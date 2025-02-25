@@ -44,8 +44,8 @@ export default function Dashboard() {
   const menuItems = [
     { id: "home", label: "Home", icon: <Home size={20} />, path: "/dashboard" },
     {
-      id: "Inventory",
-      label: "Inventory",
+      id: "Inventorys",
+      label: "Inventorys",
       icon: <FileText size={20} />,
       path: "/dashboard/documents",
     },
@@ -69,8 +69,8 @@ export default function Dashboard() {
     },
 
     {
-      id: "Inventory Nathans",
-      label: "Inventory Nathasn",
+      id: "Inventory Nathan",
+      label: "Inventory Nathan",
       icon: <Settings size={20} />,
       path: "/dashboard/settings",
     },
