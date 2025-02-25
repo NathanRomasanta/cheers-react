@@ -2,9 +2,9 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../_utils/AuthContext";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/dashboard/page";
 import AdminPanel from "../pages/AdminPanel";
-import Login from "../pages/Login";
+import Login from "../pages/login/page";
 import LoadingScreen from "../_utils/LoadingScreen";
 
 // Protected route wrapper for regular users
@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }) => {
   if (loading) return <LoadingScreen />;
 
   if (!currentUser) {
-    return <Navigate to="../pages/login" />;
+    return <Navigate to="/login" />;
   }
 
   return children;
@@ -27,11 +27,11 @@ const AdminRoute = ({ children }) => {
   if (loading) return <LoadingScreen />;
 
   if (!currentUser) {
-    return <Navigate to="../pages/login" />;
+    return <Navigate to="/login" />;
   }
 
   if (!isAdmin) {
-    return <Navigate to="../pages/dashboard" />;
+    return <Navigate to="/dashboard" />;
   }
 
   return children;
@@ -49,7 +49,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<Login />} />
 
       <Route
-        path="../pages/dashboard*"
+        path="/dashboard*"
         element={
           <ProtectedRoute>
             <Dashboard />
@@ -58,7 +58,7 @@ export default function AppRoutes() {
       />
 
       <Route
-        path="../pages/admin*"
+        path="/admin*"
         element={
           <AdminRoute>
             <AdminPanel />
@@ -66,8 +66,8 @@ export default function AppRoutes() {
         }
       />
 
-      <Route path="/" element={<Navigate to="../pages/dashboard" />} />
-      <Route path="*" element={<Navigate to="../pages/dashboard" />} />
+      <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   );
 }
