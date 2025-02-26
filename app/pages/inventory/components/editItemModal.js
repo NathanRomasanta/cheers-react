@@ -1,22 +1,13 @@
 'use client';
 
-/**
- **  Component: EditItemModal.js
- **
- **  Description:
- **  This component is responsible for allowing users to edit inventory item information.
- **  The component is a button that triggers a modal when clicked, and renders all the items information.  
- **/
-
 import { useState, useEffect } from 'react';
 import { db } from '../../../_utils/Firebase'; 
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import DeleteItemModalButton from './deleteItemButton';
 
 export default function EditItemModalButton({ itemID }) {
     
     const [loading, setLoading] = useState(true);
-    const [selectedType, setSelectedType] = useState('');
-
     const [formData, setFormData] = useState({
         itemID: '',
         supplier: '',
@@ -33,51 +24,33 @@ export default function EditItemModalButton({ itemID }) {
     const itemType = ['Cooler', 'Hard Liquor', 'Beer', 'Wine', 'Liqueurs', 'Non-Alcoholic'];
     const liquorType = ['Whiskey', 'Vodka', 'Rum', 'Tequila', 'Gin', 'Brandy'];
 
-    // Fetch Data from Firestore DB collection 'Inventory_Database' using itemID
+    // Handle fetching item data and updating formData
     useEffect(() => {
-
-        console.log('useEffect triggered - itemID: ', itemID);
-
         if (!itemID) {
             console.warn('itemID is undefined, skipping fetch');
             return;
         }
-    
+
         const fetchItemData = async () => {
             try {
-                console.log('Fetching data for itemID: ', itemID);
                 const itemRef = doc(db, 'Inventory_Database', itemID);
                 const itemDoc = await getDoc(itemRef);
                 if (itemDoc.exists()) {
                     const fetchedData = itemDoc.data();
-                    setFormData((prevState) => {
-                        console.log("Previous FormData: ", prevState);
-                        const newState = {
-                            itemID,  // Ensure `itemID` is included
-                            supplier: fetchedData.supplier || '',
-                            name: fetchedData.name || '',
-                            type: fetchedData.type || '',
-                            alcoholStyle: fetchedData.alcoholStyle || '',
-                            price: fetchedData.price || '',
-                            quantity: fetchedData.quantity || '',
-                            country: fetchedData.country || '',
-                            volume: fetchedData.volume || '',
-                            alcoholPercentage: fetchedData.alcoholPercentage || ''
-                        };
-                        console.log("New FormData (before updating state):", newState);
-                        return newState;
-                    });
+                    setFormData(fetchedData);
+                    setLoading(false); // Stop loading after data is fetched
                 } else {
                     console.warn('No document found for itemID: ', itemID);
+                    setLoading(false); // Stop loading if no document is found
                 }
             } catch (error) {
                 console.error("Error fetching item data:", error);
+                setLoading(false); // Stop loading in case of error
             }
         };
-    
-        fetchItemData();
-    }, [itemID]);
 
+        fetchItemData();
+    }, [itemID]); // Re-fetch whenever itemID changes
 
     // Handle form input changes
     const handleInputChange = (e) => {
@@ -88,7 +61,7 @@ export default function EditItemModalButton({ itemID }) {
                 ? parseFloat(value) || 0.0
                 : ['quantity', 'volume'].includes(name)
                 ? parseInt(value) || 0
-                : value, // Save other fields as string by default
+                : value,
         }));
     };
 
@@ -101,62 +74,55 @@ export default function EditItemModalButton({ itemID }) {
             const itemRef = doc(db, 'Inventory_Database', itemID);
             await updateDoc(itemRef, formData);
             alert(`Item ${itemID} updated successfully!`);
-            console.log('Item updated: ', formData.itemID);
+            console.log('Item updated: ', formData);
         } catch (error) {
             console.error(`Error: ${error} when updating item: ${itemID}`);
         } finally {
-            fetchItemData();
             setLoading(false);
         }
     };
 
-    // Handle Item Type Category Change
+    // Handle item type change
     const handleTypeChange = (e) => {
         const selectedType = e.target.value;
-        console.log('Selected Type: ', selectedType);
-        setSelectedType(selectedType);
-        setFormData( (prevData) => ({
+        setFormData((prevData) => ({
             ...prevData,
-            type: selectedType, // Selected type is set as the item type
+            type: selectedType,
         }));
     };
 
-        // Handle Delete
+    // Handle item deletion
     const handleDelete = async (e, itemID) => {
         e.preventDefault();
 
-        const confirmDelete = window.confirm(`Are you sure you want to delete item: ${formData.name}? This action cannot be undone.`);
+        const confirmDelete = window.confirm(`Are you sure you want to delete item: ${formData.name}?`);
 
         if (confirmDelete) {
             try {
                 const itemRef = doc(db, "Inventory_Database", itemID);
                 await deleteDoc(itemRef);
-                console.log(`Item ${itemID} has been successfully deleted from the database`);
-                alert(`Item ${itemID} has been successfully deleted from the database`);
+                console.log(`Item ${itemID} deleted from the database`);
+                alert(`Item ${itemID} deleted from the database`);
                 document.getElementById('edit_item_modal').close();
             } catch (error) {
                 console.error('Error deleting item: ', error);
-                alert('Could not delete the item, please try again later: ', error)
-                throw error;
-            };
+                alert('Could not delete the item, please try again later');
+            }
         } else {
-            console.log('Delete action has been cancelled');
+            console.log('Delete action cancelled');
         }
+    };
 
-        fetchItemData();
-    }
-
-    // Handle Cancel
+    // Handle cancel action
     const handleCancel = (e) => {
         e.preventDefault();
-        console.log('Edit Item action has been cancelled');
+        console.log('Edit action cancelled');
         document.getElementById('edit_item_modal').close();
     };
 
-    // Open Modal
+    // Open modal
     const openModal = () => {
-        console.log('Item ID: ', itemID);
-        console.log('Form Data before opening Modal: ', formData);
+        console.log('Opening modal to edit item: ', itemID);
         document.getElementById('edit_item_modal').showModal();
     };
 
@@ -165,6 +131,7 @@ export default function EditItemModalButton({ itemID }) {
             <button
                 className="btn bg-orange-500 rounded-xl text-black p-5"
                 onClick={openModal}
+                disabled={loading} // Disable button while loading
             >
                 Edit Item
             </button>
@@ -175,192 +142,193 @@ export default function EditItemModalButton({ itemID }) {
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
 
-                    {/* Form Data */}
-                    <form className="flex flex-col gap-4 p-4 border rounded-lg shadow-md bg-white">
-                        <h2 className="text-xl font-bold text-black text-center m-2">Edit Item</h2>
-                        
-                        <div className="bg-orange-300 p-4 rounded-lg">
-                        
-                        {/* Item ID (not editable) */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="itemID" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Item ID:
-                            </label>
-                            <input
-                                type="text"
-                                name="itemID"
-                                value={formData.itemID || ""}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                                disabled
-                            />
-                        </div>
-
-                        {/* Supplier */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="supplier" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Supplier:
-                            </label>
-                            <input
-                                type="text"
-                                name="supplier"
-                                value={formData.supplier || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                            />
-                        </div>
-
-                        {/* Name */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="name" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Name:
-                            </label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                                required
-                            />
-                        </div>
-
-                        {/* Item Type */}
-                        <div className='flex items-center mb-4'>
-                            <label htmlFor="type" className="w-1/4 text-left p-2 text-black font-bold text-lg"> 
-                                Item Type:
-                            </label>
-                            <select name="type" className="border-orange-500 w-3/4 bg-white text-black border p-2 ml-4" value={formData.type} onChange={handleTypeChange} required>
-                                <option value="">Select Item Type</option>
-                                {itemType.map((type, index) => (
-                                    <option key={index} value={type}>
-                                        {type}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        
-                        {/* Liquor Type dropdown only conditionally renders if 'Hard Liquor' is selected as item type */}
-                        <div>
-                            {formData.type == 'Hard Liquor' && (
+                    {/* Check if data is loaded */}
+                    {loading ? (
+                        <div>Loading...</div> // Show loading indicator until data is fetched
+                    ) : (
+                        <form className="flex flex-col gap-4 p-4 border rounded-lg shadow-md bg-white">
+                            <h2 className="text-xl font-bold text-black text-center m-2">Edit Item</h2>
+                            
+                            <div className="bg-orange-300 p-4 rounded-lg">
+                                {/* Item ID (not editable) */}
                                 <div className="flex items-center mb-4">
-                                    <label htmlFor="alcoholStyle" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                        Liquor Type:
+                                    <label htmlFor="itemID" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Item ID:
                                     </label>
-                                    <select name="alcoholStyle" className="border-orange-500 w-3/4 bg-white text-black border p-2 ml-4" value={formData.alcoholStyle} onChange={handleInputChange}>
-                                        <option value=""> Select Liquor Type </option>
-                                        {liquorType.map((style, index) => (
-                                            <option key={index} value={style}>
-                                                {style}
+                                    <input
+                                        type="text"
+                                        name="itemID"
+                                        value={formData.itemID || ""}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                        disabled
+                                    />
+                                </div>
+
+                                {/* Supplier */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="supplier" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Supplier:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="supplier"
+                                        value={formData.supplier || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                    />
+                                </div>
+
+                                {/* Name */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="name" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Name:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                        required
+                                    />
+                                </div>
+
+                                {/* Item Type */}
+                                <div className='flex items-center mb-4'>
+                                    <label htmlFor="type" className="w-1/4 text-left p-2 text-black font-bold text-lg"> 
+                                        Item Type:
+                                    </label>
+                                    <select name="type" className="border-orange-500 w-3/4 bg-white text-black border p-2 ml-4" value={formData.type} onChange={handleTypeChange} required>
+                                        <option value="">Select Item Type</option>
+                                        {itemType.map((type, index) => (
+                                            <option key={index} value={type}>
+                                                {type}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                            )}
-                        </div>
+                                
+                                {/* Liquor Type */}
+                                {formData.type === 'Hard Liquor' && (
+                                    <div className="flex items-center mb-4">
+                                        <label htmlFor="alcoholStyle" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                            Liquor Type:
+                                        </label>
+                                        <select name="alcoholStyle" className="border-orange-500 w-3/4 bg-white text-black border p-2 ml-4" value={formData.alcoholStyle} onChange={handleInputChange}>
+                                            <option value=""> Select Liquor Type </option>
+                                            {liquorType.map((style, index) => (
+                                                <option key={index} value={style}>
+                                                    {style}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
 
+                                {/* Price */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="price" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Price:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={formData.price || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                        step="0.01"
+                                        min="0"
+                                        required
+                                    />
+                                </div>
 
-                        {/* Price */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="price" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Price:
-                            </label>
-                            <input
-                                type="number"
-                                name="price"
-                                value={formData.price || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                                step="0.01"
-                                min="0"
-                                required
-                            />
-                        </div>
+                                {/* Quantity */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="quantity" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Quantity:
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        value={formData.quantity || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                        required
+                                    />
+                                </div>
 
-                        {/* Quantity */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="quantity" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Quantity:
-                            </label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={formData.quantity || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                                required
-                            />
-                        </div>
+                                {/* Country */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="country" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Country:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="country"
+                                        value={formData.country || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                    />
+                                </div>
 
-                        {/* Country */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="country" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Country:
-                            </label>
-                            <input
-                                type="text"
-                                name="country"
-                                value={formData.country || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                            />
-                        </div>
+                                {/* Volume */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="volume" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Volume (mL):
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="volume"
+                                        value={formData.volume || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                    />
+                                </div>
 
-                        {/* Volume */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="volume" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Volume (mL):
-                            </label>
-                            <input
-                                type="number"
-                                name="volume"
-                                value={formData.volume || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                            />
-                        </div>
-
-                        {/* Alcohol Percentage */}
-                        <div className="flex items-center mb-4">
-                            <label htmlFor="alcoholPercentage" className="w-1/4 text-left p-2 text-black font-bold text-lg">
-                                Alcohol Percentage (%):
-                            </label>
-                            <input
-                                type="number"
-                                name="alcoholPercentage"
-                                value={formData.alcoholPercentage || ""}
-                                onChange={handleInputChange}
-                                className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
-                                step="0.01"
-                                min="0"
-                            />
-                        </div>
-
-                        </div>
-                        
+                                {/* Alcohol Percentage */}
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="alcoholPercentage" className="w-1/4 text-left p-2 text-black font-bold text-lg">
+                                        Alcohol Percentage (%):
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="alcoholPercentage"
+                                        value={formData.alcoholPercentage || ""}
+                                        onChange={handleInputChange}
+                                        className="input input-bordered border-orange-500 w-3/4 bg-white text-black border p-2 ml-4"
+                                        step="0.01"
+                                        min="0"
+                                    />
+                                </div>
+                            </div>
+                            
                             <button
                                 type="submit"
                                 onClick={handleSubmit}
                                 className="btn bg-orange-500 text-black p-2 rounded-lg"
-                                >
-                                    Update Item
+                            >
+                                Update Item
                             </button>
 
-                        <div className="flex items-center justify-between">
-                            <button 
-                                className="btn bg-red-500 text-white p-2 rounded-lg w-1/2 mr-2"
-                                onClick={(e) => handleDelete(e, itemID)}>
-                                    Delete</button>
-                            <button 
-                                type="cancel" 
-                                className="btn bg-slate-200 text-black p-2 rounded-lg w-1/2 ml-2"
-                                onClick={handleCancel}
-                                >
+                            <div className="flex items-center justify-between ">
+                                <button
+                                    type="button"
+                                    className="btn bg-red-500 text-white p-2 rounded-lg w-1/2 mr-2"
+                                    onClick={(e) => handleDelete(e, itemID)}>
+                                        Delete
+                                </button>
+                                
+                                <button 
+                                    type="cancel" 
+                                    className="btn bg-gray-400 text-white p-2 rounded-lg w-1/2 ml-2" 
+                                    onClick={handleCancel}>
                                     Cancel
-                            </button>
-                        </div>
-                    </form>
+                                </button>
+                            </div>
+                        </form>
+                    )}
                 </div>
             </dialog>
         </div>
     );
-};
+}
