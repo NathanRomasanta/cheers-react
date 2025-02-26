@@ -22,7 +22,7 @@ export default function Login() {
 
   // Redirect if already logged in
   if (currentUser) {
-    router.push("../pages/dashboard");
+    router.push("../dashboard");
   }
 
   const handleSubmit = async (e) => {
@@ -48,13 +48,13 @@ export default function Login() {
 
         // Redirect based on role
         if (userData.isAdmin) {
-          router.push("../pages/dashboard");
+          router.push("../dashboard");
         } else {
-          router.push("../pages/dashboard");
+          router.push("../dashboard");
         }
       } else {
         // No user document, treat as regular user
-        router.push("../pages/dashboard");
+        router.push("../dashboard");
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");

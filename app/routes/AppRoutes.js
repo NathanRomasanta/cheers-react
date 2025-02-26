@@ -2,7 +2,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../_utils/AuthContext";
-import Dashboard from "../pages/dashboard/page";
+import Dashboard from "../dashboard/page";
 import AdminPanel from "../pages/AdminPanel";
 import Login from "../pages/login/page";
 import LoadingScreen from "../_utils/LoadingScreen";
