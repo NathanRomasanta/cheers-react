@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../../_utils/Firebase'; 
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import DeleteItemModalButton from './deleteItemButton';
 
 export default function EditItemModalButton({ itemID }) {
     
