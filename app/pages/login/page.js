@@ -7,7 +7,7 @@ import { auth, db } from "@/app/_utils/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "@/app/_utils/AuthContext";
-
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -21,9 +21,11 @@ export default function Login() {
   const router = useRouter();
 
   // Redirect if already logged in
-  if (currentUser) {
-    router.push("../dashboard");
-  }
+  useEffect(() => {
+    if (currentUser) {
+      router.push("/dashboard");
+    }
+  }, [currentUser, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

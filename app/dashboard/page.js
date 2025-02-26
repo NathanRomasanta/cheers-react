@@ -15,6 +15,7 @@ import {
   Shield,
   Menu,
   X,
+  Airplay,
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
 import KurtInventoryPage from "./inventory-page/page";
@@ -43,49 +44,48 @@ export default function Dashboard() {
   };
 
   const menuItems = [
-    { id: "home", label: "Home", icon: <Home size={20} />, path: "/dashboard" },
     {
-      id: "Inventorys",
-      label: "Inventorys",
-      icon: <FileText size={20} />,
+      id: "Dashboard",
+      label: "Dashboard",
+      icon: <Airplay size={27} />,
+      path: "/dashboard/documents",
+    },
+    {
+      id: "Inventory",
+      label: "Inventory",
+      icon: <FileText size={27} />,
       path: "/dashboard/documents",
     },
 
     {
-      id: "Dashboard",
-      label: "Dashboard",
-      icon: <FileText size={20} />,
-      path: "/dashboard/documents",
-    },
-    {
       id: "messages",
       label: "Messages",
-      icon: <Mail size={20} />,
+      icon: <Mail size={27} />,
       path: "/dashboard/messages",
     },
     {
       id: "Kurt's Inventory Page",
       label: "Inventory Page",
-      icon: <Mail size={20} />,
+      icon: <Mail size={27} />,
       path: "/dashboard/messages",
     },
     {
       id: "settings",
       label: "Settings",
-      icon: <Settings size={20} />,
+      icon: <Settings size={27} />,
       path: "/dashboard/settings",
     },
 
     {
       id: "Inventory Nathan",
       label: "Inventory Nathan",
-      icon: <Settings size={20} />,
+      icon: <Settings size={27} />,
       path: "/dashboard/settings",
     },
     {
       id: "Create POS Item",
       label: "Create POS Item",
-      icon: <Settings size={20} />,
+      icon: <Settings size={27} />,
       path: "/dashboard/settings",
     },
   ];
@@ -106,16 +106,6 @@ export default function Dashboard() {
 
   const renderContent = () => {
     switch (activeItem) {
-      case "home":
-        return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Welcome Home</h2>
-            <p className="text-gray-600">
-              This is the home page content. Click on different sidebar items to
-              see this content change.
-            </p>
-          </div>
-        );
       case "inventory":
         return (
           <div className="p-6">
@@ -198,7 +188,7 @@ export default function Dashboard() {
       case "Dashboard":
         return <ControlPanel />;
       default:
-        return <div>Select an item</div>;
+        return <ControlPanel />;
     }
   };
 
