@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
 import KurtInventoryPage from "./inventory-page/page";
+import ControlPanel from "./control-panel/page";
 
 // Dashboard sub-pages
 //import HomePage from "./dashboard/HomePage";
@@ -49,6 +50,13 @@ export default function Dashboard() {
       icon: <FileText size={20} />,
       path: "/dashboard/documents",
     },
+
+    {
+      id: "Dashboard",
+      label: "Dashboard",
+      icon: <FileText size={20} />,
+      path: "/dashboard/documents",
+    },
     {
       id: "messages",
       label: "Messages",
@@ -57,7 +65,7 @@ export default function Dashboard() {
     },
     {
       id: "Kurt's Inventory Page",
-      label: "Kurt's Inventory Page",
+      label: "Inventory Page",
       icon: <Mail size={20} />,
       path: "/dashboard/messages",
     },
@@ -186,6 +194,9 @@ export default function Dashboard() {
 
       case "Kurt's Inventory Page":
         return <KurtInventoryPage />;
+
+      case "Dashboard":
+        return <ControlPanel />;
       default:
         return <div>Select an item</div>;
     }
@@ -206,11 +217,12 @@ export default function Dashboard() {
           isMobileMenuOpen ? "flex" : "hidden"
         }`}
       >
-        <div className="p-4 border-b">
+        <div className="p-4 border-b flex items-center gap-2">
+          <img src="/Logo.svg" alt="Logo" className="w-11 h-11" />
           <h1 className="text-xl font-bold text-blue-600">Cheers</h1>
         </div>
 
-        <div className="flex flex-col flex-grow">
+        <div className="flex flex-col flex-grow p-5">
           {menuItems.map((item) => (
             <button
               key={item.id}
@@ -220,7 +232,7 @@ export default function Dashboard() {
               }}
               className={`flex items-center p-4 hover:bg-gray-100 transition-colors ${
                 activeItem === item.id
-                  ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600 p-10"
+                  ? "rounded-xl bg-[#FF6E1F20] text-[#FF6E1F] p-10 font-bold"
                   : "text-gray-700"
               }`}
             >
@@ -232,7 +244,7 @@ export default function Dashboard() {
 
         <div className="p-4 border-t mt-auto">
           <div className="flex items-center mb-4">
-            <div className="w-8 h-8 rounded-full bg-blue-500 mr-2"></div>
+            <div className="w-8 h-8 rounded-full bg-[#FF6E1F] mr-2"></div>
             <div>
               <p className="text-sm font-semibold">
                 {currentUser?.email || "User"}

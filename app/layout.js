@@ -1,7 +1,15 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import AuthProvider from "./_utils/AuthContext";
 import "./globals.css";
+import { Montserrat } from "next/font/google";
 
+// Load Montserrat with specific weights
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-montserrat", // Optional: Define a CSS variable
+  display: "swap", // Prevents layout shift
+});
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,11 +29,7 @@ export default function Layout({ children }) {
   return (
     <AuthProvider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
+        <body className={`montserrat.variable`}>{children}</body>
       </html>
     </AuthProvider>
   );
