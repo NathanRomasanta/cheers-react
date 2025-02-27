@@ -18,8 +18,9 @@ import {
   Airplay,
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
-import KurtInventoryPage from "./inventory-page/page";
+
 import ControlPanel from "./control-panel/page";
+import ItemsListView from "./inventory/page";
 
 // Dashboard sub-pages
 //import HomePage from "./dashboard/HomePage";
@@ -50,11 +51,12 @@ export default function Dashboard() {
       icon: <Airplay size={27} />,
       path: "/dashboard/documents",
     },
+
     {
       id: "Inventory",
       label: "Inventory",
-      icon: <FileText size={27} />,
-      path: "/dashboard/documents",
+      icon: <Settings size={27} />,
+      path: "/dashboard/settings",
     },
 
     {
@@ -63,12 +65,7 @@ export default function Dashboard() {
       icon: <Mail size={27} />,
       path: "/dashboard/messages",
     },
-    {
-      id: "Kurt's Inventory Page",
-      label: "Inventory Page",
-      icon: <Mail size={27} />,
-      path: "/dashboard/messages",
-    },
+
     {
       id: "settings",
       label: "Settings",
@@ -76,12 +73,6 @@ export default function Dashboard() {
       path: "/dashboard/settings",
     },
 
-    {
-      id: "Inventory Nathan",
-      label: "Inventory Nathan",
-      icon: <Settings size={27} />,
-      path: "/dashboard/settings",
-    },
     {
       id: "Create POS Item",
       label: "Create POS Item",
@@ -187,6 +178,8 @@ export default function Dashboard() {
 
       case "Dashboard":
         return <ControlPanel />;
+      case "Inventory":
+        return <ItemsListView />;
       default:
         return <ControlPanel />;
     }
