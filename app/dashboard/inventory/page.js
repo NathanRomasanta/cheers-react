@@ -8,9 +8,7 @@ import {
   getDocs,
   doc,
   updateDoc,
-  deleteDoc,
 } from "firebase/firestore";
-import CreatePOSItem from "@/app/dashboard/create-pos-item-screen/page";
 
 export default function ItemsListView() {
   const [items, setItems] = useState([]);
@@ -109,33 +107,22 @@ export default function ItemsListView() {
 
   return (
     <div className="container mx-10 p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">Items List</h1>
+      <h1 className="text-2xl font-bold mb-4">Items List</h1>
 
-        {/* Gonna figure out how to make the form open in a modal */}
-      <button
-        className="btn bg-green-500 text-white hover:bg-green-600 transition-colors p-3 rounded-lg"
-      >Add Item</button>
-
-      <div className="flex bg-orange-300 rounded-lg w-5/6 p-3 items-center justify-center">
+      <div className="flex bg-orange-300 rounded-lg w-auto p-3 items-center">
       {/* List view */}
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg m-2 w-5/6">
+        <div className="bg-white shadow-md rounded-lg">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center p-4 border-b last:border-b-0 m-2"
+              className="flex justify-between items-center p-4 border-b last:border-b-0"
             >
               <div>
-                <h2 className="text-lg text-black font-semibold">{item.name}  [{item.id}]</h2>
-                <p className="text-black">Quantity: {item.quantity}</p>
-                <p className="text-black">Category: {item.category}</p>
-                <p className="text-black">Style: {item.alcoholStyle}</p>
-                <p className="text-black">${item.price}</p>
-                <p className="text-black">{item.country}</p>
-                <p className="text-black">{item.volume} mL</p>
-                <p className="text-black">{item.alcoholPercentage}%</p>
+                <h2 className="text-lg font-semibold">{item.name}</h2>
+                <p className="text-gray-600">{item.id}</p>
               </div>
               <button
                 onClick={() => handleEditClick(item)}
@@ -183,100 +170,7 @@ export default function ItemsListView() {
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Supplier
-              </label>
-              <input
-                id="supplier"
-                name="supplier"
-                value={currentItem.supplier}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Category
-              </label>
-              <input
-                id="category"
-                name="category"
-                value={currentItem.category}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Alcohol Style: 
-              </label>
-              <input
-                id="alcoholStyle"
-                name="alcoholStyle"
-                value={currentItem.supplier}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Price
-              </label>
-              <input
-                id="price"
-                name="price"
-                value={currentItem.price}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Country
-              </label>
-              <input
-                id="country"
-                name="country"
-                value={currentItem.country}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Volume (mL)
-              </label>
-              <input
-                id="volume"
-                name="volume"
-                value={currentItem.volume}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Alcohol %
-              </label>
-              <input
-                id="alcoholPercentage"
-                name="alcoholPercentage"
-                value={currentItem.alcoholPercentage}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
-
-            <div className="flex justify-end space-x-2 py-2">
+            <div className="flex justify-end space-x-2">
               <button
                 onClick={handleSave}
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors w-full"
