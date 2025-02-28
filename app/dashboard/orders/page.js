@@ -6,6 +6,8 @@ import {
   getDocs,
   doc,
   updateDoc,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 
 export default function Orders() {
@@ -39,7 +41,7 @@ export default function Orders() {
   }, []);
 
   // Handler for opening the edit modal
-  const handleEditClick = (item) => {
+  const handleDetailsClick = (item) => {
     setCurrentItem({ ...item });
     setIsModalOpen(true);
   };
@@ -50,39 +52,96 @@ export default function Orders() {
     setCurrentItem(null);
   };
 
-  // Handler for input changes in the modal
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setCurrentItem({
-      ...currentItem,
-      [name]: name === "quantity" ? parseInt(value, 10) || 0 : value, // Convert to number
-    });
-  };
-
-  // Handler for saving the edited item
-  const handleSave = async () => {
+  const handleFulfillOrder = async () => {
     try {
-      // Update the document in Firestore
-      const itemRef = doc(db, "Orders", currentItem.id);
+      // Check if currentItem and ingredients exist
+      if (!currentItem || !currentItem.ingredients) {
+        console.error("No current item or ingredients found");
+        return;
+      }
 
-      // Create a copy of the item without the id field (since id is for the document reference)
-      const { id, ...itemData } = currentItem;
+      // Loop through ingredients properly
+      for (const item of currentItem.ingredients) {
+        // Make sure item has id
+        if (!item || !item.id) {
+          console.error("Invalid ingredient item:", item);
+          continue;
+        }
 
-      await updateDoc(itemRef, itemData);
+        const baristaRef = doc(
+          db,
+          "Accounts",
+          currentItem.baristaUID,
+          "stock",
+          item.id
+        );
 
-      // Update the local state
-      setItems(
-        items.map((item) => (item.id === currentItem.id ? currentItem : item))
-      );
+        try {
+          // First try to get the document to see if it exists
+          const docSnap = await getDoc(baristaRef);
 
-      // Close the modal
+          if (docSnap.exists()) {
+            // Document exists, update it by adding quantities
+            const currentCount = docSnap.data().runningCount || 0;
+            const newCount = currentCount + Number(item.quantity);
+
+            await updateDoc(baristaRef, {
+              runningCount: newCount,
+            });
+
+            console.log(
+              `Updated stock for item ${item.id}: ${currentCount} + ${item.quantity} = ${newCount}`
+            );
+          } else {
+            // Document doesn't exist, create it
+            await setDoc(baristaRef, {
+              runningCount: Number(item.quantity),
+              // Add any other fields you might need for a new stock item
+              name: item.name || "Unknown Item",
+              isLiquor: item.isLiquor,
+              id: item.id,
+              ouncesPerBottle: item.ouncesPerBottle,
+            });
+
+            console.log(
+              `Created new stock item ${item.id} with count ${item.quantity}`
+            );
+          }
+
+          // Subtract from the Items collection
+          const itemRef = doc(db, "Items", item.id);
+          const itemSnap = await getDoc(itemRef);
+
+          if (itemSnap.exists()) {
+            const currentStock = itemSnap.data().stock || 0;
+            // Make sure we don't go below zero
+            const newStock = Math.max(0, currentStock - Number(item.quantity));
+
+            await updateDoc(itemRef, {
+              stock: newStock,
+            });
+
+            console.log(
+              `Updated Items collection for item ${item.id}: ${currentStock} - ${item.quantity} = ${newStock}`
+            );
+          } else {
+            console.warn(
+              `Item ${item.id} not found in Items collection. No stock subtracted.`
+            );
+          }
+        } catch (itemErr) {
+          console.error(`Error handling item ${item.id}:`, itemErr);
+        }
+      }
+
       handleCloseModal();
     } catch (err) {
       console.error("Error updating item: ", err);
       alert("Failed to save changes. Please try again.");
     }
   };
+
+  // Handler for saving the edited item
 
   if (loading)
     return <div className="container mx-auto p-4">Loading items...</div>;
@@ -97,21 +156,29 @@ export default function Orders() {
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg">
+        <div className="bg-white shadow-md rounded-lg px-11 py-5">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center p-4 border-b last:border-b-0"
+              className="flex justify-between items-center py-5 border-b last:border-b-0 columns-2"
             >
-              <div>
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-600">{item.id}</p>
+              <div className="">
+                <div className="row-span-1">
+                  <h2 className="text-lg font-semibold">{item.baristaUID}</h2>
+                  <p>{item.id}</p>
+                </div>
+
+                <div className="row-span-2">
+                  <p className="text-lg font-semibold">
+                    Order Quantity: {item.ingredients.length}
+                  </p>
+                </div>
               </div>
               <button
-                onClick={() => handleEditClick(item)}
+                onClick={() => handleDetailsClick(item)}
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
               >
-                Edit
+                Details
               </button>
             </div>
           ))}
@@ -122,34 +189,29 @@ export default function Orders() {
       {isModalOpen && currentItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg w-full max-w-md p-6">
-            <h2 className="text-xl font-bold mb-4">Edit Item</h2>
+            <h2 className="text-xl font-bold mb-4">Order Details</h2>
 
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="name">
-                Name
+                Barista: {currentItem.baristaUID}
               </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={currentItem.name}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="description">
-                Quantity
-              </label>
-              <input
-                id="quantity"
-                name="quantity"
-                value={currentItem.quantity}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
-            </div>
+            {currentItem.ingredients.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between items-center p-4 border-b last:border-b-0"
+              >
+                <div>
+                  <h2 className="text-lg font-semibold">
+                    {item.name} x {item.quantity}
+                  </h2>
+                  <p className="text-gray-600">{item.id}</p>
+                </div>
+              </div>
+            ))}
+
+            <div className="p-3"></div>
 
             <div className="flex justify-end space-x-2">
               <button
@@ -159,10 +221,10 @@ export default function Orders() {
                 Cancel
               </button>
               <button
-                onClick={handleSave}
+                onClick={handleFulfillOrder}
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
               >
-                Save
+                Fulfill
               </button>
             </div>
           </div>

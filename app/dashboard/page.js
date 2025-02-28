@@ -222,7 +222,7 @@ export default function Dashboard() {
           <h1 className="text-xl font-bold text-[#FF6E1F]">Cheers</h1>
         </div>
 
-        <div className="flex flex-col flex-grow p-5">
+        <div className="flex flex-col flex-grow p-5 ">
           {menuItems.map((item) => (
             <button
               key={item.id}
@@ -265,7 +265,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow overflow-auto">{renderContent()}</div>
+      <div className="flex-grow overflow-auto ">{renderContent()}</div>
     </div>
   );
 }

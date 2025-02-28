@@ -20,7 +20,7 @@ export default function ItemsListView() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const itemsCollection = collection(db, "Inventory_Database");
+        const itemsCollection = collection(db, "Items");
         const itemsSnapshot = await getDocs(itemsCollection);
         const itemsList = itemsSnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -64,7 +64,7 @@ export default function ItemsListView() {
   const handleSave = async () => {
     try {
       // Update the document in Firestore
-      const itemRef = doc(db, "Inventory_Database", currentItem.id);
+      const itemRef = doc(db, "Items", currentItem.id);
 
       // Create a copy of the item without the id field (since id is for the document reference)
       const { id, ...itemData } = currentItem;

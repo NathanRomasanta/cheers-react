@@ -84,7 +84,8 @@ export default function AddInventory() {
       // Reset form
       setItemName("");
       setIsLiquor(false);
-      setOuncesPerBottle("");
+      setOuncesPerBottle(0);
+      setItemQuantity(0);
       setMessage("Item saved successfully!");
     } catch (error) {
       console.error("Error saving item:", error);
