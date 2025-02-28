@@ -16,11 +16,16 @@ import {
   Menu,
   X,
   Airplay,
+  Send,
+  FilePlus,
+  Table,
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
 
 import ControlPanel from "./control-panel/page";
 import ItemsListView from "./inventory/page";
+import AddInventory from "./create-inventory/page";
+import Orders from "./orders/page";
 
 // Dashboard sub-pages
 //import HomePage from "./dashboard/HomePage";
@@ -55,27 +60,34 @@ export default function Dashboard() {
     {
       id: "Inventory",
       label: "Inventory",
-      icon: <Settings size={27} />,
+      icon: <Table size={27} />,
       path: "/dashboard/settings",
     },
 
     {
-      id: "messages",
+      id: "Add Inventory",
+      label: "Add Inventory",
+      icon: <FilePlus size={27} />,
+      path: "/dashboard/settings",
+    },
+
+    {
+      id: "Orders",
+      label: "Orders",
+      icon: <Send size={27} />,
+      path: "/dashboard/settings",
+    },
+
+    {
+      id: "Messages",
       label: "Messages",
       icon: <Mail size={27} />,
       path: "/dashboard/messages",
     },
 
     {
-      id: "settings",
+      id: "Settings",
       label: "Settings",
-      icon: <Settings size={27} />,
-      path: "/dashboard/settings",
-    },
-
-    {
-      id: "Create POS Item",
-      label: "Create POS Item",
       icon: <Settings size={27} />,
       path: "/dashboard/settings",
     },
@@ -113,7 +125,7 @@ export default function Dashboard() {
             </div>
           </div>
         );
-      case "messages":
+      case "Messages":
         return (
           <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">Messages</h2>
@@ -141,7 +153,7 @@ export default function Dashboard() {
             </div>
           </div>
         );
-      case "settings":
+      case "Settings":
         return (
           <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">Settings</h2>
@@ -178,8 +190,13 @@ export default function Dashboard() {
 
       case "Dashboard":
         return <ControlPanel />;
+
+      case "Orders":
+        return <Orders />;
       case "Inventory":
         return <ItemsListView />;
+      case "Add Inventory":
+        return <AddInventory />;
       default:
         return <ControlPanel />;
     }
@@ -202,7 +219,7 @@ export default function Dashboard() {
       >
         <div className="p-4 border-b flex items-center gap-2">
           <img src="/Logo.svg" alt="Logo" className="w-11 h-11" />
-          <h1 className="text-xl font-bold text-blue-600">Cheers</h1>
+          <h1 className="text-xl font-bold text-[#FF6E1F]">Cheers</h1>
         </div>
 
         <div className="flex flex-col flex-grow p-5">
