@@ -120,6 +120,7 @@ export default function ItemsListView() {
               <span className="w-1/4">Item Name</span>
               <span className="w-1/4">ID</span>
               <span className="w-1/4">Stock</span>
+              <span className="w-1/4">Status</span>
               <span className="w-1/4 text-center">Actions</span>
             </div>
 
@@ -132,6 +133,22 @@ export default function ItemsListView() {
                 <span className="w-1/4">{item.name}</span>
                 <span className="w-1/4 text-gray-600">{item.id}</span>
                 <span className="w-1/4 text-gray-600">{item.quantity}</span>
+
+                <span
+                  className={`w-1/4 text-white px-2 py-1 rounded-full ${
+                    item.quantity > 30
+                      ? "text-green-500 font-bold" // In stock (green)
+                      : item.quantity > 0
+                      ? "text-orange-500 font-bold" // Low stock (orange)
+                      : "text-red-500 font-bold" // No stock (red)
+                  }`}
+                >
+                  {item.quantity > 30
+                    ? "In Stock"
+                    : item.quantity > 0
+                    ? "Low Stock"
+                    : "No Stock"}
+                </span>
                 <div className="w-1/4 flex justify-center">
                   <button
                     onClick={() => handleEditClick(item)}
