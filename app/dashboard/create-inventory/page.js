@@ -71,7 +71,7 @@ export default function AddInventory() {
       // Prepare data object
       const itemData = {
         name: itemName,
-        isLiquor: isLiquor,
+        isLiquor: Boolean(isLiquor),
         ouncesPerBottle: isLiquor ? Number(ouncesPerBottle) : 1,
         createdAt: new Date(),
         quantity: Number(itemQuantity),
