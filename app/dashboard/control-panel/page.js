@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "@/app/_utils/Firebase"; // Import your firestore instance
 import { Archive, Box, ListOrdered, Send } from "lucide-react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import {
   LineChart,
   Line,
@@ -32,11 +32,14 @@ const ControlPanel = () => {
 
   const [ordersCount, setOrdersCount] = useState(0);
   const [posItemCount, setPosItemCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
+
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Items_List")); // "orders" is your Firestore collection name
+        const querySnapshot = await getDocs(collection(db, "Items")); // "orders" is your Firestore collection name
 
         const accountSnapshot = await getDocs(collection(db, "Accounts"));
         const ordersSnapshot = await getDocs(collection(db, "Orders"));
@@ -45,7 +48,26 @@ const ControlPanel = () => {
         setAccountsCount(accountSnapshot.size);
 
         setOrdersCount(ordersSnapshot.size);
-        setPosItemCount(posItemSnapshot.size); // Set the document count
+        setPosItemCount(posItemSnapshot.size);
+
+        const transactionsSnapshot = await getDocs(
+          collection(db, "Transactions")
+        );
+        const q = query(
+          collection(db, "Transactions"),
+          orderBy("time", "desc"),
+          limit(5)
+        );
+        const querysSnapshot = await getDocs(q);
+
+        const docs = querysSnapshot.docs.map((doc) => ({
+          id: doc.baristaUID,
+          ...doc.data(),
+        }));
+
+        setTransactions(docs);
+
+        setCategoryCount(4);
       } catch (error) {
         console.error("Error fetching documents: ", error);
       }
@@ -116,14 +138,28 @@ const ControlPanel = () => {
             <p className="text-sm text-gray-500">Total POS Items</p>
           </div>
         </div>
+
+        <div className="p-4 border rounded-lg shadow-lg bg-white relative h-55 w-64">
+          <div className="absolute top-3 left-3 text-lg font-semibold text-gray-500">
+            Category Count
+          </div>
+          <div className="absolute top-3 right-3 text-xl text-gray-500">
+            <ListOrdered size={30} />
+          </div>
+          <div className="mt-6 text-left">
+            <p className="text-6xl font-bold text-[#FF6E1F]">{categoryCount}</p>
+            <div className="h-4"></div>
+            <p className="text-sm text-gray-500">Total POS Items</p>
+          </div>
+        </div>
       </div>
 
       {/* Second Div for additional content */}
-      <div className="mt-8 p-4 bg-white rounded-lg shadow-lg w-full">
+      <div className="mt-8 p-4 bg-white rounded-lg shadow-lg w-full h-250">
         {/* Add any additional content here */}
-        <p className="text-lg font-semibold text-gray-700">Statistics</p>
+        <h1 className="text-xl font-bold mb-3">Sales Statistics</h1>
         <div className="mt-4 text-gray-500">
-          <ResponsiveContainer width="80%" height={400}>
+          <ResponsiveContainer width="100%" height={250}>
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -135,6 +171,20 @@ const ControlPanel = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
+      </div>
+
+      <div className="mt-8 p-4 bg-white rounded-lg shadow-lg w-full">
+        <h2 className="text-xl font-bold mb-3">Recent Transactions</h2>
+        <ul className="space-y-2">
+          {transactions.map((doc) => (
+            <li key={doc.id} className="p-3 bg-gray-100 rounded-lg shadow-md">
+              <p className="font-semibold">{doc.baristaUID || "Untitled"}</p>
+              <p className="text-sm text-gray-600">
+                Transaction Total: {doc.total} | Total Items: {doc.totalItems}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   updateDoc,
   getDoc,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 export default function Orders() {
@@ -20,25 +21,25 @@ export default function Orders() {
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const itemsCollection = collection(db, "Orders");
-        const itemsSnapshot = await getDocs(itemsCollection);
-        const itemsList = itemsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setItems(itemsList);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching items: ", err);
-        setError("Failed to load items. Please try again later.");
-        setLoading(false);
-      }
-    };
-
     fetchItems();
   }, []);
+
+  const fetchItems = async () => {
+    try {
+      const itemsCollection = collection(db, "Orders");
+      const itemsSnapshot = await getDocs(itemsCollection);
+      const itemsList = itemsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setItems(itemsList);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching items: ", err);
+      setError("Failed to load items. Please try again later.");
+      setLoading(false);
+    }
+  };
 
   // Handler for opening the edit modal
   const handleDetailsClick = (item) => {
@@ -113,12 +114,12 @@ export default function Orders() {
           const itemSnap = await getDoc(itemRef);
 
           if (itemSnap.exists()) {
-            const currentStock = itemSnap.data().stock || 0;
+            const currentStock = itemSnap.data().quantity;
             // Make sure we don't go below zero
-            const newStock = Math.max(0, currentStock - Number(item.quantity));
+            const newStock = currentStock - Number(item.quantity);
 
             await updateDoc(itemRef, {
-              stock: newStock,
+              quantity: newStock,
             });
 
             console.log(
@@ -133,6 +134,10 @@ export default function Orders() {
           console.error(`Error handling item ${item.id}:`, itemErr);
         }
       }
+
+      const documentRef = doc(db, "Orders", currentItem.id);
+      await deleteDoc(documentRef);
+      await fetchItems();
 
       handleCloseModal();
     } catch (err) {
@@ -149,37 +154,42 @@ export default function Orders() {
     return <div className="container mx-auto p-4 text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-10 p-4">
+    <div className=" mx-10 p-4">
       <h1 className="text-2xl font-bold mb-4">Orders</h1>
 
       {/* List view */}
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg px-11 py-5">
+        <div className="bg-white shadow-md rounded-lg p-6">
+          {/* Table Header */}
+          <div className="flex justify-between items-center bg-gray-100 p-4 font-semibold border-b">
+            <span className="w-1/3">Barista UID</span>
+            <span className="w-1/3">Order ID</span>
+            <span className="w-1/3">Order Quantity</span>
+            <span className="w-1/6 text-center">Actions</span>
+          </div>
+
+          {/* Table Rows */}
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center py-5 border-b last:border-b-0 columns-2"
+              className="flex justify-between items-center p-4 border-b"
             >
-              <div className="">
-                <div className="row-span-1">
-                  <h2 className="text-lg font-semibold">{item.baristaUID}</h2>
-                  <p>{item.id}</p>
-                </div>
+              <span className="w-1/3">{item.baristaUID}</span>
+              <span className="w-1/3">{item.id}</span>
+              <span className="w-1/3 text-gray-600">
+                {item.ingredients.length}
+              </span>
 
-                <div className="row-span-2">
-                  <p className="text-lg font-semibold">
-                    Order Quantity: {item.ingredients.length}
-                  </p>
-                </div>
+              <div className="w-1/6 flex justify-center">
+                <button
+                  onClick={() => handleDetailsClick(item)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                >
+                  Details
+                </button>
               </div>
-              <button
-                onClick={() => handleDetailsClick(item)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-              >
-                Details
-              </button>
             </div>
           ))}
         </div>

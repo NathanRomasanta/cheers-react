@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 export default function ItemsListView() {
@@ -18,25 +19,25 @@ export default function ItemsListView() {
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const itemsCollection = collection(db, "Items");
-        const itemsSnapshot = await getDocs(itemsCollection);
-        const itemsList = itemsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setItems(itemsList);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching items: ", err);
-        setError("Failed to load items. Please try again later.");
-        setLoading(false);
-      }
-    };
-
     fetchItems();
   }, []);
+
+  const fetchItems = async () => {
+    try {
+      const itemsCollection = collection(db, "Items");
+      const itemsSnapshot = await getDocs(itemsCollection);
+      const itemsList = itemsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setItems(itemsList);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching items: ", err);
+      setError("Failed to load items. Please try again later.");
+      setLoading(false);
+    }
+  };
 
   // Handler for opening the edit modal
   const handleEditClick = (item) => {
@@ -84,37 +85,81 @@ export default function ItemsListView() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const itemRef = doc(db, "Items", currentItem.id);
+
+      await deleteDoc(itemRef);
+
+      fetchItems();
+
+      handleCloseModal();
+    } catch (err) {
+      console.error("Error updating item: ", err);
+      alert("Failed to save changes. Please try again.");
+    }
+  };
+
   if (loading)
     return <div className="container mx-auto p-4">Loading items...</div>;
   if (error)
     return <div className="container mx-auto p-4 text-red-500">{error}</div>;
 
   return (
-    <div className="container mx-10 p-4">
+    <div className=" mx-10 p-4">
       <h1 className="text-2xl font-bold mb-4">Items List</h1>
 
       {/* List view */}
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="flex justify-between items-center p-4 border-b last:border-b-0"
-            >
-              <div>
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-600">{item.id}</p>
-              </div>
-              <button
-                onClick={() => handleEditClick(item)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-              >
-                Edit
-              </button>
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="w-full">
+            {/* Table Header */}
+            <div className="flex justify-between items-center bg-gray-100 p-4 font-semibold border-b">
+              <span className="w-1/4">Item Name</span>
+              <span className="w-1/4">ID</span>
+              <span className="w-1/4">Stock</span>
+              <span className="w-1/4">Status</span>
+              <span className="w-1/4 text-center">Actions</span>
             </div>
-          ))}
+
+            {/* Table Rows */}
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between items-center p-4 border-b"
+              >
+                <span className="w-1/4">{item.name}</span>
+                <span className="w-1/4 text-gray-600">{item.id}</span>
+                <span className="w-1/4 text-gray-600">{item.quantity}</span>
+
+                <span
+                  className={`w-1/4 text-white px-2 py-1 rounded-full ${
+                    item.quantity > 30
+                      ? "text-green-500 font-bold" // In stock (green)
+                      : item.quantity > 0
+                      ? "text-orange-500 font-bold" // Low stock (orange)
+                      : "text-red-500 font-bold" // No stock (red)
+                  }`}
+                >
+                  {item.quantity > 30
+                    ? "In Stock"
+                    : item.quantity > 0
+                    ? "Low Stock"
+                    : "No Stock"}
+                </span>
+                <div className="w-1/4 flex justify-center">
+                  <button
+                    onClick={() => handleEditClick(item)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -128,14 +173,20 @@ export default function ItemsListView() {
               <label className="block text-gray-700 mb-2" htmlFor="name">
                 Name
               </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={currentItem.name}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded"
-              />
+
+              <p className="block text-black-700 mb-2 text-xl">
+                {currentItem.name}
+              </p>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2" htmlFor="name">
+                Item ID
+              </label>
+
+              <p className="block text-black-700 mb-2 text-xl">
+                {currentItem.id}
+              </p>
             </div>
 
             <div className="mb-4">
@@ -157,6 +208,12 @@ export default function ItemsListView() {
                 className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors"
               >
                 Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-green-600 transition-colors"
+              >
+                Delete
               </button>
               <button
                 onClick={handleSave}
