@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { app, db } from "@/app/_utils/Firebase";
 import {
   getFirestore,
@@ -10,12 +10,16 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { Toast } from "primereact/toast";
+import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
+import "primereact/resources/primereact.min.css"; // core css
+import "primeicons/primeicons.css";
 
 export default function Orders() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const toast = useRef(null);
   // State for the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
@@ -135,6 +139,13 @@ export default function Orders() {
         }
       }
 
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Order Successfully Fulfilled",
+        life: 3000,
+      });
+
       const documentRef = doc(db, "Orders", currentItem.id);
       await deleteDoc(documentRef);
       await fetchItems();
@@ -156,6 +167,7 @@ export default function Orders() {
   return (
     <div className=" mx-10 p-4">
       <h1 className="text-2xl font-bold mb-4">Orders</h1>
+      <Toast ref={toast} />
 
       {/* List view */}
       {items.length === 0 ? (
@@ -230,6 +242,7 @@ export default function Orders() {
               >
                 Cancel
               </button>
+
               <button
                 onClick={handleFulfillOrder}
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"

@@ -1,8 +1,12 @@
 // pages/vowel-remover.js
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "@/app/_utils/Firebase"; // You'll need to create this config file
 import Head from "next/head";
+import { Toast } from "primereact/toast";
+import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
+import "primereact/resources/primereact.min.css"; // core css
+import "primeicons/primeicons.css";
 
 export default function AddInventory() {
   const [input, setInput] = useState("");
@@ -17,7 +21,7 @@ export default function AddInventory() {
   const [ouncesPerBottle, setOuncesPerBottle] = useState("");
   const [isLiquor, setIsLiquor] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const toast = useRef(null);
   // Function to remove vowels from a string and convert to uppercase
   const removeVowelsAndFormat = (str) => {
     return str.replace(/[aeiouAEIOU]/g, "").toUpperCase();
@@ -87,6 +91,15 @@ export default function AddInventory() {
       setOuncesPerBottle(0);
       setItemQuantity(0);
       setMessage("Item saved successfully!");
+      setResult("");
+      seItemID("");
+
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Inventory item successfully made",
+        life: 3000,
+      });
     } catch (error) {
       console.error("Error saving item:", error);
       setMessage(`Error: ${error.message}`);
@@ -109,7 +122,7 @@ export default function AddInventory() {
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Add Inventory
         </h1>
-
+        <Toast ref={toast} />
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label

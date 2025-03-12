@@ -23,7 +23,7 @@ import {
 import CreatePOSItem from "./create-pos-item-screen/page";
 
 import ControlPanel from "./control-panel/page";
-import ItemsListView from "./inventory/page";
+import ItemsListView from "./inventory-screen/page";
 import AddInventory from "./create-inventory/page";
 import Orders from "./orders/page";
 
@@ -33,7 +33,7 @@ import Orders from "./orders/page";
 //import MessagesPage from "./dashboard/MessagesPage";
 //import SettingsPage from "./dashboard/SettingsPage";
 
-export default function Dashboard() {
+export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { currentUser, isAdmin, logout } = useAuth();
   const router = useRouter();

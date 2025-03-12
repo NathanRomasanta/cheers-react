@@ -23,7 +23,7 @@ export default function Login() {
   // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
-      router.push("/dashboard");
+      router.push("/admin");
     }
   }, [currentUser, router]);
 
@@ -42,21 +42,21 @@ export default function Login() {
       const user = userCredential.user;
 
       // Check user role in Firestore
-      const userDocRef = doc(db, "users", user.uid);
+      const userDocRef = doc(db, "Accounts", user.email);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
 
         // Redirect based on role
-        if (userData.isAdmin) {
-          router.push("../dashboard");
+        if (userData.Admin) {
+          router.push("../admin");
         } else {
-          router.push("../dashboard");
+          router.push("../inventory");
         }
       } else {
         // No user document, treat as regular user
-        router.push("../dashboard");
+        router.push("../inventory");
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");

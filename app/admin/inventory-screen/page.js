@@ -135,7 +135,7 @@ export default function ItemsListView() {
                 <span className="w-1/4 text-gray-600">{item.quantity}</span>
 
                 <span
-                  className={`w-1/4 text-white px-2 py-1 rounded-full ${
+                  className={`w-1/4 text px-2 py-1 rounded-full ${
                     item.quantity > 30
                       ? "text-green-500 font-bold" // In stock (green)
                       : item.quantity > 0
