@@ -3,13 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../_utils/AuthContext";
-import Inventory from "../inventory/page"; // Assuming this is your inventory page component
-
-import Login from "../pages/login/page";
+import dynamic from "next/dynamic";
 import LoadingScreen from "../_utils/LoadingScreen";
 import { db } from "../_utils/Firebase";
 import { doc, getDoc } from "firebase/firestore";
-import AdminPanel from "../admin/page";
+
+// Dynamic imports with no SSR
+const Inventory = dynamic(() => import("../inventory/page"), { ssr: false });
+const AdminPanel = dynamic(() => import("../admin/page"), { ssr: false });
+const Login = dynamic(() => import("../login/page"), { ssr: false });
+
 const AppRoutes = () => {
   const { currentUser, loading } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -24,7 +27,6 @@ const AppRoutes = () => {
       }
 
       try {
-        // Get user document from Firestore
         const userDocRef = doc(db, "Accounts", currentUser.email);
         const userSnapshot = await getDoc(userDocRef);
 
@@ -97,8 +99,14 @@ const AppRoutes = () => {
     return children;
   };
 
-  // Show loading screen while authentication status is being determined
-  if (loading || checkingAdminStatus) {
+  // Client-side only rendering
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Show loading screen while authentication status is being determined or before mount
+  if (!isMounted || loading || checkingAdminStatus) {
     return <LoadingScreen />;
   }
 
@@ -153,4 +161,4 @@ const AppRoutes = () => {
   );
 };
 
-export default AppRoutes;
+export default dynamic(() => Promise.resolve(AppRoutes), { ssr: false });

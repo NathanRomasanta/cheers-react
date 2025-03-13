@@ -1,37 +1,12 @@
-// pages/Dashboard.js
-
 "use client";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
 import "primereact/resources/primereact.min.css"; // core css
 import "primeicons/primeicons.css"; // icons
-
 import { useRouter } from "next/navigation";
-import React, { useState, useRef } from "react";
-
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/app/_utils/AuthContext";
-
-import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
-import {
-  Home,
-  FileText,
-  Mail,
-  Settings,
-  LogOut,
-  Shield,
-  Menu,
-  X,
-  Airplay,
-  Send,
-  FilePlus,
-  Table,
-} from "lucide-react";
-
-// Dashboard sub-pages
-//import HomePage from "./dashboard/HomePage";
-//import DocumentsPage from "./dashboard/DocumentsPage";
-//import MessagesPage from "./dashboard/MessagesPage";
-//import SettingsPage from "./dashboard/SettingsPage";
+import { LogOut, Shield, Menu, X, Airplay } from "lucide-react";
 
 export default function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -85,7 +60,11 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     try {
       await logout();
-      router.push("../pages/login");
+      useEffect(() => {
+        if (router.isReady) {
+          router.push("./login"); // Redirect to /login after router is initialized
+        }
+      }, [router.isReady]);
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -244,9 +223,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-//<Route path="/" element={<HomePage />} />
-//<Route path="/documents" element={<DocumentsPage />} />
-//<Route path="/messages" element={<MessagesPage />} />
-//<Route path="/settings" element={<SettingsPage />} />
-//<Route path="*" element={<Navigate to="/dashboard" />} />

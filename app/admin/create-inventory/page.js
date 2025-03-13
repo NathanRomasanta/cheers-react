@@ -2,15 +2,12 @@
 import { useState, useRef } from "react";
 import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "@/app/_utils/Firebase"; // You'll need to create this config file
-import Head from "next/head";
 import { Toast } from "primereact/toast";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
 import "primereact/resources/primereact.min.css"; // core css
 import "primeicons/primeicons.css";
 
 export default function AddInventory() {
-  const [input, setInput] = useState("");
-
   const [itemID, seItemID] = useState("");
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -110,14 +107,6 @@ export default function AddInventory() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 h-100 w-100">
-      <Head>
-        <title>Add Inventory</title>
-        <meta
-          name="description"
-          content="Remove vowels and add Firestore count"
-        />
-      </Head>
-
       <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Add Inventory

@@ -3,12 +3,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/app/_utils/AuthContext";
 import {
-  Home,
-  FileText,
   Mail,
   Settings,
   LogOut,
@@ -21,17 +18,10 @@ import {
   Table,
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
-
 import ControlPanel from "./control-panel/page";
 import ItemsListView from "./inventory-screen/page";
 import AddInventory from "./create-inventory/page";
 import Orders from "./orders/page";
-
-// Dashboard sub-pages
-//import HomePage from "./dashboard/HomePage";
-//import DocumentsPage from "./dashboard/DocumentsPage";
-//import MessagesPage from "./dashboard/MessagesPage";
-//import SettingsPage from "./dashboard/SettingsPage";
 
 export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -42,8 +32,11 @@ export default function AdminPanel() {
 
   const handleSignOut = async () => {
     try {
-      await logout();
-      router.push("../pages/login");
+      useEffect(() => {
+        if (router.isReady) {
+          router.push("../pages/login"); // Redirect to /login after router is initialized
+        }
+      }, [router.isReady]);
     } catch (error) {
       console.error("Error signing out:", error);
     }

@@ -2,7 +2,6 @@
 "use client";
 // pages/Login.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { auth, db } from "@/app/_utils/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -23,7 +22,11 @@ export default function Login() {
   // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
-      router.push("/admin");
+      useEffect(() => {
+        if (router.isReady) {
+          router.push("/admin"); // Redirect to /login after router is initialized
+        }
+      }, [router.isReady]);
     }
   }, [currentUser, router]);
 
@@ -50,13 +53,25 @@ export default function Login() {
 
         // Redirect based on role
         if (userData.Admin) {
-          router.push("../admin");
+          useEffect(() => {
+            if (router.isReady) {
+              router.push("../admin"); // Redirect to /login after router is initialized
+            }
+          }, [router.isReady]);
         } else {
-          router.push("../inventory");
+          useEffect(() => {
+            if (router.isReady) {
+              router.push("../inventory"); // Redirect to /login after router is initialized
+            }
+          }, [router.isReady]);
         }
       } else {
         // No user document, treat as regular user
-        router.push("../inventory");
+        useEffect(() => {
+          if (router.isReady) {
+            router.push("../inventory"); // Redirect to /login after router is initialized
+          }
+        }, [router.isReady]);
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");

@@ -1,16 +1,13 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
-import { app, db } from "@/app/_utils/Firebase";
+import { db } from "@/app/_utils/Firebase";
 import {
-  getFirestore,
   collection,
   getDocs,
   doc,
   updateDoc,
   getDoc,
   setDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { Toast } from "primereact/toast";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme

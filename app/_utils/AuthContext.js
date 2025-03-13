@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  use,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { auth, db } from "../_utils/Firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -28,7 +22,6 @@ export default function AuthProvider({ children }) {
 
       if (user) {
         try {
-          // Check if user is admin in Firestore
           const userDocRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userDocRef);
 

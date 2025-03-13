@@ -177,8 +177,11 @@ const ControlPanel = () => {
       <div className="mt-8 p-4 bg-white rounded-lg shadow-lg w-full">
         <h2 className="text-xl font-bold mb-3">Recent Transactions</h2>
         <ul className="space-y-2">
-          {transactions.map((doc) => (
-            <li key={doc.id} className="p-3 bg-gray-100 rounded-lg shadow-md">
+          {transactions.map((doc, index) => (
+            <li
+              key={doc.id || index}
+              className="p-3 bg-gray-100 rounded-lg shadow-md"
+            >
               <p className="font-semibold">{doc.baristaUID || "Untitled"}</p>
               <p className="text-sm text-gray-600">
                 Transaction Total: {doc.total} | Total Items: {doc.totalItems}

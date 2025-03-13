@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { app, db } from "@/app/_utils/Firebase";
+import { db } from "@/app/_utils/Firebase";
 import {
-  getFirestore,
   collection,
   getDocs,
   doc,
