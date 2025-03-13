@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import { app, db } from "@/app/_utils/Firebase";
 import {

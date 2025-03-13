@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { db } from "@/app/_utils/Firebase"; // Import your firestore instance
 import { Archive, Box, ListOrdered, Send } from "lucide-react";

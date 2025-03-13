@@ -1,4 +1,4 @@
-// pages/vowel-remover.js
+"use client";
 import { useState, useRef } from "react";
 import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "@/app/_utils/Firebase"; // You'll need to create this config file
