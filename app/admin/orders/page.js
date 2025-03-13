@@ -146,15 +146,42 @@ export default function Orders() {
         life: 3000,
       });
 
-      const documentRef = doc(db, "Orders", currentItem.id);
-      await deleteDoc(documentRef);
-      await fetchItems();
+      const itemRef = doc(db, "Orders", currentItem.id);
+
+      await updateDoc(itemRef, {
+        status: "Fulfilled",
+      });
 
       handleCloseModal();
     } catch (err) {
       console.error("Error updating item: ", err);
       alert("Failed to save changes. Please try again.");
     }
+  };
+
+  const handleDenyOrder = async () => {
+    try {
+      // Check if currentItem and ingredients exist
+      const itemRef = doc(db, "Orders", currentItem.id);
+
+      await updateDoc(itemRef, {
+        status: "Denied",
+      });
+
+      toast.current.show({
+        severity: "success",
+        summary: "Denied",
+        detail: "Order Successfully Denied",
+        life: 3000,
+      });
+    } catch (err) {
+      console.error("Error updating item: ", err);
+      alert("Failed to save changes. Please try again.");
+    }
+
+    await fetchItems();
+
+    handleCloseModal();
   };
 
   // Handler for saving the edited item
@@ -248,6 +275,13 @@ export default function Orders() {
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
               >
                 Fulfill
+              </button>
+
+              <button
+                onClick={handleDenyOrder}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-green-600 transition-colors"
+              >
+                Deny
               </button>
             </div>
           </div>
