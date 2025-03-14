@@ -32,11 +32,7 @@ export default function AdminPanel() {
 
   const handleSignOut = async () => {
     try {
-      useEffect(() => {
-        if (router.isReady) {
-          router.push("../pages/login"); // Redirect to /login after router is initialized
-        }
-      }, [router.isReady]);
+      router.push("../pages/login"); // Redirect to /login after router is initialized
     } catch (error) {
       console.error("Error signing out:", error);
     }
