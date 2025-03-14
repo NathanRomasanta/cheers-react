@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { db } from "@/app/_utils/Firebase";
 import {
   collection,
@@ -9,11 +9,16 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
+import { Toast } from "primereact/toast";
+import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
+import "primereact/resources/primereact.min.css"; // core css
+import "primeicons/primeicons.css";
+
 export default function ItemsListView() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const toast = useRef(null);
   // State for the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
@@ -79,6 +84,13 @@ export default function ItemsListView() {
 
       // Close the modal
       handleCloseModal();
+
+      toast.current.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Inventory item successfully updated",
+        life: 3000,
+      });
     } catch (err) {
       console.error("Error updating item: ", err);
       alert("Failed to save changes. Please try again.");
@@ -123,7 +135,7 @@ export default function ItemsListView() {
               <span className="w-1/4">Status</span>
               <span className="w-1/4 text-center">Actions</span>
             </div>
-
+            <Toast ref={toast} />
             {/* Table Rows */}
             {items.map((item) => (
               <div
