@@ -1,30 +1,50 @@
-// app/log-in/page.js
 "use client";
-// pages/Login.js
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { auth, db } from "@/app/_utils/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "@/app/_utils/AuthContext";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-import { Routes, Route, Navigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
 
   const { currentUser } = useAuth();
-
   const router = useRouter();
 
+  // Check authentication status on initial load
   useEffect(() => {
-    if (currentUser) {
-      router.push("/admin");
-    }
+    const checkAuth = async () => {
+      // Wait briefly to ensure auth state is properly determined
+      if (currentUser === undefined) return;
+
+      if (currentUser) {
+        // User is logged in, check their role before redirect
+        try {
+          const userDocRef = doc(db, "Accounts", currentUser.email);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists() && userDoc.data().Admin) {
+            router.push("/admin");
+          } else {
+            router.push("/inventory");
+          }
+        } catch (error) {
+          console.error("Error checking user role:", error);
+          router.push("/inventory"); // Default to inventory on error
+        }
+      } else {
+        // User is not logged in, stay on login page
+        setAuthChecking(false);
+      }
+    };
+
+    checkAuth();
   }, [currentUser, router]);
 
   const handleSubmit = async (e) => {
@@ -50,22 +70,32 @@ export default function Login() {
 
         // Redirect based on role
         if (userData.Admin) {
-          router.push("../admin"); // Redirect to /login after router is initialized
+          router.push("/admin"); // Use absolute path
         } else {
-          router.push("../inventory"); // Redirect to /login after router is initialized
+          router.push("/inventory"); // Use absolute path
         }
       } else {
         // No user document, treat as regular user
-
-        router.push("../inventory"); // Redirect to /login after router is initialized
+        router.push("/inventory"); // Use absolute path
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");
       console.error("Login error:", error);
+      setLoading(false); // Only set loading to false on error
     }
-
-    setLoading(false);
   };
+
+  // Show loading spinner while checking auth status
+  if (authChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-3 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -124,7 +154,14 @@ export default function Login() {
                 loading ? "opacity-70 cursor-not-allowed" : ""
               }`}
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? (
+                <span className="flex items-center">
+                  <span className="w-5 h-5 mr-2 border-t-2 border-r-2 border-white rounded-full animate-spin"></span>
+                  Signing in...
+                </span>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </div>
         </form>
