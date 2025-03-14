@@ -23,6 +23,7 @@ import ItemsListView from "./inventory-screen/page";
 import AddInventory from "./create-inventory/page";
 import Orders from "./orders/page";
 import { getAuth, signOut } from "firebase/auth";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,7 +36,7 @@ export default function AdminPanel() {
     const auth = getAuth();
     try {
       await signOut(auth);
-      router.push("./login");
+      router.push("/login");
     } catch (error) {
       console.error("Error signing out:", error);
     }

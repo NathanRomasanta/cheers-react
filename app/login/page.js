@@ -9,6 +9,8 @@ import { useAuth } from "@/app/_utils/AuthContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+import { Routes, Route, Navigate } from "react-router-dom";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,14 +21,9 @@ export default function Login() {
 
   const router = useRouter();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
-      useEffect(() => {
-        if (router.isReady) {
-          router.push("/admin"); // Redirect to /login after router is initialized
-        }
-      }, [router.isReady]);
+      router.push("/admin");
     }
   }, [currentUser, router]);
 
@@ -53,25 +50,14 @@ export default function Login() {
 
         // Redirect based on role
         if (userData.Admin) {
-          useEffect(() => {
-            if (router.isReady) {
-              router.push("../admin"); // Redirect to /login after router is initialized
-            }
-          }, [router.isReady]);
+          router.push("../admin"); // Redirect to /login after router is initialized
         } else {
-          useEffect(() => {
-            if (router.isReady) {
-              router.push("../inventory"); // Redirect to /login after router is initialized
-            }
-          }, [router.isReady]);
+          router.push("../inventory"); // Redirect to /login after router is initialized
         }
       } else {
         // No user document, treat as regular user
-        useEffect(() => {
-          if (router.isReady) {
-            router.push("../inventory"); // Redirect to /login after router is initialized
-          }
-        }, [router.isReady]);
+
+        router.push("../inventory"); // Redirect to /login after router is initialized
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");

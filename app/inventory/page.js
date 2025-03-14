@@ -60,11 +60,8 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     try {
       await logout();
-      useEffect(() => {
-        if (router.isReady) {
-          router.push("./login"); // Redirect to /login after router is initialized
-        }
-      }, [router.isReady]);
+
+      router.push("./login"); // Redirect to /login after router is initialized
     } catch (error) {
       console.error("Error signing out:", error);
     }
