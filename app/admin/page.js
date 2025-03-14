@@ -22,6 +22,7 @@ import ControlPanel from "./control-panel/page";
 import ItemsListView from "./inventory-screen/page";
 import AddInventory from "./create-inventory/page";
 import Orders from "./orders/page";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,8 +32,10 @@ export default function AdminPanel() {
   const [activeItem, setActiveItem] = useState("home");
 
   const handleSignOut = async () => {
+    const auth = getAuth();
     try {
-      router.push("../pages/login"); // Redirect to /login after router is initialized
+      await signOut(auth);
+      router.push("./login");
     } catch (error) {
       console.error("Error signing out:", error);
     }
