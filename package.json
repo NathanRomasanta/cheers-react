@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@primecss/primecss": "^0.0.1",
     "chart.js": "^4.4.8",
     "firebase": "^11.3.1",
     "lucide-react": "^0.476.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "daisyui": "^5.0.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",
