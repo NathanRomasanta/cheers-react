@@ -27,8 +27,10 @@ describe('user valid login', () => {
 describe('user invalid login', () => {
   beforeEach( () => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
+    cy.get('button[name="signout"]').click();
     cy.clearCookies();
     cy.clearLocalStorage();
+    cy.url().should('include', '/login');
   })
 
   // Testing user login with invalid credentials

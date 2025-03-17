@@ -262,6 +262,7 @@ export default function AdminPanel() {
             </div>
           </div>
           <button
+            name="signout"
             onClick={handleSignOut}
             className='flex items-center w-full p-2 text-red-600 hover:bg-red-50 rounded'>
             <LogOut
