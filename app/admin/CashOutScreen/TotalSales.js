@@ -71,13 +71,13 @@ function TotalSales({ tableData, RTDTableData }) {
 
   return (
     <div>
-      <h1>Total Stock Value</h1>
+      <h1 className='text-lg font-semibold'>Total Stock Value</h1>
       <p>{StockTotal(tableData, RTDTableData)}</p>
-      <h1>Total Stock over/loss</h1>
+      <h1 className='text-lg font-semibold'>Total Stock Over/Loss</h1>
       <p>{StockOverLoss(tableData, RTDTableData)}</p>
 
       <>
-        <h1>Tip:</h1>
+        <h1 className='text-lg font-semibold'>Tip:</h1>
         {cashReceived !==
         parseFloat(StockTotal(tableData, RTDTableData).replace('$', '')) ? (
           <p>0</p>
@@ -87,7 +87,7 @@ function TotalSales({ tableData, RTDTableData }) {
       </>
 
       <div>
-        <h1>Cash Received</h1>
+        <h1 className='text-lg font-semibold'>Cash Received</h1>
 
         <input
           type='number'

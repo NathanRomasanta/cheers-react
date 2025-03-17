@@ -281,7 +281,7 @@ function editCount({
 
   return (
     <div>
-      <h1>Edit Liquor Count</h1>
+      <h1 className='text-lg font-semibold'>Edit Liquor Count</h1>
       {!editCount && (
         <button
           className='btn'

@@ -72,20 +72,20 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
   return (
     <div>
       {' '}
-      <h1>Edit count</h1>
-      <button
-        className='btn'
-        onClick={() => {
-          editRTDpopCloseOz(modData);
-        }}>
-        Edit Close
-      </button>
+      <h1>Edit count</h1>{' '}
       <button
         className='btn'
         onClick={() => {
           editRTDpopOpenOz(modData);
         }}>
         Edit Open
+      </button>
+      <button
+        className='btn'
+        onClick={() => {
+          editRTDpopCloseOz(modData);
+        }}>
+        Edit Close
       </button>
     </div>
   );
