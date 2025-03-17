@@ -16,6 +16,7 @@ import fetchCashOut from './fetch-cashout';
 import fetchReqData from './fetch-Reqs';
 import fetchRTDData from './fetch-RTD';
 import fetchTransactions from './fetch-Transactions';
+import TopBar from './TopBar';
 
 // username to be replaced with user object from auth
 let userName = { job: 'Inventory', name: 'Johnny', id: 1 };
@@ -51,9 +52,6 @@ function CashOutPg() {
 
   const [selectedTransRow, setSelectedTransRow] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null); // State for selected row
-
-  // searched barista
-  const [searchedBarista, setSearchedBarista] = useState('');
 
   // cash out table needs the following columns
   let InventoryColumnTitles = [
@@ -507,6 +505,7 @@ function CashOutPg() {
 
   return (
     <div>
+      <TopBar />
       {/* Dropdowns to be added  */}
       <HSpliter>
         <HSpliter>
