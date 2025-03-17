@@ -18,7 +18,7 @@ describe('user valid login', () => {
     });
   
     it('fails', () => {
-    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');  
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app');  
   });
 });
 
