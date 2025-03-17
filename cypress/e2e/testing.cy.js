@@ -25,7 +25,7 @@ describe('user valid login', () => {
 
 // TC002: Invalid Login Attempt
 describe('user invalid login', () => {
-  forEach( () => {
+  beforeEach( () => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
     cy.clearCookies();
     cy.clearLocalStorage();
