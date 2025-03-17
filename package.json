@@ -25,6 +25,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@testing-library/cypress": "^10.0.3",
+    "cypress": "^14.2.0",
     "daisyui": "^5.0.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
