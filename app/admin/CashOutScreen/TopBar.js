@@ -5,7 +5,12 @@ import fetchBaristas from './FetchBaristas';
 import fetchBaristaDates from './FetchBaristaDates';
 
 // icons
-import { EllipsisVertical } from 'lucide-react';
+import {
+  EllipsisVertical,
+  Martini,
+  CalendarArrowDown,
+  Search,
+} from 'lucide-react';
 
 export default function TopBar({
   setSelectedBarista,
@@ -17,6 +22,8 @@ export default function TopBar({
   // Added Sign Out functionality
   const [baristaList, setBaristaList] = useState([]);
   const [dateList, setDateList] = useState([]);
+  const [toastMessage, setToastMessage] = useState(''); // State for toast message
+  const [showToast, setShowToast] = useState(false); // State to control toast visibility
 
   useEffect(() => {
     const FetchBaristas = async () => {
@@ -37,8 +44,33 @@ export default function TopBar({
     fetchDates();
   }, [selectedBarista]);
 
+  const CustomAlert = ({ message }) => {
+    return (
+      <div className='toast toast-top toast-center absolute top-0 z-50 '>
+        <div className='alert bg-orange-500 text-white '>
+          <span>{message}</span>
+        </div>
+      </div>
+    );
+  };
+
+  const handleDateSelection = (dateId) => {
+    setSelectedDate(dateId);
+    setToastMessage(`Data selected: ${dateId} `); // Set the toast message
+    setShowToast(true); // Show the toast
+    setTimeout(() => setShowToast(false), 2000); // Hide the toast after 3 seconds
+  };
+  const handleBaristaSelection = (baristaId) => {
+    setSelectedBarista(baristaId);
+    setToastMessage(`Barista selected: ${baristaId} `); // Set the toast message
+    setShowToast(true); // Show the toast
+    setTimeout(() => setShowToast(false), 2000); // Hide the toast after 3 seconds
+  };
+
   return (
     <div className='navbar bg-base-100 shadow-sm sticky top-0 z-50'>
+      {showToast && <CustomAlert message={toastMessage} />}
+      {/* Render toast if visible */}
       <div className='navbar-start'>
         <div className='dropdown'>
           <div
@@ -62,7 +94,7 @@ export default function TopBar({
             tabIndex={0}
             className='menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow'>
             <li>
-              <div className='dropdown dropdown-right dropdown-end  '>
+              <div className='dropdown dropdown-right dropdown-end'>
                 <div
                   tabIndex={0}
                   role='button'
@@ -93,7 +125,7 @@ export default function TopBar({
                 <div
                   tabIndex={0}
                   role='button'
-                  className='btn m-1'>
+                  className='btn bg-orange-400 bg-opacity-35 m-1 mb-2 hover:bg-opacity-100'>
                   Dates
                 </div>
                 <ul
@@ -102,10 +134,8 @@ export default function TopBar({
                   {dateList.map((date, index) => (
                     <li key={index}>
                       <a
-                        onClick={() => {
-                          console.log('date.id', date.id);
-                          setSelectedDate(date.id);
-                        }}>
+                        onClick={() => handleDateSelection(date.id)} // Call the handler
+                      >
                         {date.id}
                       </a>
                     </li>
@@ -116,16 +146,16 @@ export default function TopBar({
           </ul>
         </div>
       </div>
-      {/* for large menu */}
-
-      <div className='navbar-center hidden lg:flex '>
+      {/* large view menu */}
+      <div className='navbar-center hidden lg:flex'>
         <ul className='menu menu-horizontal px-1'>
-          <div className='dropdown dropdown-bottom dropdown-end mr-5 '>
+          <div className='dropdown dropdown-bottom dropdown-end mr-5'>
             <div
               tabIndex={0}
               role='button'
-              className='btn btn-sm btn-ghost m-1 mb-2 btn-warning'>
+              className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'>
               Barista
+              <Martini size={12} />
             </div>
             <ul
               tabIndex={0}
@@ -134,10 +164,9 @@ export default function TopBar({
                 <li key={index}>
                   <a
                     onClick={() => {
-                      let strippedBarista = barista.id.replace(/ /g, '');
-                      console.log('strippedBarista', strippedBarista);
-                      setSelectedBarista(strippedBarista);
-                    }}>
+                      handleBaristaSelection(barista.id); // Call the handler
+                    }} // Call the handler
+                  >
                     {barista.id}
                   </a>
                 </li>
@@ -150,8 +179,9 @@ export default function TopBar({
               <div
                 tabIndex={0}
                 role='button'
-                className='btn m-1 btn-sm btn-ghost btn-warning'>
+                className=' btn btn-ghost  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'>
                 Dates
+                <CalendarArrowDown size={12} />
               </div>
               <ul
                 tabIndex={0}
@@ -159,17 +189,15 @@ export default function TopBar({
                 {dateList.map((date, index) => (
                   <li key={index}>
                     <a
-                      onClick={() => {
-                        console.log('date', date.id);
-                        setSelectedDate(date.id);
-                      }}>
+                      onClick={() => handleDateSelection(date.id)} // Call the handler
+                    >
                       {date.id}
                     </a>
                   </li>
                 ))}
               </ul>
               <button
-                className='btn btn-sm btn-outline btn-warning'
+                className='btn btn-ghost  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'
                 onClick={() => {
                   setSwitchSearch(!switchSearch);
                   setTimeout(() => {
@@ -178,7 +206,8 @@ export default function TopBar({
                     setSelectedBarista('');
                   }, 1000);
                 }}>
-                search
+                Search
+                <Search size={12} />
               </button>
             </div>
           )}
