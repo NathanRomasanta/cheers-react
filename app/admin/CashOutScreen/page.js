@@ -567,7 +567,7 @@ function CashOutPg() {
           </Spliter>
 
           {/* RTD Table */}
-          <Spliter title='RTD'>
+          <Spliter title='Single Sale Items'>
             <div className='flex w-full'>
               <Table
                 type={1}
