@@ -31,26 +31,25 @@ function TotalSales({ tableData, RTDTableData }) {
   };
 
   const StockOverLoss = (tableData, RTDTableData) => {
-    let LiquorTotal = tableData
-      .map((row) => {
-        let stockUsed = Number(row[13].replace('$', '')); // Extract stock used from the correct column
-        let stockPrice = Number(row[8]); // Extract stock price from the correct column
-        let stockTotal = stockUsed * stockPrice;
+    let LiquorTotal = tableData.reduce((acc, row) => {
+      let productValue = parseFloat(row[row.length - 2].replace('$', '')); // Extract stock used from the second last column
+      let salesTotal = parseFloat(row[row.length - 1].replace('$', '')); // Extract stock sold from the last column
+      let stockLoss = salesTotal - productValue; // Calculate the total stock
 
-        return isNaN(stockTotal) ? 0 : Number(stockTotal.toFixed(2));
-      })
-      .reduce((acc, stockTotal) => acc + stockTotal, 0);
+      return acc + (isNaN(stockLoss) ? 0 : parseFloat(stockLoss));
+    }, 0);
+
     let RTDTotal = Array.isArray(RTDTableData)
       ? RTDTableData.reduce((acc, row) => {
-          let sales = Number(row[4]) * Number(row[5]); // Extract sales from the correct column
-          if (isNaN(sales)) {
-            sales = 0;
-          }
-          return acc + sales; // Handle NaN values
+          let productValue = parseFloat(row[row.length - 2]); // Extract stock used from the second last column
+          let salesTotal = parseFloat(row[row.length - 1]); // Extract stock sold from the last column
+          let stockLoss = salesTotal - productValue; // Calculate the total stock
+
+          return acc + (isNaN(stockLoss) ? 0 : stockLoss); // Handle NaN values
         }, 0)
       : 0;
 
-    let total = Number(LiquorTotal) + Number(RTDTotal); // Add the two totals together
+    let total = LiquorTotal - RTDTotal; // Subtract the two totals
     return ` $${total.toFixed(2)}`;
   };
 
@@ -64,10 +63,6 @@ function TotalSales({ tableData, RTDTableData }) {
   useEffect(() => {
     calculateCashOut();
   }, [cashReceived, tableData, RTDTableData]);
-
-  const overUnder = parseFloat(
-    StockOverLoss(tableData, RTDTableData).replace('$', '')
-  );
 
   return (
     <div>

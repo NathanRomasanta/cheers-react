@@ -19,12 +19,14 @@ import fetchTransactions from './fetch-Transactions';
 import TopBar from './TopBar';
 
 // username to be replaced with user object from auth
-let userName = { job: 'Inventory', name: 'Johnny', id: 1 };
+
 let baristaID = 'jdoe@gmail.com';
 let userDate = '2025-07-04';
 function CashOutPg() {
   // States
-
+  const [baristaID, setBaristaID] = useState('');
+  const [userDate, setUserDate] = useState('');
+  const [switchSearch, setSwitchSearch] = useState(false);
   // state for the Transactions table
   const [transTableData, setTransTableData] = useState([]);
   //state for the RTD cashout table
@@ -52,6 +54,8 @@ function CashOutPg() {
 
   const [selectedTransRow, setSelectedTransRow] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null); // State for selected row
+
+  // Lifted States for search bar
 
   // cash out table needs the following columns
   let InventoryColumnTitles = [
@@ -112,21 +116,25 @@ function CashOutPg() {
     console.log('Selected liquor is: ', liquor);
   };
 
+  //Function to switch the value of baristaID and userDate
+
   // Fetch data from Main Cashout table Firestore
   //TO DO : Make this into the Orders Table  not the Item table
   //useEffect functions for different tables
   /* Main Cashout Table*/
   useEffect(() => {
-    const fetchCashOutData = async () => {
-      setLoading(true);
-      const fetchedItems = await fetchCashOut(baristaID, userDate);
-      setLoading(false);
-      setCashOutItems(fetchedItems); // Fetched items set to state
-    };
+    if (switchSearch) {
+      const fetchCashOutData = async () => {
+        setLoading(true);
+        const fetchedItems = await fetchCashOut(baristaID, userDate);
+        setLoading(false);
+        setCashOutItems(fetchedItems); // Fetched items set to state
+      };
+      fetchCashOutData();
+    }
 
     // Trigger data fetch when component mounts
-    fetchCashOutData();
-  }, []);
+  }, [switchSearch, baristaID, userDate]);
 
   // Map firestore data to match format of table for Main Cashout Table
   // uses the openOZ closeOZ stockUsed StockValueRow AddTransTableToCashOut AddReqTableToCashOut functions
@@ -217,27 +225,34 @@ function CashOutPg() {
       setLoading(true);
       const fetchedItems = await fetchTransactions(baristaID, userDate);
       setLoading(false);
-      const mappedData = fetchedItems.flatMap((item, index) => {
-        // Extract order details including internal sub-rows for liquor items
-        return (item.order || [])
-          .filter((orderItem) => orderItem.isLiquor) // Filter to only include items with isLiquor === true
+      const mappedData = (fetchedItems || []).flatMap((item, index) => {
+        // Ensure item and item.order exist before proceeding
+        if (!item || !Array.isArray(item.order)) return [];
+        return item.order
+          .filter((orderItem) => orderItem?.isLiquor) // Filter to only include items with isLiquor === true
           .map((orderItem, orderIndex, array) => [
             index + 1, // Row #
             `${index + 1}.${orderIndex + 1}`, // Sub-row #
-            orderItem.name, // Item name
-            orderItem.ounces ? Number(orderItem.ounces) : 0, // Ounces
-            `$${((orderItem.price || 0) * orderItem.ounces).toFixed(2)}`, // Price
-            orderIndex === array.length - 1 ? item.total : '', // Total sales for the order (only on last item)
-            orderIndex === array.length - 1 ? item.totalItems : '', // Total items in the order (only on last item)
-            orderIndex === array.length - 1 ? item.time.toLocaleString() : '', // Convert Date object to string (only on last item)
+            orderItem?.name || 'Unknown', // Item name
+            orderItem?.ounces ? Number(orderItem.ounces) : 0, // Ounces
+            `$${((orderItem?.price || 0) * (orderItem?.ounces || 0)).toFixed(
+              2
+            )}`, // Price
+            orderIndex === array.length - 1 ? item?.total || '' : '', // Total sales for the order (only on last item)
+            orderIndex === array.length - 1 ? item?.totalItems || '' : '', // Total items in the order (only on last item)
+            orderIndex === array.length - 1
+              ? item?.time
+                ? new Date(item.time).toLocaleString()
+                : ''
+              : '', // Safely convert to Date object and then to string (only on last item)
           ]);
       });
       setTransTableData(mappedData); // Fetched items set to state
     };
+    fetchTrans();
 
     // Trigger data fetch when component mounts
-    fetchTrans();
-  }, [baristaID, userDate]);
+  }, [CashOutItems]);
 
   //ROW FUNCTIONS FOR THE MAIN CASHOUT TABLE//
   // used in the mapped data useEffect to add rows to the table
@@ -504,8 +519,15 @@ function CashOutPg() {
   }
 
   return (
-    <div>
-      <TopBar />
+    <div className='overflow-scroll h-screen'>
+      <TopBar
+        setSelectedBarista={setBaristaID}
+        setSelectedDate={setUserDate}
+        selectedDate={userDate}
+        selectedBarista={baristaID}
+        setSwitchSearch={setSwitchSearch}
+        switchSearch={switchSearch}
+      />
       {/* Dropdowns to be added  */}
       <HSpliter>
         <HSpliter>
