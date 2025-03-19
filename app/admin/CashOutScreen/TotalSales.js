@@ -65,7 +65,7 @@ function TotalSales({ tableData, RTDTableData }) {
   }, [cashReceived, tableData, RTDTableData]);
 
   return (
-    <div>
+    <div className=' border-2 w-3/4'>
       <h1 className='text-lg font-semibold'>Total Stock Value</h1>
       <p>{StockTotal(tableData, RTDTableData)}</p>
       <h1 className='text-lg font-semibold'>Total Stock Over/Loss</h1>

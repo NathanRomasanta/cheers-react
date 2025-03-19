@@ -24,7 +24,10 @@ function Table({
     setModData(rowData);
     setSelectedRow(index);
 
-    console.log('Selected row data: ', rowData);
+    // Unselect after 10 seconds
+    setTimeout(() => {
+      setSelectedRow(null);
+    }, 10000);
   }
 
   // Return message if no data is available
@@ -34,7 +37,7 @@ function Table({
 
   if (type === 1) {
     return (
-      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
+      <div className='flex flex-col gap-8  h-full w-3/4 min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
         <div>
           {/* Table */}
           <table className='table table-pin-rows table-pin-cols table-sm bg-white w-full'>
@@ -56,7 +59,9 @@ function Table({
                 <tr
                   key={index}
                   className={`hover:bg-orange-600 hover:bg-opacity-55  ${
-                    selectedRow === index ? 'bg-orange-600 text-orange-600' : ''
+                    selectedRow === index
+                      ? 'bg-orange-400 bg-opacity-75 text-orange-600'
+                      : ''
                   }`}>
                   <td>
                     <input
@@ -83,7 +88,7 @@ function Table({
     );
   } else {
     return (
-      <div className='flex flex-col gap-8  h-full w-full rounded-lg  overflow-scroll  items-center flex-wrap '>
+      <div className='flex flex-col gap-8  h-full w-3/4 rounded-lg  overflow-scroll  items-center flex-wrap '>
         <div>
           {/* Table */}
           <table className='table table-pin-rows table-pin-cols table-sm bg-white w-full'>
@@ -105,7 +110,9 @@ function Table({
                 <tr
                   key={index}
                   className={`hover:bg-orange-600 hover:bg-opacity-55  ${
-                    selectedRow === index ? 'bg-orange-600 text-orange-600' : ''
+                    selectedRow === index
+                      ? 'bg-orange-600 text-orange-600  '
+                      : ''
                   }`}>
                   {data.map((item, colIndex) => (
                     <td

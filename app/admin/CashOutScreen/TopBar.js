@@ -46,7 +46,7 @@ export default function TopBar({
 
   const CustomAlert = ({ message }) => {
     return (
-      <div className='toast toast-top toast-center absolute top-0 z-50 '>
+      <div className='toast toast-top toast-center absolute top-0 sm:left-1/4 lg:left-3/4 z-50 sm:translate-x-1/3 lg:translate-x-1/3 '>
         <div className='alert bg-orange-500 text-white '>
           <span>{message}</span>
         </div>
@@ -108,9 +108,7 @@ export default function TopBar({
                     <li key={index}>
                       <a
                         onClick={() => {
-                          let strippedBarista = barista.id.replace(/ /g, '');
-                          console.log('strippedBarista', strippedBarista);
-                          setSelectedBarista(strippedBarista);
+                          handleBaristaSelection(barista.id); // Call the handler
                         }}>
                         {barista.id}
                       </a>
@@ -147,13 +145,13 @@ export default function TopBar({
         </div>
       </div>
       {/* large view menu */}
-      <div className='navbar-center hidden lg:flex'>
-        <ul className='menu menu-horizontal px-1'>
-          <div className='dropdown dropdown-bottom dropdown-end mr-5'>
+      <div className='navbar-center hidden lg:flex items-center  lg:gap-5  '>
+        <ul className='menu menu-horizontal '>
+          <div className='dropdown dropdown-bottom dropdown-end '>
             <div
               tabIndex={0}
               role='button'
-              className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'>
+              className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35   rounded-xl mr-2 '>
               Barista
               <Martini size={12} />
             </div>
@@ -179,7 +177,7 @@ export default function TopBar({
               <div
                 tabIndex={0}
                 role='button'
-                className=' btn btn-ghost  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'>
+                className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'>
                 Dates
                 <CalendarArrowDown size={12} />
               </div>
@@ -197,7 +195,7 @@ export default function TopBar({
                 ))}
               </ul>
               <button
-                className='btn btn-ghost  hover:bg-orange-400 hover:bg-opacity-35 m-1 mb-2  rounded-xl'
+                className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35   rounded-xl'
                 onClick={() => {
                   setSwitchSearch(!switchSearch);
                   setTimeout(() => {

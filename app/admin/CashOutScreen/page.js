@@ -549,7 +549,7 @@ function CashOutPg() {
               setSelectedRow={setSelectedRow}
             />
 
-            <div className='flex flex-col h-11/12 w-11/12'>
+            <div className='flex flex-col h-11/12 '>
               <TotalSales
                 tableData={tableData}
                 RTDTableData={RTDTableData}
@@ -568,7 +568,7 @@ function CashOutPg() {
 
           {/* RTD Table */}
           <Spliter title='Single Sale Items'>
-            <div className='flex w-full'>
+            <div className='flex '>
               <Table
                 type={1}
                 tableData={RTDTableData}

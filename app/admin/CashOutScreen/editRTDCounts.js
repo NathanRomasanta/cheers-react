@@ -70,18 +70,17 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
     }
   };
   return (
-    <div>
-      {' '}
-      <h1>Edit count</h1>{' '}
+    <div className=' justify-center border-2 border-red-200 p-4'>
+      <h1>Edit count</h1>
       <button
-        className='btn'
+        className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
         onClick={() => {
           editRTDpopOpenOz(modData);
         }}>
         Edit Open
       </button>
       <button
-        className='btn'
+        className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
         onClick={() => {
           editRTDpopCloseOz(modData);
         }}>

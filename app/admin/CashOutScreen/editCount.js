@@ -280,11 +280,11 @@ function editCount({
   };
 
   return (
-    <div>
+    <div className='w-3/4'>
       <h1 className='text-lg font-semibold'>Edit Liquor Count</h1>
       {!editCount && (
         <button
-          className='btn'
+          className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
           onClick={() => {
             if (!editCount) {
               setEditCount(true);
@@ -296,42 +296,42 @@ function editCount({
       {editCount && (
         <div className='flex flex-row flex-wrap gap-5'>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               EditOpenCount(modData);
             }}>
             OPEN Count
           </button>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               EditOpenLbs(modData);
             }}>
             OPEN Lbs
           </button>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               editOpenOz(modData);
             }}>
             OPEN Oz
           </button>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               EditCloseCount(modData);
             }}>
             Close Count
           </button>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               editCloseLbs(modData);
             }}>
             Close Lbs
           </button>
           <button
-            className='btn'
+            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
             onClick={() => {
               editCloseOz(modData);
             }}>
