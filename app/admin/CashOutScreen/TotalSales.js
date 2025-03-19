@@ -65,7 +65,7 @@ function TotalSales({ tableData, RTDTableData }) {
   }, [cashReceived, tableData, RTDTableData]);
 
   return (
-    <div>
+    <div className=' border-2 w-3/4'>
       <h1 className='text-lg font-semibold'>Total Stock Value</h1>
       <p>{StockTotal(tableData, RTDTableData)}</p>
       <h1 className='text-lg font-semibold'>Total Stock Over/Loss</h1>
@@ -73,11 +73,11 @@ function TotalSales({ tableData, RTDTableData }) {
 
       <>
         <h1 className='text-lg font-semibold'>Tip:</h1>
-        {cashReceived !==
+        {cashReceived ===
         parseFloat(StockTotal(tableData, RTDTableData).replace('$', '')) ? (
-          <p>0</p>
-        ) : (
           <p>{`$${(cashReceived * 0.035).toFixed(2)}`}</p>
+        ) : (
+          <p>0</p>
         )}
       </>
 
@@ -86,15 +86,16 @@ function TotalSales({ tableData, RTDTableData }) {
 
         <input
           type='number'
-          placeholder='enter cash received'
           className='input input-bordered'
-          value={cashReceived}
+          value={cashReceived || ''}
           onChange={(e) => {
             const value = e.target.value;
-            if (value === '' || !isNaN(parseFloat(value))) {
-              setCashReceived(parseFloat(value) || 0); // Set to 0 if the input is empty
+            if (value === '') {
+              setCashReceived(0); // Set to 0 if the input is empty
+            } else if (!isNaN(parseFloat(value)) && parseFloat(value) >= 0) {
+              setCashReceived(parseFloat(value));
             } else {
-              alert('Please enter a valid number');
+              alert('Please enter a valid number greater than or equal to 0');
             }
           }}
         />
