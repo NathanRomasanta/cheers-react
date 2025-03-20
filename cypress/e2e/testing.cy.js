@@ -10,14 +10,14 @@ describe('user valid login', () => {
   });
 
   // Testing user login with valid credentials   
-  it('passes', () => {
+  it('passes if user signs in with valid credentials', () => {
     cy.get('input[name="email"]').click().type('admin2@admin.com');
     cy.get('input[name="password"]').click().type('admin123');
     cy.get('button[type="submit"]').click();
     cy.url().should('include', '/admin');
     });
   
-    it('fails', () => {
+    it('fails if the system redirects back to login page after valid credentials', () => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app');  
   });
 });
@@ -34,7 +34,7 @@ describe('user invalid login', () => {
   })
 
   // Testing user login with invalid credentials
-  it('passes', () => {
+  it('passes if error message is displayed about invalid credentials', () => {
   cy.get('input[name="email"]').click().type('user@fakeemail.com');
   cy.get('input[name="password"]').click().type('fakepassword');
   cy.get('button[type="submit"]').click();
@@ -44,56 +44,236 @@ describe('user invalid login', () => {
   });
 });
 
-// TC003: Order Drink - Test Case
 
+// TC003: Order Drink - Test Case
+/** FLUTTER TEST **/
 
 // TC004: Order Food - Test Case
-
+/** FLUTTER TEST **/
 
 // TC005: Credit Card Payment - Test Case (Suspended)
-
+/** FLUTTER TEST **/
 
 // TC006: Failed Credit Payment - Test Case (Suspended)
-
+/** FLUTTER TEST **/
 
 // TC007: Fast Cash Payment - Test Case
-
+/** FLUTTER TEST **/
 
 // TC008: Failed Fast Cash Payment - Test Case
-
+/** FLUTTER TEST **/
 
 // TC009: Cash Payment
-
+/** FLUTTER TEST **/
 
 // TC010: Failed Cash Payment
-
+/** FLUTTER TEST **/
 
 // TC011: Request Liquor Stock
+/** FLUTTER TEST **/
 
 // TC012: Failed Liquor Request Stock
+/** FLUTTER TEST **/
 
 // TC014: Request Food Stock
+/** FLUTTER TEST **/
 
 // TC015:	Request Multiple Items 
+/** FLUTTER TEST **/
 
 // TC016:	Failed Multi-Item Request 
-
+/** FLUTTER TEST **/
 
 // TC017:	Void Order at POS Level 
-
+/** FLUTTER TEST **/
 
 // TC018:	Void Order at Database Level 
+
 
 // TC019:	Failed Order Void 
 
 
 // TC020:	Logout Functionality 
+describe('user logout functionality', () => {
+  it('logs the user out and redirects to login page', () => {
+    cy.get('button[name="signout"]')
+      .click();
+
+    cy.url()
+      .should('include', '/login');
+
+    cy.getAllLocalStorage().should('not.exist');
+  });
+});
+
 // TC021:	Email Validation 
-// TC022:	Invalid Email Input   
-// TC023:	Password Validation 
-// TC024:	Invalid Password Input 
+describe('email format validation', () => {
+  
+  beforeEach( () => {
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
+    cy.clearCookies();
+    cy.clearLocalStorage();
+    cy.url()
+      .should('include', '/login');
+  });
+
+  // Testing email input with valid format
+  it("passes if email contains '@' symbol", () => {
+    cy.get('input[name="email"]')
+      .click()
+      .type('validemail@domain.com')
+      .invoke('val') // Get inputs value
+      .should('contain', '@'); // Assert value contains '@' symbol
+  });
+  it("fails if email does not contain '@ symbol'", () => {
+    cy.get('input[name="email"]')
+    .type('invalidemail.com')
+    .invoke('val') // Get inputs value
+    .should('not.contain', '@'); // Assert value does not contain '@' symbol
+  });
+})
+
+
+// TC022:	Invalid Email Input 
+describe('check invalid email format', () => {
+  beforeEach( () => {
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
+    cy.clearCookies();
+    cy.clearLocalStorage();
+  });
+
+  // Testing email input with invalid format
+  it("passes if message warns that email does not contain '@' symbol in it", () => {
+    cy.get('input[name="email"]')
+      .click()
+      .type('invalidemail.com')
+      .blur(); // Triggers validation
+    
+      // Assert that error message is displayed
+      cy.get('input[name="email"]')
+      .should('be.visible'); // Ensures error message is visible
+  });
+  it('fails if it does not display message', () => {
+    cy.get('input[name="email"]')
+      .type('valid@email.com') // Valid email format
+      .blur(); // Triggers validation
+
+    // Assert that no error message is displayed
+    cy.get('[data-testid="email-error-message"]').should('not.exist');
+  });
+});
+  
+
+// TC023:	Password Validation && TC024 Invalid Password Input
+describe('password validation', () => {
+    
+    beforeEach( () => {
+      cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
+      cy.clearCookies();
+      cy.clearLocalStorage();
+      cy.url().should('include', '/login');
+    });
+  
+    // Testing password input with valid format
+    it("passes if password matches with associated email", () => {
+      cy.get('input[name="email"]')
+        .click()
+        .type('admin2@admin.com');
+
+      cy.get('input[name="password"]')
+        .click()
+        .type('admin123')
+        .blur(); // Triggers validation
+      
+      cy.get('button[type="submit"]').click();
+
+      // Passes if redirected to admin page
+      cy.url().should('include', '/admin');
+
+    });
+    it("passes if error message occurs when password does not match associated email", () => {
+      cy.get('input[name="email"]')
+      .click()
+      .type('admin2@gmail.com');
+      
+      cy.get('input[name="password"]')
+      .type('wrongpassword')
+      .blur(); // Triggers validation
+
+      cy.get('button[type="submit"]').click();
+
+      // Assert error message is displayed
+      cy.contains('Failed to log in. Please check your credentials.').should('be.visible');
+    });
+})
+
 // TC025:	Page Load Test 
+describe('page load test', () => {
+  beforeEach( () => {
+    cy.visit('/admin'); // Start at admin dashboard page
+    cy.clearCookies();
+    cy.clearLocalStorage();
+  });
+
+  it('Passes if mobile menu can be toggled', () => {
+    cy.get('[data-testid="mobile-menu-toggle"]').click(); // Toggle mobile menu
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+  });
+
+  it('Navigates to Dashboard', () => {
+    cy.get('[data-testid="Dashboard"]').click(); // Click on Dashboard
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    // cy.get('h1').should('contain', 'Dashboard'); // Assert dashboard page is loaded
+  });
+
+  it('Navigates to Inventory', () => {
+    cy.get('[data-testid="Inventory"]').click(); // Click on Inventory
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Items List'); // Assert inventory page is loaded
+  });
+
+  it('Navigates to Add Inventory', () => {
+    cy.get('[data-testid="Add Inventory"]').click(); // Click on Add Inventory
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Add Inventory'); // Assert add inventory page is loaded
+  });
+
+  it('Navigates to Orders', () => {
+    cy.get('[data-testid="Orders"]').click(); // Click on Orders
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Orders'); // Assert orders page is loaded
+  });
+
+  it('Navigates to Cashout', () => {
+    cy.get('[data-testid="Cashout"]').click(); // Click on Cashout
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Cashout'); // Assert cashout page is loaded
+  });
+
+  it('Navigates to Messages', () => {
+    cy.get('[data-testid="Messages"]').click(); // Click on Messages
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Messages'); // Assert messages page is loaded
+  });
+
+  it('Navigates to Settings', () => {
+    cy.get('[data-testid="Settings"]').click(); // Click on Settings
+    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
+    cy.get('h1').should('contain', 'Settings'); // Assert settings page is loaded
+  });
+  
+});
+
+
 // TC026:	Button Click Test 
+describe('button click test', () => {
+  it('passes if all buttons are functional and clickable', () => {
+    
+    // Test buttons on inventory page.
+
+  });
+});
+
 // TC027:	Input Field Validation 
 // TC028:	Invalid Input Handling  
 // TC029:	Bandwidth Test 
