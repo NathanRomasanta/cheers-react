@@ -6,7 +6,7 @@ function Spliter({ children, title, title2 }) {
 
   return (
     <div className='flex  h-full w-full justify-center items-center '>
-      <div className='card  rounded-box grid h-full  flex-grow place-items-center  p-5'>
+      <div className='card  rounded-box grid h-full  flex-grow place-items-center  '>
         <h1 className='text-xl font-extrabold text-orange-500'>{title}</h1>
         {firstChild}
       </div>
