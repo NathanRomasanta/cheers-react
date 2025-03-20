@@ -76,7 +76,7 @@ export default function TopBar({
           <div
             tabIndex={0}
             role='button'
-            className='btn btn-ghost lg:hidden'>
+            className='btn btn-ghost lg:hidden '>
             <svg
               className='h-5 w-5'
               viewBox='0 0 24 24'>
@@ -123,7 +123,7 @@ export default function TopBar({
                 <div
                   tabIndex={0}
                   role='button'
-                  className='btn bg-orange-400 bg-opacity-35 m-1 mb-2 hover:bg-opacity-100'>
+                  className='btn btn-sm btn-ghost m-1 mb-2'>
                   Dates
                 </div>
                 <ul
@@ -151,7 +151,7 @@ export default function TopBar({
             <div
               tabIndex={0}
               role='button'
-              className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35   rounded-xl mr-2 '>
+              className='btn btn-outline border-orange-400 bg-orange-400 bg-opacity-35 text-orange-700    hover:bg-orange-400 hover:bg-opacity-55  hover:border-rose-400  rounded-xl mr-2  '>
               Barista
               <Martini size={12} />
             </div>
