@@ -549,7 +549,7 @@ function CashOutPg() {
               setSelectedRow={setSelectedRow}
             />
 
-            <div className='flex flex-col h-11/12 '>
+            <div className='flex flex-col '>
               <TotalSales
                 tableData={tableData}
                 RTDTableData={RTDTableData}

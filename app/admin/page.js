@@ -17,12 +17,14 @@ import {
   FilePlus,
   Table,
   Receipt,
+  BookMarked,
 } from 'lucide-react';
 import CreatePOSItem from './create-pos-item-screen/page';
 import ControlPanel from './control-panel/page';
 import ItemsListView from './inventory-screen/page';
 import AddInventory from './create-inventory/page';
 import Orders from './orders/page';
+import AddToPosPage from './addToPos/page';
 import CashOutPg from './CashOutScreen/page';
 import { getAuth, signOut } from 'firebase/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -63,6 +65,12 @@ export default function AdminPanel() {
       id: 'Add Inventory',
       label: 'Add Inventory',
       icon: <FilePlus size={27} />,
+      path: '/dashboard/settings',
+    },
+    {
+      id: 'Add POS Item',
+      label: 'Add POS Item',
+      icon: <BookMarked size={27} />,
       path: '/dashboard/settings',
     },
 
@@ -196,6 +204,8 @@ export default function AdminPanel() {
         return <Orders />;
       case 'Cashout':
         return <CashOutPg />;
+      case 'Add POS Item':
+        return <AddToPosPage />;
       case 'Inventory':
         return <ItemsListView />;
       case 'Add Inventory':
@@ -262,7 +272,7 @@ export default function AdminPanel() {
             </div>
           </div>
           <button
-            name="signout"
+            name='signout'
             onClick={handleSignOut}
             className='flex items-center w-full p-2 text-red-600 hover:bg-red-50 rounded'>
             <LogOut
