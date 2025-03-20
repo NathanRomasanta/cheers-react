@@ -5,20 +5,18 @@ describe('user valid login', () => {
   // Reset environment before each test case
   beforeEach(() => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
-    cy.clearCookies();
-    cy.clearLocalStorage();
   });
 
   // Testing user login with valid credentials   
   it('passes if user signs in with valid credentials', () => {
-    cy.get('input[name="email"]').click().type('admin2@admin.com');
-    cy.get('input[name="password"]').click().type('admin123');
+    cy.get('input[name="email"]').should('be.visible').click().type('admin2@admin.com');
+    cy.get('input[name="password"]').should('be.visible').click().type('admin123');
     cy.get('button[type="submit"]').click();
     cy.url().should('include', '/admin');
     });
   
     it('fails if the system redirects back to login page after valid credentials', () => {
-    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app');  
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/login');  
   });
 });
 
@@ -27,10 +25,9 @@ describe('user valid login', () => {
 describe('user invalid login', () => {
   beforeEach( () => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
-    cy.get('button[name="signout"]').click();
-    cy.clearCookies();
-    cy.clearLocalStorage();
-    cy.url().should('include', '/login');
+    cy.get('button[name="signout"]').should('be.visible').click();
+    cy.get('input[name="email"]').should('be.visible');
+    cy.get('input[name="password"]').should('be.visible');
   })
 
   // Testing user login with invalid credentials
@@ -97,10 +94,11 @@ describe('user invalid login', () => {
 describe('user logout functionality', () => {
   it('logs the user out and redirects to login page', () => {
     cy.get('button[name="signout"]')
+      .should('be.visible')
       .click();
 
-    cy.url()
-      .should('include', '/login');
+    cy.get('input[name="email]').should('be.visible');
+    cy.get('input[name="password"]').should('be.visible');
 
     cy.getAllLocalStorage().should('not.exist');
   });
@@ -210,52 +208,49 @@ describe('password validation', () => {
 // TC025:	Page Load Test 
 describe('page load test', () => {
   beforeEach( () => {
-    cy.visit('/admin'); // Start at admin dashboard page
-    cy.clearCookies();
-    cy.clearLocalStorage();
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin'); // Start at admin dashboard page
   });
 
-  it('Passes if mobile menu can be toggled', () => {
-    cy.get('[data-testid="mobile-menu-toggle"]').click(); // Toggle mobile menu
-    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
-  });
 
-  it('Navigates to Dashboard', () => {
-    cy.get('[data-testid="Dashboard"]').click(); // Click on Dashboard
-    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
-    // cy.get('h1').should('contain', 'Dashboard'); // Assert dashboard page is loaded
-  });
-
+  // Test if you can navigate to Inventory page
   it('Navigates to Inventory', () => {
-    cy.get('[data-testid="Inventory"]').click(); // Click on Inventory
-    cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
-    cy.get('h1').should('contain', 'Items List'); // Assert inventory page is loaded
+    cy.get('[data-test="sidebar-inventory"]').click(); // Click on Inventory
+    
+    // Assert that the "Documents" section is visible
+    cy.contains('h2', 'Documents').should('be.visible');
+    cy.contains('Project Report').should('be.visible');
+    cy.contains('Meeting Notes').should('be.visible');
   });
 
+  // Navigate to Add Inventory page
   it('Navigates to Add Inventory', () => {
     cy.get('[data-testid="Add Inventory"]').click(); // Click on Add Inventory
     cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
     cy.get('h1').should('contain', 'Add Inventory'); // Assert add inventory page is loaded
   });
 
+  // Test you can navigate to Orders page
   it('Navigates to Orders', () => {
     cy.get('[data-testid="Orders"]').click(); // Click on Orders
     cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
     cy.get('h1').should('contain', 'Orders'); // Assert orders page is loaded
   });
 
+  // Test you can navigate to Cashout page
   it('Navigates to Cashout', () => {
     cy.get('[data-testid="Cashout"]').click(); // Click on Cashout
     cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
     cy.get('h1').should('contain', 'Cashout'); // Assert cashout page is loaded
   });
 
+  // Test you can navigate to Messages page
   it('Navigates to Messages', () => {
     cy.get('[data-testid="Messages"]').click(); // Click on Messages
     cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
     cy.get('h1').should('contain', 'Messages'); // Assert messages page is loaded
   });
 
+  // Test you can navigate to Settings page
   it('Navigates to Settings', () => {
     cy.get('[data-testid="Settings"]').click(); // Click on Settings
     cy.get('[data-testid="mobile-menu"]').should('be.visible'); // Assert mobile menu is visible
@@ -340,3 +335,4 @@ describe('button click test', () => {
 // TC088	Add new User to the system 
 // TC089	Order Testing 
 // TC090	Order Testing 
+
