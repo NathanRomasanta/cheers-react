@@ -1,31 +1,37 @@
 import CustomInputBox from './CustomInputBox';
 import { useState } from 'react';
 
-function BoolInput({ setBool }) {
+function BoolInput({ setBool, Boolean }) {
+  const [checked, setChecked] = useState(Boolean);
+
+  const handleYesClick = () => {
+    setChecked(true);
+    setBool(true);
+  };
+
+  const handleNoClick = () => {
+    setChecked(false);
+    setBool(false);
+  };
+
   return (
-    <CustomInputBox Headers='Liquor?'>
+    <CustomInputBox>
       <div>
         <div className='flex flex-row gap-4'>
           <h1>Yes</h1>
           <input
             type='checkbox'
-            defaultChecked={false}
+            checked={checked}
             className='checkbox border-indigo-600 bg-indigo-500 checked:bg-orange-400 checked:text-orange-800 checked:border-orange-500 '
-            onClick={() => {
-              console.log('clicked yes');
-              setBool(true);
-            }}
+            onChange={handleYesClick}
           />
 
           <h1>No</h1>
           <input
             type='checkbox'
-            defaultChecked={false}
+            checked={!checked}
             className='checkbox border-indigo-600 bg-indigo-500 checked:bg-orange-400 checked:text-orange-800 checked:border-orange-500 '
-            onClick={() => {
-              console.log('clicked no');
-              setBool(false);
-            }}
+            onChange={handleNoClick}
           />
         </div>
       </div>
