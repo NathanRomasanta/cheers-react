@@ -1,6 +1,6 @@
-"use client";
-import { useState, useEffect, useRef } from "react";
-import { db } from "@/app/_utils/Firebase";
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import { db } from '/app/_utils/Firebase';
 import {
   collection,
   getDocs,
@@ -8,11 +8,11 @@ import {
   updateDoc,
   getDoc,
   setDoc,
-} from "firebase/firestore";
-import { Toast } from "primereact/toast";
-import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
-import "primereact/resources/primereact.min.css"; // core css
-import "primeicons/primeicons.css";
+} from 'firebase/firestore';
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-indigo/theme.css'; // theme
+import 'primereact/resources/primereact.min.css'; // core css
+import 'primeicons/primeicons.css';
 
 export default function Orders() {
   const [items, setItems] = useState([]);
@@ -29,7 +29,7 @@ export default function Orders() {
 
   const fetchItems = async () => {
     try {
-      const itemsCollection = collection(db, "Orders");
+      const itemsCollection = collection(db, 'Orders');
       const itemsSnapshot = await getDocs(itemsCollection);
       const itemsList = itemsSnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -38,8 +38,8 @@ export default function Orders() {
       setItems(itemsList);
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching items: ", err);
-      setError("Failed to load items. Please try again later.");
+      console.error('Error fetching items: ', err);
+      setError('Failed to load items. Please try again later.');
       setLoading(false);
     }
   };
@@ -60,7 +60,7 @@ export default function Orders() {
     try {
       // Check if currentItem and ingredients exist
       if (!currentItem || !currentItem.ingredients) {
-        console.error("No current item or ingredients found");
+        console.error('No current item or ingredients found');
         return;
       }
 
@@ -68,15 +68,15 @@ export default function Orders() {
       for (const item of currentItem.ingredients) {
         // Make sure item has id
         if (!item || !item.id) {
-          console.error("Invalid ingredient item:", item);
+          console.error('Invalid ingredient item:', item);
           continue;
         }
 
         const baristaRef = doc(
           db,
-          "Accounts",
+          'Accounts',
           currentItem.baristaUID,
-          "stock",
+          'stock',
           item.id
         );
 
@@ -101,7 +101,7 @@ export default function Orders() {
             await setDoc(baristaRef, {
               runningCount: Number(item.quantity),
               // Add any other fields you might need for a new stock item
-              name: item.name || "Unknown Item",
+              name: item.name || 'Unknown Item',
               isLiquor: item.isLiquor,
               id: item.id,
               ouncesPerBottle: item.ouncesPerBottle,
@@ -113,7 +113,7 @@ export default function Orders() {
           }
 
           // Subtract from the Items collection
-          const itemRef = doc(db, "Items", item.id);
+          const itemRef = doc(db, 'Items', item.id);
           const itemSnap = await getDoc(itemRef);
 
           if (itemSnap.exists()) {
@@ -139,43 +139,43 @@ export default function Orders() {
       }
 
       toast.current.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Order Successfully Fulfilled",
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Order Successfully Fulfilled',
         life: 3000,
       });
 
-      const itemRef = doc(db, "Orders", currentItem.id);
+      const itemRef = doc(db, 'Orders', currentItem.id);
 
       await updateDoc(itemRef, {
-        status: "Fulfilled",
+        status: 'Fulfilled',
       });
 
       handleCloseModal();
     } catch (err) {
-      console.error("Error updating item: ", err);
-      alert("Failed to save changes. Please try again.");
+      console.error('Error updating item: ', err);
+      alert('Failed to save changes. Please try again.');
     }
   };
 
   const handleDenyOrder = async () => {
     try {
       // Check if currentItem and ingredients exist
-      const itemRef = doc(db, "Orders", currentItem.id);
+      const itemRef = doc(db, 'Orders', currentItem.id);
 
       await updateDoc(itemRef, {
-        status: "Denied",
+        status: 'Denied',
       });
 
       toast.current.show({
-        severity: "success",
-        summary: "Denied",
-        detail: "Order Successfully Denied",
+        severity: 'success',
+        summary: 'Denied',
+        detail: 'Order Successfully Denied',
         life: 3000,
       });
     } catch (err) {
-      console.error("Error updating item: ", err);
-      alert("Failed to save changes. Please try again.");
+      console.error('Error updating item: ', err);
+      alert('Failed to save changes. Please try again.');
     }
 
     await fetchItems();
@@ -186,45 +186,43 @@ export default function Orders() {
   // Handler for saving the edited item
 
   if (loading)
-    return <div className="container mx-auto p-4">Loading items...</div>;
+    return <div className='container mx-auto p-4'>Loading items...</div>;
   if (error)
-    return <div className="container mx-auto p-4 text-red-500">{error}</div>;
+    return <div className='container mx-auto p-4 text-red-500'>{error}</div>;
 
   return (
-    <div className=" mx-10 p-4">
-      <h1 className="text-2xl font-bold mb-4">Orders</h1>
+    <div className=' mx-10 p-4'>
+      <h1 className='text-2xl font-bold mb-4'>Orders</h1>
       <Toast ref={toast} />
 
       {/* List view */}
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className='bg-white shadow-md rounded-lg p-6'>
           {/* Table Header */}
-          <div className="flex justify-between items-center bg-gray-100 p-4 font-semibold border-b">
-            <span className="w-1/3">Barista UID</span>
-            <span className="w-1/3">Order ID</span>
-            <span className="w-1/3">Order Quantity</span>
-            <span className="w-1/6 text-center">Actions</span>
+          <div className='flex justify-between items-center bg-gray-100 p-4 font-semibold border-b'>
+            <span className='w-1/3'>Barista UID</span>
+            <span className='w-1/3'>Order ID</span>
+            <span className='w-1/3'>Order Quantity</span>
+            <span className='w-1/6 text-center'>Actions</span>
           </div>
 
           {/* Table Rows */}
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex justify-between items-center p-4 border-b"
-            >
-              <span className="w-1/3">{item.baristaUID}</span>
-              <span className="w-1/3">{item.id}</span>
-              <span className="w-1/3 text-gray-600">
+              className='flex justify-between items-center p-4 border-b'>
+              <span className='w-1/3'>{item.baristaUID}</span>
+              <span className='w-1/3'>{item.id}</span>
+              <span className='w-1/3 text-gray-600'>
                 {item.ingredients.length}
               </span>
 
-              <div className="w-1/6 flex justify-center">
+              <div className='w-1/6 flex justify-center'>
                 <button
                   onClick={() => handleDetailsClick(item)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                >
+                  className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors'>
                   Details
                 </button>
               </div>
@@ -235,12 +233,14 @@ export default function Orders() {
 
       {/* Edit Modal */}
       {isModalOpen && currentItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg w-full max-w-md p-6">
-            <h2 className="text-xl font-bold mb-4">Order Details</h2>
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4'>
+          <div className='bg-white rounded-lg w-full max-w-md p-6'>
+            <h2 className='text-xl font-bold mb-4'>Order Details</h2>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2" htmlFor="name">
+            <div className='mb-4'>
+              <label
+                className='block text-gray-700 mb-2'
+                htmlFor='name'>
                 Barista: {currentItem.baristaUID}
               </label>
             </div>
@@ -248,38 +248,34 @@ export default function Orders() {
             {currentItem.ingredients.map((item) => (
               <div
                 key={item.id}
-                className="flex justify-between items-center p-4 border-b last:border-b-0"
-              >
+                className='flex justify-between items-center p-4 border-b last:border-b-0'>
                 <div>
-                  <h2 className="text-lg font-semibold">
+                  <h2 className='text-lg font-semibold'>
                     {item.name} x {item.quantity}
                   </h2>
-                  <p className="text-gray-600">{item.id}</p>
+                  <p className='text-gray-600'>{item.id}</p>
                 </div>
               </div>
             ))}
 
-            <div className="p-3"></div>
+            <div className='p-3'></div>
 
-            <div className="flex justify-end space-x-2">
+            <div className='flex justify-end space-x-2'>
               <button
                 onClick={handleCloseModal}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors"
-              >
+                className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors'>
                 Cancel
               </button>
 
               <button
                 onClick={handleFulfillOrder}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-              >
+                className='px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors'>
                 Fulfill
               </button>
 
               <button
                 onClick={handleDenyOrder}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-green-600 transition-colors"
-              >
+                className='px-4 py-2 bg-red-500 text-white rounded hover:bg-green-600 transition-colors'>
                 Deny
               </button>
             </div>
