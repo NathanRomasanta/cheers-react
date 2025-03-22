@@ -17,7 +17,7 @@ const CreatePosItem = (name, price, category, isLiquor, ounces) => {
   let ingredients = [
     {
       id: CreateID(name),
-      isLiquor: isLiquor,
+      isLiquor: true,
       name: name,
       ounces: ounces,
     },
@@ -76,7 +76,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
             }}
           />
         </CustomInputBox>
-        <BoolInput setBool={setIsLiquor} />
+
         <div className='flex flex-row gap-4 m-5 justify-around'>
           <button
             className='btn btn-primary'
@@ -109,7 +109,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
           </button>
           <button
             className='btn btn-primary'
-            onClick={() => setTypeSelectedsetTypeSelected('')}>
+            onClick={() => setTypeSelected('')}>
             Back
           </button>
         </div>
