@@ -20,6 +20,18 @@ async function addPosItem(data) {
       data
     );
   }
+  if (data.category === 'beers') {
+    return await addDoc(
+      collection(db, 'Pos_Items', data.category, 'beer_items'),
+      data
+    );
+  }
+  if (data.category === 'food') {
+    return await addDoc(
+      collection(db, 'Pos_Items', data.category, 'food_items'),
+      data
+    );
+  }
 }
 
 export default addPosItem;

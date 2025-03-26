@@ -12,21 +12,16 @@ function MainForm({ typeSelected, setTypeSelected }) {
           setTypeSelected={setTypeSelected}
         />
         <div className='flex flex-col h-screen items-center justify-center'>
-          <h1 className='text-3xl font-bold'>Select Item Type to Continue</h1>
+          <h1 className='text-3xl font-bold'>
+            Entering area to modify the Point of Sales application
+          </h1>
+          <h2>Pick a Category at the top of the screen to proceed to form</h2>
           <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
         </div>
       </div>
     );
   }
 
-  if (typeSelected.id === 'wines') {
-    return (
-      <WineForm
-        typeSelected={typeSelected}
-        setTypeSelected={setTypeSelected}
-      />
-    );
-  }
   if (typeSelected.id === 'cocktails') {
     return (
       <CocktailForm
@@ -35,6 +30,12 @@ function MainForm({ typeSelected, setTypeSelected }) {
       />
     );
   }
+  return (
+    <WineForm
+      typeSelected={typeSelected}
+      setTypeSelected={setTypeSelected}
+    />
+  );
 }
 
 export default MainForm;
