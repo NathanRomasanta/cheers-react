@@ -1,6 +1,6 @@
 
-// TC001: Valid Login - Test Case
-describe('user valid login', () => {
+// TC001: Valid Login - Test Case && TC002: Invalid Login Attempt - Test Case
+describe('user login tests', () => {
   
   // Reset environment before each test case
   beforeEach(() => {
@@ -23,6 +23,7 @@ describe('user valid login', () => {
 
 // TC002: Invalid Login Attempt - Test Case
 describe('user invalid login', () => {
+  
   beforeEach( () => {
     cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
     cy.get('button[name="signout"]').should('be.visible').click();
