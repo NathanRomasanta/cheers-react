@@ -1,7 +1,7 @@
 const CustomInputBox = ({ Headers, children }) => {
-  if (children.length >= 1) {
+  if (children.length > 1) {
     return (
-      <div className='flex flex-col justify-center items-center gap-4 '>
+      <div className='flex flex-col justify-center items-center gap-4  '>
         {children.map((child, index) => (
           <div
             key={index}
@@ -16,8 +16,8 @@ const CustomInputBox = ({ Headers, children }) => {
     );
   } else {
     return (
-      <div className='flex flex-col  items-center'>
-        <div className='flex justify-around items-center w-2/3 mt-5'>
+      <div className='flex flex-col  items-center '>
+        <div className='flex justify-around items-center w-2/3 mt-5 gap-5'>
           <label className='label'>
             <span className='label-text '>
               {Array.isArray(Headers) ? Headers[0] : Headers}

@@ -4,7 +4,7 @@ import 'primereact/resources/primereact.min.css'; // core css
 import 'primeicons/primeicons.css'; // icons
 import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '@/app/_utils/AuthContext';
+import { useAuth } from '/app/_utils/AuthContext';
 import { Toast } from 'primereact/toast';
 import { LogOut, Shield, Menu, X, Airplay } from 'lucide-react';
 

@@ -4,7 +4,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/app/_utils/AuthContext';
+import { useAuth } from '/app/_utils/AuthContext';
 import {
   Mail,
   Settings,
@@ -272,7 +272,7 @@ export default function AdminPanel() {
             </div>
           </div>
           <button
-            name="signout"
+            name='signout'
             onClick={handleSignOut}
             className='flex items-center w-full p-2 text-red-600 hover:bg-red-50 rounded'>
             <LogOut
