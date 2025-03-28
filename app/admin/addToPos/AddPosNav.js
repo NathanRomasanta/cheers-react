@@ -63,7 +63,9 @@ function AddToPosNav({ setTypeSelected }) {
         <ul className='menu menu-horizontal px-1'>
           <li>
             <details>
-              <summary>Parent</summary>
+              <summary className='bg-orange-500 bg-opacity-25 hover:bg-opacity-75'>
+                Categories
+              </summary>
               <ul className='p-2'>
                 {drinkTypes.map((drinkType) => (
                   <li key={drinkType.id}>
@@ -76,9 +78,6 @@ function AddToPosNav({ setTypeSelected }) {
             </details>
           </li>
         </ul>
-      </div>
-      <div className='navbar-end'>
-        <a className='btn'>Button</a>
       </div>
     </div>
   );

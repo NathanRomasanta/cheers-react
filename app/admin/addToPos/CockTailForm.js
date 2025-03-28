@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import CustomInputBox from './CustomInputBox';
-import BoolInput from './BoolInput';
 import TopForm from './TopForm';
 import AddPosItem from './Add-PosItem';
 import SubForm from './SubForm';
-import Table from '../CashOutScreen/Table';
-
 function CocktailForm({ typeSelected, setTypeSelected }) {
   // Firestore data
   const [cocktailName, setCocktailName] = useState('');
@@ -24,10 +21,9 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
   const [ingredientName, setIngredientName] = useState('');
   const [ingredientOz, setIngredientOz] = useState('');
   const [ingredientIsLiquor, setIngredientIsLiquor] = useState(false);
-
-  // table states
-
+  //Conditional rendering of the subform and final form
   const [ifAdded, setIfAdded] = useState(false);
+  // Function to create the ID for the cocktail and the ingredients
   const CreateID = (str) => {
     let idNumber = Math.floor(Math.random() * 100);
 
@@ -36,7 +32,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
       .replace(/[aeiou]/gi, '')
       .trim()}-00${idNumber}`;
   };
-
+  // Function to create the PosItem object to be added to the database in the proper format for firebase
   const CreatePosItem = (name, price, category) => {
     let ingredients = cocktailIngredients;
 
@@ -49,7 +45,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
 
     return PosItem;
   };
-
+  // Function to handle the next ingredient and add it to the cocktailIngredients array in the proper format for firebase
   const handleNextIngredient = () => {
     let newIngredient = {
       id: CreateID(ingredientName),
@@ -67,7 +63,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
     setIngredientOz('');
     setIngredientIsLiquor(null);
   };
-
+  // Component to render the subform and the final form using while loop so that the subform can be rendered multiple times
   const renderIngredientSubForm = ({
     ifAdded,
     setIfAdded,
@@ -157,6 +153,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
   return (
     <TopForm>
       <h1>{typeSelected.id}</h1>
+      {/* Shows SubForm when the Create CockTail Button is pressed  */}
       {showIngredients ? (
         renderIngredientSubForm({
           ifAdded,
@@ -220,7 +217,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
       )}
       <div className='flex flex-row gap-4 m-5 justify-around'>
         {!showIngredients ? (
-          <div>
+          <div className='flex flex-row gap-10  justify-around items-center'>
             <button
               className='btn btn-primary'
               onClick={() => {
@@ -232,7 +229,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
               className='btn btn-primary'
               onClick={() => setTypeSelected('')}>
               Back
-            </button>{' '}
+            </button>
           </div>
         ) : (
           <div>

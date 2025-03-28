@@ -42,7 +42,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
   return (
     <TopForm>
       <div className='form'>
-        <CustomInputBox Headers={[' Name :', 'Price :', 'Oz :']}>
+        <CustomInputBox Headers={[' Name :', 'Price :']}>
           <input
             type='text'
             className='input input-bordered w-1/2'
@@ -51,7 +51,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
             onChange={(e) => {
               console.log('Name :', e.target.value);
               console.log(CreateID(e.target.value));
-              setCategory(String(typeSelectedsetTypeSelected.id));
+              setCategory(String(typeSelected.id));
               setName(e.target.value);
             }}
           />
@@ -65,16 +65,21 @@ function WineForm({ typeSelected, setTypeSelected }) {
               setPrice(e.target.value);
             }}
           />
-          <input
-            type='number'
-            className='input input-bordered w-1/2'
-            placeholder='Oz'
-            value={ounces}
-            onChange={(e) => {
-              console.log('Oz :', e.target.value);
-              setOunces(e.target.value);
-            }}
-          />
+          {typeSelected.id === 'food' ? null : (
+            <div className='flex flex-row gap-44 w-full'>
+              <label className='label'>Ounces</label>
+              <input
+                type='number'
+                className='input input-bordered w-1/2'
+                placeholder='Oz'
+                value={ounces}
+                onChange={(e) => {
+                  console.log('Oz :', e.target.value);
+                  setOunces(e.target.value);
+                }}
+              />
+            </div>
+          )}
         </CustomInputBox>
 
         <div className='flex flex-row gap-4 m-5 justify-around'>
