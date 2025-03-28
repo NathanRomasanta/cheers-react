@@ -122,6 +122,7 @@ export default function AddInventory() {
               Item Name
             </label>
             <input
+              name='itemName'
               type='text'
               id='input'
               value={itemName}
@@ -134,6 +135,7 @@ export default function AddInventory() {
 
           <div>
             <label
+              name='itemID'
               htmlFor='Item Name'
               className='block text-sm font-medium text-gray-700'>
               Item ID
@@ -144,6 +146,7 @@ export default function AddInventory() {
           </div>
 
           <button
+            name='generateItemID'
             onClick={generateItemID}
             type='submit'
             disabled={isLoading}
@@ -158,7 +161,7 @@ export default function AddInventory() {
               Item Quantity
             </label>
             <input
-              type='numbers'
+              type='number'
               id='quantity'
               value={itemQuantity}
               onChange={(e) => setItemQuantity(e.target.value)}
@@ -171,6 +174,7 @@ export default function AddInventory() {
             <div className='flex items-center'>
               <input
                 type='checkbox'
+                name='isLiquor'
                 id='isLiquor'
                 checked={isLiquor}
                 onChange={(e) => setIsLiquor(e.target.checked)}
@@ -192,6 +196,7 @@ export default function AddInventory() {
                 Ounces Per Bottle
               </label>
               <input
+                name='ouncesPerBottle'
                 type='number'
                 id='ouncesPerBottle'
                 value={ouncesPerBottle}
