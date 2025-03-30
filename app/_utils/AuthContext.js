@@ -22,12 +22,12 @@ export default function AuthProvider({ children }) {
 
       if (user) {
         try {
-          const userDocRef = doc(db, "users", user.uid);
+          const userDocRef = doc(db, "Accounts", user.email);
           const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
             const userData = userDoc.data();
-            setIsAdmin(userData.isAdmin === true);
+            setIsAdmin(userData.accountType === "Super Admin");
           } else {
             setIsAdmin(false);
           }

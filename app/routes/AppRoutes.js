@@ -33,7 +33,11 @@ const AppRoutes = () => {
         if (userSnapshot.exists()) {
           // Check if the isAdmin field is true
           const userData = userSnapshot.data();
-          setIsAdmin(userData && userData.Admin === true);
+          if (userData.accountType == "Super Admin") {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         } else {
           setIsAdmin(false);
         }

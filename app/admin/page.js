@@ -19,6 +19,7 @@ import {
   Receipt,
   BookMarked,
   Accessibility,
+  UserPlus,
 } from "lucide-react";
 import CreatePOSItem from "./create-pos-item-screen/page";
 import ControlPanel from "./control-panel/page";
@@ -57,6 +58,13 @@ export default function AdminPanel() {
     },
 
     {
+      id: "Cashout",
+      label: "Cashout",
+      icon: <Receipt size={27} />,
+      path: "/dashboard/settings",
+    },
+
+    {
       id: "Inventory",
       label: "Inventory",
       icon: <Table size={27} />,
@@ -85,14 +93,7 @@ export default function AdminPanel() {
     {
       id: "Create New Users",
       label: "Create New Users",
-      icon: <Accessibility size={27} />,
-      path: "/dashboard/settings",
-    },
-
-    {
-      id: "Cashout",
-      label: "Cashout",
-      icon: <Receipt size={27} />,
+      icon: <UserPlus size={27} />,
       path: "/dashboard/settings",
     },
 
@@ -112,15 +113,6 @@ export default function AdminPanel() {
   ];
 
   // Add admin option if the user is an admin
-  if (isAdmin) {
-    menuItems.push({
-      id: "admin",
-      label: "Admin Panel",
-      icon: <Shield size={20} />,
-      path: "/admin",
-    });
-  }
-
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -271,12 +263,10 @@ export default function AdminPanel() {
           <div className="flex items-center mb-4">
             <div className="w-8 h-8 rounded-full bg-[#FF6E1F] mr-2"></div>
             <div>
-              <p className="text-sm font-semibold">
+              <p className="text-sm font-semibold text-black">
                 {currentUser?.email || "User"}
               </p>
-              <p className="text-xs text-gray-500">
-                {isAdmin ? "Administrator" : "Standard User"}
-              </p>
+              <p className="text-xs text-gray-500">Super Admin</p>
             </div>
           </div>
           <button
