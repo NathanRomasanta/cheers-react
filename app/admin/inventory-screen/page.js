@@ -113,7 +113,12 @@ export default function ItemsListView() {
   };
 
   if (loading)
-    return <div className='container mx-auto p-4'>Loading items...</div>;
+    return (
+      <div className='flex flex-col justify-center items-center h-full'>
+        <h1 className='text-2xl font-bold mb-4'>Loading Items...</h1>
+        <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
+      </div>
+    );
   if (error)
     return <div className='container mx-auto p-4 text-red-500'>{error}</div>;
 

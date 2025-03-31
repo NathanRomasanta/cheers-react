@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 // components
 
-import LoadingPg from './LoadingPg';
 import Table from './Table';
 import HSpliter from './HSpliter';
 import EditCount from './editCount';
@@ -513,7 +512,11 @@ function CashOutPg() {
 
   // Loading screen while data loads
   if (loading) {
-    return <LoadingPg />;
+    return (
+      <div className='flex flex-col justify-center items-center h-full'>
+        <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
+      </div>
+    );
   }
   if (tableData.length === 0) {
     return (
