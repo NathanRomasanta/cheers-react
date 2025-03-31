@@ -284,7 +284,7 @@ function editCount({
       <h1 className='text-lg font-semibold'>Edit Liquor Count</h1>
       {!editCount && (
         <button
-          className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+          className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
           onClick={() => {
             if (!editCount) {
               setEditCount(true);
@@ -294,51 +294,51 @@ function editCount({
         </button>
       )}
       {editCount && (
-        <div className='flex flex-row flex-wrap gap-5'>
+        <div className='flex flex-row flex-wrap gap-5 '>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               EditOpenCount(modData);
             }}>
             OPEN Count
           </button>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               EditOpenLbs(modData);
             }}>
             OPEN Lbs
           </button>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               editOpenOz(modData);
             }}>
             OPEN Oz
           </button>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               EditCloseCount(modData);
             }}>
             Close Count
           </button>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               editCloseLbs(modData);
             }}>
             Close Lbs
           </button>
           <button
-            className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'
+            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
             onClick={() => {
               editCloseOz(modData);
             }}>
             Close Oz
           </button>
           <button
-            className='btn btn-circle btn-xs bg-orange-600 justify-center  '
+            className='btn btn-circle btn-xs btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400 '
             onClick={() => {
               setEditCount(false);
             }}>

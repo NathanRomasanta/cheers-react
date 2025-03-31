@@ -1,8 +1,6 @@
 import WineForm from './WineForm';
 import CocktailForm from './CockTailForm';
 
-import AddToPosNav from './AddPosNav';
-
 function MainForm({ typeSelected, setTypeSelected }) {
   if (typeSelected === '') {
     return (
@@ -13,7 +11,7 @@ function MainForm({ typeSelected, setTypeSelected }) {
           </h1>
           <div className='flex flex-col items-center justify-center '>
             <h2>Pick a Category at the top of the screen to proceed to form</h2>
-            <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
+            <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
           </div>
         </div>
         {typeSelected == 'cocktails' && (

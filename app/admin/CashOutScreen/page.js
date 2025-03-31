@@ -219,9 +219,8 @@ function CashOutPg() {
   //No extra mapping needed for the transactions table
   useEffect(() => {
     const fetchTrans = async () => {
-      setLoading(true);
       const fetchedItems = await fetchTransactions(baristaID, userDate);
-      setLoading(false);
+
       const mappedData = (fetchedItems || []).flatMap((item, index) => {
         // Ensure item and item.order exist before proceeding
         if (!item || !Array.isArray(item.order)) return [];
@@ -514,6 +513,7 @@ function CashOutPg() {
   if (loading) {
     return (
       <div className='flex flex-col justify-center items-center h-full'>
+        <h1 className='text-2xl font-bold'>Loading ...</h1>
         <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
       </div>
     );
@@ -533,7 +533,7 @@ function CashOutPg() {
           <h1 className='text-2xl font-bold '>
             Please select a Barista and Date
           </h1>
-          <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
+          <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
         </div>
       </div>
     );
