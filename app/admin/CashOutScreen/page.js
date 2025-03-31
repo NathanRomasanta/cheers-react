@@ -520,20 +520,22 @@ function CashOutPg() {
   }
   if (tableData.length === 0) {
     return (
-      <div className='flex flex-col justify-between items-center h-screen'>
-        <TopBar
-          setSelectedBarista={setBaristaID}
-          setSelectedDate={setUserDate}
-          selectedDate={userDate}
-          selectedBarista={baristaID}
-          setSwitchSearch={setSwitchSearch}
-          switchSearch={switchSearch}
-        />
-        <div className='flex flex-col justify-center items-center h-full'>
-          <h1 className='text-2xl font-bold '>
-            Please select a Barista and Date
-          </h1>
-          <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
+      <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
+        <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md '>
+          <div className='flex flex-col justify-center items-center h-full'>
+            <h1 className='text-2xl font-bold '>
+              Please select a Barista and Date to view data
+            </h1>
+            <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
+            <TopBar
+              setSelectedBarista={setBaristaID}
+              setSelectedDate={setUserDate}
+              selectedDate={userDate}
+              selectedBarista={baristaID}
+              setSwitchSearch={setSwitchSearch}
+              switchSearch={switchSearch}
+            />
+          </div>
         </div>
       </div>
     );
