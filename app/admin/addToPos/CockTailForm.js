@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CustomInputBox from './CustomInputBox';
 import TopForm from './TopForm';
 import AddPosItem from './Add-PosItem';
+import SubForm from './Subform';
 
 function CocktailForm({ typeSelected, setTypeSelected }) {
   // Firestore data
