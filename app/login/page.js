@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "/app/_utils/AuthContext";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -114,73 +115,89 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+    <div className="flex h-screen">
+      <div className="relative flex-1">
+        <Image
+          src="/images/stampede.png"
+          alt="Your image"
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+
+      <div className="flex-1 p-8 flex items-center justify-start bg-white">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
+          <div className="w-max space-y-8  p-16">
+            <div>
+              <h2 className="mt-6 text-4xl font-bold text-gray-900">
+                Welcome to Cheers!
+              </h2>
+              <label className="text-gray-400 text-xl font-bold">
+                Login to your Account
+              </label>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 text-red-700 p-3 rounded">{error}</div>
+            )}
+
+            <form className="mt-8  space-y-9" onSubmit={handleSubmit}>
+              <div className="rounded-md shadow-sm space-y-5">
+                <div className="space-y-2">
+                  <label htmlFor="email-address" className=" text-black">
+                    Email address
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="appearance-none relative block w-[500px] px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                    placeholder="Email address"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email-address" className=" text-black">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 ${
+                    loading ? "opacity-70 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {loading ? (
+                    <span className="flex items-center">
+                      <span className="w-5 h-5 mr-2 border-t-2 border-r-2 border-white rounded-full animate-spin"></span>
+                      Logging In...
+                    </span>
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        {error && (
-          <div className="bg-red-50 text-red-700 p-3 rounded">{error}</div>
-        )}
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
-            >
-              {loading ? (
-                <span className="flex items-center">
-                  <span className="w-5 h-5 mr-2 border-t-2 border-r-2 border-white rounded-full animate-spin"></span>
-                  Signing in...
-                </span>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
