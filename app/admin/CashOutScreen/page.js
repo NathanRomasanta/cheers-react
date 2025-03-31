@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // components
 
 import Table from './Table';
-import HSpliter from './HSpliter';
+import VSpliter from './HSpliter';
 import EditCount from './editCount';
 
 import EditRTDCounts from './editRTDCounts';
@@ -552,8 +552,8 @@ function CashOutPg() {
         switchSearch={switchSearch}
       />
       {/* Dropdowns to be added  */}
-      <HSpliter>
-        <HSpliter>
+      <VSpliter>
+        <VSpliter>
           {/*Main Cashout Table */}
 
           <Spliter
@@ -612,7 +612,7 @@ function CashOutPg() {
               modData={modData}
             />
           </Spliter>
-        </HSpliter>
+        </VSpliter>
         {/* Req Table*/}
         <Spliter
           title2='Requests'
@@ -632,6 +632,7 @@ function CashOutPg() {
             />
           </div>
           <Table
+            type={2}
             key='invReqTable'
             tableData={invReqTableData}
             tableTitles={['Row', 'Name', 'Quantity']}
@@ -644,7 +645,7 @@ function CashOutPg() {
             setSelectedRow={setSelectedReqRow}
           />
         </Spliter>
-      </HSpliter>
+      </VSpliter>
     </div>
   );
 }
