@@ -68,7 +68,7 @@ export default function TopBar({
   };
 
   return (
-    <div className='navbar bg-base-100 shadow-sm sticky top-0 z-50'>
+    <div className='navbar bg-base-100 shadow-sm sticky top-0 z-50  h-20'>
       {showToast && <CustomAlert message={toastMessage} />}
       {/* Render toast if visible */}
       <div className='navbar-start'>
@@ -151,7 +151,7 @@ export default function TopBar({
             <div
               tabIndex={0}
               role='button'
-              className='btn btn-outline border-orange-400 bg-orange-400 bg-opacity-35 text-orange-700    hover:bg-orange-400 hover:bg-opacity-55  hover:border-rose-400  rounded-xl mr-2  '>
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2'>
               Barista
               <Martini size={12} />
             </div>
@@ -177,7 +177,7 @@ export default function TopBar({
               <div
                 tabIndex={0}
                 role='button'
-                className=' btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35 mr-2   rounded-xl'>
+                className='btn btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2 '>
                 Dates
                 <CalendarArrowDown size={12} />
               </div>
@@ -195,7 +195,7 @@ export default function TopBar({
                 ))}
               </ul>
               <button
-                className='btn btn-outline btn-warning  hover:bg-orange-400 hover:bg-opacity-35   rounded-xl'
+                className='btn btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2 '
                 onClick={() => {
                   setSwitchSearch(!switchSearch);
                   setTimeout(() => {
