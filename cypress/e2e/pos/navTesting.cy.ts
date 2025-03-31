@@ -9,7 +9,7 @@ describe('tc025: page load test', () => {
   
   beforeEach(() => {
 
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {

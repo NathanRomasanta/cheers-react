@@ -15,14 +15,14 @@ context('tc047: test input fields', () => {
     describe('validate functionality of inventory page', () => {
 
         it('sign in with proper credentials', () => {
-            cy.visit('http://localhost:3000');
-            cy.get('input[name="email"]').click().type('admin2@admin.com');
-            cy.get('input[name="password"]').click().type('admin123');
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
+            cy.get('input[name="email"]').click().type('barmanager@cheers.com');
+            cy.get('input[name="password"]').click().type('test123');
             cy.get('button[type="submit"]').click();
         });
 
         beforeEach( () => {
-            cy.visit('http://localhost:3000/admin');
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
         })
         
         it('passes if inventory button navigate to inventory page', () => {
@@ -51,7 +51,7 @@ context('tc047: test input fields', () => {
 
     describe('validate functionality of add inventory page', () => {
         beforeEach( () => {
-            cy.visit('http://localhost:3000/admin');
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
             cy.contains('button', 'Add Inventory').click();
         });
 
@@ -76,11 +76,14 @@ context('tc047: test input fields', () => {
         });
     });
 
+    // TODO: Validate functionality of Orders Page
 
+    // TODO: Validate functionality of _____ Page
 
-
+    // TODO: Validate functionality of _____ Page
 
 });
+
 // TC048:	Test Input Fields 
 // TC049:	Request Stock Orders 
 // TC050:	Request Stock Orders 
