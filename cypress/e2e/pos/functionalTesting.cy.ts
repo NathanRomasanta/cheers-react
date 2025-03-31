@@ -11,7 +11,7 @@
 describe('tc027: input field validation', () => { 
 
   beforeEach( () => {
-    cy.visit('http://localhost:3000/admin');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
   })
 
   // Test buttons on Inventory page

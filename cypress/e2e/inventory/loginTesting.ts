@@ -10,7 +10,7 @@ describe('tc037: user login tests', () => {
   // Reset environment before each test case
   beforeEach(() => {
 
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {
@@ -23,13 +23,13 @@ describe('tc037: user login tests', () => {
 
   // Testing user login with valid credentials   
   it('passes if user signs in with valid credentials', () => {
-    cy.get('input[name="email"]').should('be.visible').click().type('admin2@admin.com');
-    cy.get('input[name="password"]').should('be.visible').click().type('admin123');
+    cy.get('input[name="email"]').should('be.visible').click().type('superadmin@admin.com');
+    cy.get('input[name="password"]').should('be.visible').click().type('test123');
     cy.get('button[type="submit"]').click();
     });
   
   it('fails if the system redirects back to login page after valid credentials', () => {
-    cy.visit('http://localhost:3000');  
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');  
     });
 });
 
@@ -39,7 +39,7 @@ describe('tc038: user invalid login', () => {
   // Reset environment before each test case
 beforeEach(() => {
 
-  cy.visit('http://localhost:3000');
+  cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
 
   // Checks if user is signed in and signs out if true
@@ -65,11 +65,11 @@ cy.contains('Failed to log in. Please check your credentials.').should('be.visib
 // TC039:	Logout 
 describe('tc039: user logout functionality', () => {
   it('passes if user is correctly signed out and returned back to login page', () => {
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Sign in with valid credentials
-    cy.get('input[name="email"]').click().type('admin2@admin.com');
-    cy.get('input[name="password"]').click().type('admin123');
+    cy.get('input[name="email"]').click().type('superadmin@admin.com');
+    cy.get('input[name="password"]').click().type('test123');
     cy.get('button[type="submit"]').click();
 
     // Locates signout button and clicks it

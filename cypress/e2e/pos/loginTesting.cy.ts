@@ -17,7 +17,7 @@ describe('tc020: user logout functionality', () => {
   // Reset environment before each test case
   // Contains logout functionality
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {
@@ -31,11 +31,11 @@ describe('tc020: user logout functionality', () => {
   it('signs the user in with valid credentials', () => {
     cy.get('input[name="email"]')
       .click()
-      .type("admin2@admin.com");
+      .type("superadmin@admin.com");
     
     cy.get('input[name="password"]')
       .click()
-      .type("admin123");
+      .type("test123");
     
     cy.get('button[type="submit"]').click();
   });
@@ -46,7 +46,7 @@ describe('tc021: email format validation', () => {
   
   // Reset environment before each test case
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {
@@ -80,7 +80,7 @@ describe('tc022: check invalid email format', () => {
   // Reset environment before each test case
   beforeEach(() => {
 
-    cy.visit('http://localhost:3000');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {
@@ -129,7 +129,7 @@ describe('tc023: password validation', () => {
   // Reset environment before each test case
   beforeEach(() => {
 
-    cy.visit('http://localhost:3000/login');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app//login');
 
     // Checks if user is signed in and signs out if true
     cy.get('body').then(($body) => {
@@ -145,11 +145,11 @@ describe('tc023: password validation', () => {
   it("passes if password matches with associated email", () => {
     cy.get('input[name="email"]')
       .click()
-      .type('admin2@admin.com');
+      .type('superadmin@admin.com');
 
     cy.get('input[name="password"]')
       .click()
-      .type('admin123')
+      .type('test123')
       .blur(); // Triggers validation
       
     cy.get('button[type="submit"]').click();
@@ -165,7 +165,7 @@ describe('tc024: invalid password input', () => {
 
   beforeEach( () => {
 
-    cy.visit('http://localhost:3000/login');
+    cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app//login');
 
     if (cy.url().should('include', '/admin')) {
       cy.get('button[name="signout"]').click();
@@ -177,7 +177,7 @@ describe('tc024: invalid password input', () => {
   it('passes if error message occurs when password does not match associated email', () => {
     cy.get('input[name="email"]')
       .click()
-      .type('admin2@admin.com');
+      .type('superadmin@admin.com');
     
     cy.get('input[name="password"]')
       .type('wrongpassword')

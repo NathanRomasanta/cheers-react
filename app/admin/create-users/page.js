@@ -74,11 +74,11 @@ export default function CreateUsers() {
           accountType: accountType,
         };
 
-        const docRef = await addDoc(collection(db, "myCollection"), data);
-
-        // Save to Firestore
         await setDoc(userRef, userData);
 
+        if (accountType == "Barista") {
+          //docRef = await addDoc(collection(db, "myCollection"), data);
+        }
         // Reset form
 
         setSuccess("Account created successfully!");
