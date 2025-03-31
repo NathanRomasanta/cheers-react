@@ -62,7 +62,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
             value={price}
             onChange={(e) => {
               console.log('Price :', e.target.value);
-              setPrice(e.target.value);
+              setPrice(Math.max(0, e.target.value)); // Ensure value is not below 0
             }}
           />
           {typeSelected.id === 'food' ? null : (
@@ -74,8 +74,9 @@ function WineForm({ typeSelected, setTypeSelected }) {
                 placeholder='Oz'
                 value={ounces}
                 onChange={(e) => {
-                  console.log('Oz :', e.target.value);
-                  setOunces(e.target.value);
+                  // Ensure value is not below 0
+
+                  setOunces(Math.max(0, e.target.value));
                 }}
               />
             </div>
@@ -84,7 +85,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
 
         <div className='flex flex-row gap-4 m-5 justify-around'>
           <button
-            className='btn btn-primary'
+            className='btn  bg-orange-500 text-white hover:bg-orange-600'
             onClick={() => {
               if (name === '' || price === 0 || category === '') {
                 alert('Please fill out all fields');
@@ -113,7 +114,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
             Create Item
           </button>
           <button
-            className='btn btn-primary'
+            className='btn  bg-orange-500 text-white hover:bg-orange-600'
             onClick={() => setTypeSelected('')}>
             Back
           </button>

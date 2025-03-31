@@ -38,12 +38,21 @@ function MainForm({ typeSelected, setTypeSelected }) {
     );
   }
 
-  return (
-    <WineForm
-      typeSelected={typeSelected}
-      setTypeSelected={setTypeSelected}
-    />
-  );
+  if (typeSelected.id === 'cocktails') {
+    return (
+      <CocktailForm
+        typeSelected={typeSelected}
+        setTypeSelected={setTypeSelected}
+      />
+    );
+  } else {
+    return (
+      <WineForm
+        typeSelected={typeSelected}
+        setTypeSelected={setTypeSelected}
+      />
+    );
+  }
 }
 
 export default MainForm;

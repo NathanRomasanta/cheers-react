@@ -11,7 +11,7 @@ const AddToPosPage = () => {
       <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md '>
         <h1 className='text-2xl font-bold mb-4 text-black'>
           Create New POS Item
-        </h1>{' '}
+        </h1>
         {!typeSelected && (
           <AddToPosNav
             typeSelected={typeSelected}
@@ -22,7 +22,7 @@ const AddToPosPage = () => {
           typeSelected={typeSelected}
           setTypeSelected={setTypeSelected}
         />
-      </div>{' '}
+      </div>
     </div>
   );
 };
