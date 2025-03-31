@@ -222,7 +222,7 @@ export default function Orders() {
               <div className='w-1/6 flex justify-center'>
                 <button
                   onClick={() => handleDetailsClick(item)}
-                  className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors'>
+                  className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'>
                   Details
                 </button>
               </div>
@@ -245,9 +245,9 @@ export default function Orders() {
               </label>
             </div>
 
-            {currentItem.ingredients.map((item) => (
+            {currentItem.ingredients.map((item, index) => (
               <div
-                key={item.id}
+                key={`${item.id}-${index}`}
                 className='flex justify-between items-center p-4 border-b last:border-b-0'>
                 <div>
                   <h2 className='text-lg font-semibold'>
@@ -275,7 +275,7 @@ export default function Orders() {
 
               <button
                 onClick={handleDenyOrder}
-                className='px-4 py-2 bg-red-500 text-white rounded hover:bg-green-600 transition-colors'>
+                className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition-colors'>
                 Deny
               </button>
             </div>

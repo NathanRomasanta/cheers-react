@@ -151,7 +151,7 @@ export default function TopBar({
             <div
               tabIndex={0}
               role='button'
-              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2'>
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'>
               Barista
               <Martini size={12} />
             </div>
