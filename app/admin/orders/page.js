@@ -168,7 +168,7 @@ export default function Orders() {
       });
 
       toast.current.show({
-        severity: 'success',
+        severity: 'error',
         summary: 'Denied',
         detail: 'Order Successfully Denied',
         life: 3000,
