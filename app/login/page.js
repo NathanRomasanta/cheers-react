@@ -29,14 +29,26 @@ export default function Login() {
           const userDocRef = doc(db, "Accounts", currentUser.email);
           const userDoc = await getDoc(userDocRef);
 
-          if (userDoc.exists() && userDoc.data().accountType == "Super Admin") {
-            router.push("/admin");
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            // Redirect based on role
+            if (userData.accountType === "Super Admin") {
+              router.push("/admin");
+            } else if (userData.accountType === "Cashout Admin") {
+              router.push("/cashout");
+            } else if (userData.accountType === "Inventory Admin") {
+              router.push("/inventory");
+            } else {
+              router.push("/denied");
+            }
           } else {
-            router.push("/inventory");
+            // No user document, treat as regular user
+            router.push("/denied"); // Use absolute path
           }
         } catch (error) {
           console.error("Error checking user role:", error);
-          router.push("/inventory"); // Default to inventory on error
+          router.push("/denied"); // Default to 404 on error
         }
       } else {
         // User is not logged in, stay on login page
@@ -69,14 +81,18 @@ export default function Login() {
         const userData = userDoc.data();
 
         // Redirect based on role
-        if (userData.accountType == "Super Admin") {
+        if (userData.accountType === "Super Admin") {
           router.push("/admin"); // Use absolute path
+        } else if (userData.accountType === "Cashout Admin") {
+          router.push("/cashout");
+        } else if (userData.accountType === "Inventory Admin") {
+          router.push("/inventory");
         } else {
-          router.push("/inventory"); // Use absolute path
+          router.push("/denied"); // Use absolute path
         }
       } else {
         // No user document, treat as regular user
-        router.push("/inventory"); // Use absolute path
+        router.push("/denied"); // Use absolute path
       }
     } catch (error) {
       setError("Failed to log in. Please check your credentials.");

@@ -8,155 +8,97 @@ import LoadingScreen from "../_utils/LoadingScreen";
 import { db } from "../_utils/Firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-// Dynamic imports with no SSR
+// Dynamic imports
 const Inventory = dynamic(() => import("../inventory/page"), { ssr: false });
 const AdminPanel = dynamic(() => import("../admin/page"), { ssr: false });
+const Cashout = dynamic(() => import("../cashout/page"), { ssr: false });
 const Login = dynamic(() => import("../login/page"), { ssr: false });
 
 const AppRoutes = () => {
   const { currentUser, loading } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAdminStatus, setCheckingAdminStatus] = useState(true);
+  const [roles, setRoles] = useState({
+    isAdmin: false,
+    isCashout: false,
+    isInventory: false,
+  });
+  const [checkingStatus, setCheckingStatus] = useState(true);
 
-  // Check if user is admin by reading from Firestore
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      if (!currentUser) {
-        setCheckingAdminStatus(false);
-        return;
-      }
+    if (!currentUser) {
+      setCheckingStatus(false);
+      return;
+    }
 
+    const fetchRoles = async () => {
       try {
-        const userDocRef = doc(db, "Accounts", currentUser.email);
-        const userSnapshot = await getDoc(userDocRef);
-
-        if (userSnapshot.exists()) {
-          // Check if the isAdmin field is true
-          const userData = userSnapshot.data();
-          if (userData.accountType == "Super Admin") {
-            setIsAdmin(true);
-          } else {
-            setIsAdmin(false);
-          }
-        } else {
-          setIsAdmin(false);
+        const userDoc = await getDoc(doc(db, "Accounts", currentUser.email));
+        if (userDoc.exists()) {
+          const { accountType } = userDoc.data();
+          setRoles({
+            isAdmin: accountType === "Super Admin",
+            isInventory: accountType === "Inventory Admin",
+            isCashout: accountType === "Cashout Admin",
+          });
         }
       } catch (error) {
-        console.error("Error checking admin status:", error);
-        setIsAdmin(false);
+        console.error("Error fetching roles:", error);
       } finally {
-        setCheckingAdminStatus(false);
+        setCheckingStatus(false); // Make sure to set this false after fetching roles
       }
     };
+    fetchRoles();
+  }, [currentUser]);
 
-    if (currentUser) {
-      checkAdminStatus();
-    } else if (!loading) {
-      setCheckingAdminStatus(false);
-    }
-  }, [currentUser, loading]);
+  if (loading || checkingStatus) return <LoadingScreen />;
 
-  // Component for protected routes (requires authentication)
-  const ProtectedRoute = ({ children }) => {
-    if (loading || checkingAdminStatus) {
-      return <LoadingScreen />;
-    }
-
-    if (!currentUser) {
-      return <Navigate to="/login" replace />;
-    }
-
-    return children;
-  };
-
-  // Component for admin routes
-  const AdminRoute = ({ children }) => {
-    if (loading || checkingAdminStatus) {
-      return <LoadingScreen />;
-    }
-
-    if (!currentUser) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (!isAdmin) {
-      return <Navigate to="/inventory" replace />;
-    }
-
-    return children;
-  };
-
-  // Component for regular user routes (non-admin only)
-  const RegularUserRoute = ({ children }) => {
-    if (loading || checkingAdminStatus) {
-      return <LoadingScreen />;
-    }
-
-    if (!currentUser) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (isAdmin) {
-      return <Navigate to="/admin" replace />;
-    }
-
-    return children;
-  };
-
-  // Client-side only rendering
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Show loading screen while authentication status is being determined or before mount
-  if (!isMounted || loading || checkingAdminStatus) {
-    return <LoadingScreen />;
-  }
-
-  // Main routes
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
-      <Route
-        path="/inventory/*"
-        element={
-          <RegularUserRoute>
-            <Inventory />
-          </RegularUserRoute>
-        }
-      />
-
       <Route
         path="/admin/*"
         element={
-          <AdminRoute>
+          currentUser && roles.isAdmin ? (
             <AdminPanel />
-          </AdminRoute>
+          ) : (
+            <Navigate to="/denied" replace />
+          )
         }
       />
-
       <Route
-        path="/"
+        path="/cashout"
         element={
-          currentUser ? (
-            isAdmin ? (
-              <Navigate to="/admin" replace />
-            ) : (
-              <Navigate to="/inventory" replace />
-            )
+          currentUser && roles.isCashout ? (
+            <Cashout />
           ) : (
             <Navigate to="/login" replace />
           )
         }
       />
-
+      <Route
+        path="/inventory"
+        element={
+          currentUser && roles.isInventory ? (
+            <Inventory />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
       <Route
         path="*"
         element={
           <Navigate
-            to={currentUser ? (isAdmin ? "/admin" : "/inventory") : "/login"}
+            to={
+              currentUser
+                ? roles.isAdmin
+                  ? "/admin"
+                  : roles.isCashout
+                  ? "/cashout"
+                  : roles.isInventory
+                  ? "/inventory"
+                  : "/denied" // Handle all denied roles here
+                : "/login"
+            }
             replace
           />
         }
