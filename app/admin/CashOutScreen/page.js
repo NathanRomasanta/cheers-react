@@ -20,8 +20,6 @@ import TopBar from './TopBar';
 
 // username to be replaced with user object from auth
 
-let baristaID = 'jdoe@gmail.com';
-let userDate = '2025-07-04';
 function CashOutPg() {
   // States
   const [baristaID, setBaristaID] = useState('');
@@ -517,9 +515,29 @@ function CashOutPg() {
   if (loading) {
     return <LoadingPg />;
   }
+  if (tableData.length === 0) {
+    return (
+      <div className='flex flex-col justify-between items-center h-screen'>
+        <TopBar
+          setSelectedBarista={setBaristaID}
+          setSelectedDate={setUserDate}
+          selectedDate={userDate}
+          selectedBarista={baristaID}
+          setSwitchSearch={setSwitchSearch}
+          switchSearch={switchSearch}
+        />
+        <div className='flex flex-col justify-center items-center h-full'>
+          <h1 className='text-2xl font-bold '>
+            Please select a Barista and Date
+          </h1>
+          <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className='overflow-scroll h-screen'>
+    <div>
       <TopBar
         setSelectedBarista={setBaristaID}
         setSelectedDate={setUserDate}
@@ -534,7 +552,7 @@ function CashOutPg() {
           {/*Main Cashout Table */}
 
           <Spliter
-            title='Liquor'
+            title='Liquor /Wine'
             title2='Cashout'>
             <Table
               type={1}
