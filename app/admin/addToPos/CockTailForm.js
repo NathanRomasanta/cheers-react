@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import CustomInputBox from "./CustomInputBox";
-import TopForm from "./TopForm";
-import AddPosItem from "./Add-PosItem";
+import React, { useState } from 'react';
+import CustomInputBox from './CustomInputBox';
+import TopForm from './TopForm';
+import AddPosItem from './Add-PosItem';
 
 function CocktailForm({ typeSelected, setTypeSelected }) {
   // Firestore data
-  const [cocktailName, setCocktailName] = useState("");
+  const [cocktailName, setCocktailName] = useState('');
   const [isLiquor, setIsLiquor] = useState(false);
 
-  const [cocktailPrice, setCocktailPrice] = useState("");
-  const [cocktailOz, setCocktailOz] = useState("");
+  const [cocktailPrice, setCocktailPrice] = useState('');
+  const [cocktailOz, setCocktailOz] = useState('');
 
   // number of ingredients to render input boxes
   const [cocktailIngredients, setCocktailIngredients] = useState([]); // array of ingredient objects
@@ -18,8 +18,8 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
   const [showIngredients, setShowIngredients] = useState(false);
 
   // ingredient data
-  const [ingredientName, setIngredientName] = useState("");
-  const [ingredientOz, setIngredientOz] = useState("");
+  const [ingredientName, setIngredientName] = useState('');
+  const [ingredientOz, setIngredientOz] = useState('');
   const [ingredientIsLiquor, setIngredientIsLiquor] = useState(false);
   //Conditional rendering of the subform and final form
   const [ifAdded, setIfAdded] = useState(false);
@@ -28,8 +28,8 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
     let idNumber = Math.floor(Math.random() * 100);
 
     return `${str
-      .replace(/\s+/g, "")
-      .replace(/[aeiou]/gi, "")
+      .replace(/\s+/g, '')
+      .replace(/[aeiou]/gi, '')
       .trim()}-00${idNumber}`;
   };
   // Function to create the PosItem object to be added to the database in the proper format for firebase
@@ -56,11 +56,11 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
 
     setCocktailIngredients((prevIngredients) => {
       const updatedIngredients = [...prevIngredients, newIngredient];
-      console.log("cocktailIngredients :", updatedIngredients);
+      console.log('cocktailIngredients :', updatedIngredients);
       return updatedIngredients;
     });
-    setIngredientName("");
-    setIngredientOz("");
+    setIngredientName('');
+    setIngredientOz('');
     setIngredientIsLiquor(null);
   };
   // Component to render the subform and the final form using while loop so that the subform can be rendered multiple times
@@ -103,48 +103,46 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
         <ul>
           {cocktailIngredients.map((ingredient, index) => (
             <li key={index}>
-              {ingredient.name} - {ingredient.ounces} oz -{" "}
-              {ingredient.isLiquor ? "Liquor" : "Non-Liquor"}
+              {ingredient.name} - {ingredient.ounces} oz -{' '}
+              {ingredient.isLiquor ? 'Liquor' : 'Non-Liquor'}
             </li>
           ))}
         </ul>
         <h1>You finished</h1>
         {!ifAdded ? (
           <button
-            className="btn"
+            className='btn'
             onClick={() => {
               let item = CreatePosItem(
                 cocktailName,
                 cocktailPrice,
                 typeSelected
               );
-              console.log("Created For Firebase: ", item);
-              console.log("Ingredients Array: ", cocktailIngredients);
+              console.log('Created For Firebase: ', item);
+              console.log('Ingredients Array: ', cocktailIngredients);
               AddPosItem(item);
               setIfAdded(true);
-            }}
-          >
+            }}>
             Add to POS
           </button>
         ) : (
           <button
-            className="btn"
+            className='btn'
             onClick={() => {
               // Reset all states and inputs
               setShowIngredients(false);
               setIngredientCount(0);
               setCocktailIngredients([]);
-              setCocktailName("");
-              setCocktailPrice("");
+              setCocktailName('');
+              setCocktailPrice('');
               setIfAdded(false);
 
-              setCocktailOz("");
-              setIngredientName("");
-              setIngredientOz("");
+              setCocktailOz('');
+              setIngredientName('');
+              setIngredientOz('');
               setIngredientIsLiquor(false);
               setIsLiquor(false);
-            }}
-          >
+            }}>
             Make Another Creation
           </button>
         )}
@@ -173,81 +171,76 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
           setIsLiquor,
         })
       ) : (
-        <div className="form">
+        <div className='form'>
           <CustomInputBox
             Headers={[
-              " Cocktail Name :",
-              " Cocktail Price :",
-              " # of Ingredients: ",
-            ]}
-          >
+              ' Cocktail Name :',
+              ' Cocktail Price :',
+              ' # of Ingredients: ',
+            ]}>
             <input
-              type="text"
-              className="input input-bordered w-1/2"
-              placeholder="Cocktail Name"
+              type='text'
+              className='input input-bordered w-1/2'
+              placeholder='Cocktail Name'
               value={cocktailName}
               onChange={(e) => {
-                console.log("Name :", e.target.value);
+                console.log('Name :', e.target.value);
                 console.log(CreateID(e.target.value));
 
                 setCocktailName(e.target.value);
               }}
             />
             <input
-              type="number"
-              className="input input-bordered w-1/2"
-              placeholder="Price"
+              type='number'
+              className='input input-bordered w-1/2'
+              placeholder='Price'
               value={cocktailPrice}
               onChange={(e) => {
                 const value = Math.max(0, e.target.value);
-                console.log("Price :", value);
+                console.log('Price :', value);
                 setCocktailPrice(value);
               }}
             />
             <input
-              type="number"
-              className="input input-bordered w-1/2"
-              placeholder=" 0"
+              type='number'
+              className='input input-bordered w-1/2'
+              placeholder=' 0'
               value={ingredientCount}
               onChange={(e) => {
                 const value = Math.max(0, e.target.value);
-                console.log("Oz :", value);
+                console.log('Oz :', value);
                 setIngredientCount(value);
               }}
             />
           </CustomInputBox>
         </div>
       )}
-      <div className="flex flex-row gap-4 m-5 justify-around">
+      <div className='flex flex-row gap-4 m-5 justify-around'>
         {!showIngredients ? (
-          <div className="flex flex-row gap-10  justify-around items-center">
+          <div className='flex flex-row gap-10  justify-around items-center'>
             <button
-              className="btn btn-primary"
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
               onClick={() => {
                 setShowIngredients(true);
-              }}
-            >
+              }}>
               Create Cocktail
             </button>
             <button
-              className="btn btn-primary"
-              onClick={() => setTypeSelected("")}
-            >
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => setTypeSelected('')}>
               Back
             </button>
           </div>
         ) : (
           <div>
             <button
-              className="btn btn-primary"
-              onClick={() => handleNextIngredient()}
-            >
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => handleNextIngredient()}>
               Next Ingredient
             </button>
             <button
-              className="btn btn-primary"
-              onClick={() => setShowIngredients(false)}
-            >
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => setShowIngredients(false)}>
               Back
             </button>
           </div>
