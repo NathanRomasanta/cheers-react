@@ -40,14 +40,14 @@ function Table({
       <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
         <div>
           {/* Table */}
-          <table className='table table-pin-rows table-pin-cols table-sm bg-white w-full'>
+          <table className='table table-pin-rows table-pin-cols table-sm bg-zinc-500 bg-opacity-65 w-full'>
             {/* head */}
             <thead>
               <tr>
                 {tableTitles.map((title, index) => (
                   <th
                     key={index}
-                    className='text-center  '>
+                    className='text-center bg-zinc-700 bg-opacity-65 text-orange-400 font-semibold text-lg'>
                     {title}
                   </th>
                 ))}
@@ -75,7 +75,7 @@ function Table({
                     <td
                       onClick={(e) => handleSelect(e, index)}
                       key={colIndex}
-                      className='text-black  text-center'>
+                      className='text-white  text-center'>
                       {item}
                     </td>
                   ))}
@@ -91,14 +91,14 @@ function Table({
       <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
         <div>
           {/* Table */}
-          <table className='table table-pin-rows table-pin-cols table-sm bg-white w-full'>
+          <table className='table table-pin-rows table-pin-cols table-sm bg-zinc-500 bg-opacity-65 w-full'>
             {/* head */}
             <thead>
               <tr>
                 {tableTitles.map((title, index) => (
                   <th
                     key={index}
-                    className='text-center  '>
+                    className='text-center bg-zinc-700 bg-opacity-65 text-orange-400 text-lg'>
                     {title}
                   </th>
                 ))}
@@ -118,7 +118,7 @@ function Table({
                     <td
                       onClick={(e) => handleSelect(e, index)}
                       key={colIndex}
-                      className='text-black  text-center'>
+                      className='text-white  text-center'>
                       {item}
                     </td>
                   ))}
