@@ -547,7 +547,8 @@ function CashOutPg() {
   }
 
   return (
-    <div>
+    <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
+      {' '}
       <TopBar
         setSelectedBarista={setBaristaID}
         setSelectedDate={setUserDate}
@@ -556,101 +557,103 @@ function CashOutPg() {
         setSwitchSearch={setSwitchSearch}
         switchSearch={switchSearch}
       />
-      {/* Dropdowns to be added  */}
-      <VSpliter>
+      <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md overflow-auto  '>
+        {/* Dropdowns to be added  */}
         <VSpliter>
-          {/*Main Cashout Table */}
+          <VSpliter>
+            {/*Main Cashout Table */}
 
-          <Spliter
-            title='Liquor /Wine'
-            title2='Cashout'>
-            <Table
-              type={1}
-              tableTitles={InventoryColumnTitles}
-              tableData={tableData}
-              setModData={(data) => {
-                setModData(data);
-                setSelectedRow(data);
-              }}
-              modData={modData}
-              selectedRow={selectedRow}
-              setSelectedRow={setSelectedRow}
-            />
-
-            <div className='flex flex-col '>
-              <TotalSales
-                tableData={tableData}
-                RTDTableData={RTDTableData}
-              />
-              <EditCount
-                setEditCount={setEditCount}
-                editCount={editCount}
-                modData={modData}
-                setModData={setModData}
-                setTableData={setTableData}
-                baristaID={baristaID}
-                userDate={userDate}
-              />
-            </div>
-          </Spliter>
-
-          {/* RTD Table */}
-          <Spliter title='Single Sale Items'>
-            <div className='flex '>
+            <Spliter
+              title='Liquor /Wine'
+              title2='Cashout'>
               <Table
                 type={1}
-                tableData={RTDTableData}
-                tableTitles={rtdTitles}
+                tableTitles={InventoryColumnTitles}
+                tableData={tableData}
                 setModData={(data) => {
                   setModData(data);
-                  setSelectedRTDRow(data);
+                  setSelectedRow(data);
                 }}
                 modData={modData}
-                selectedRow={selectedRTDRow}
-                setSelectedRow={setSelectedRTDRow}
+                selectedRow={selectedRow}
+                setSelectedRow={setSelectedRow}
+              />
+
+              <div className='flex flex-col '>
+                <TotalSales
+                  tableData={tableData}
+                  RTDTableData={RTDTableData}
+                />
+                <EditCount
+                  setEditCount={setEditCount}
+                  editCount={editCount}
+                  modData={modData}
+                  setModData={setModData}
+                  setTableData={setTableData}
+                  baristaID={baristaID}
+                  userDate={userDate}
+                />
+              </div>
+            </Spliter>
+
+            {/* RTD Table */}
+            <Spliter title='Single Sale Items'>
+              <div className='flex '>
+                <Table
+                  type={1}
+                  tableData={RTDTableData}
+                  tableTitles={rtdTitles}
+                  setModData={(data) => {
+                    setModData(data);
+                    setSelectedRTDRow(data);
+                  }}
+                  modData={modData}
+                  selectedRow={selectedRTDRow}
+                  setSelectedRow={setSelectedRTDRow}
+                />
+              </div>
+              <EditRTDCounts
+                baristaID={baristaID}
+                userDate={userDate}
+                setTableData={setTableData}
+                modData={modData}
+              />
+            </Spliter>
+          </VSpliter>
+          {/* Req Table*/}
+          <Spliter
+            title2='Requests'
+            title='Transactions'>
+            <div className='flex w-full h-3/4'>
+              <Table
+                key={'Transactions'}
+                tableData={transTableData}
+                tableTitles={transTableTitles}
+                setModData={(data) => {
+                  setModData(data);
+                  setSelectedTransRow(data);
+                }}
+                modData={modData}
+                selectedRow={selectedTransRow}
+                setSelectedRow={setSelectedTransRow}
               />
             </div>
-            <EditRTDCounts
-              baristaID={baristaID}
-              userDate={userDate}
-              setTableData={setTableData}
+            <Table
+              type={2}
+              key='invReqTable'
+              tableData={invReqTableData}
+              tableTitles={['Row', 'Name', 'Quantity']}
+              setModData={(data) => {
+                setModData(data);
+                setSelectData(data);
+              }}
               modData={modData}
+              selectedRow={selectedReqRow}
+              setSelectedRow={setSelectedReqRow}
             />
           </Spliter>
         </VSpliter>
-        {/* Req Table*/}
-        <Spliter
-          title2='Requests'
-          title='Transactions'>
-          <div className='flex w-full h-3/4'>
-            <Table
-              key={'Transactions'}
-              tableData={transTableData}
-              tableTitles={transTableTitles}
-              setModData={(data) => {
-                setModData(data);
-                setSelectedTransRow(data);
-              }}
-              modData={modData}
-              selectedRow={selectedTransRow}
-              setSelectedRow={setSelectedTransRow}
-            />
-          </div>
-          <Table
-            type={2}
-            key='invReqTable'
-            tableData={invReqTableData}
-            tableTitles={['Row', 'Name', 'Quantity']}
-            setModData={(data) => {
-              setModData(data);
-              setSelectData(data);
-            }}
-            modData={modData}
-            selectedRow={selectedReqRow}
-            setSelectedRow={setSelectedReqRow}
-          />
-        </Spliter>
-      </VSpliter>
+      </div>
     </div>
   );
 }
