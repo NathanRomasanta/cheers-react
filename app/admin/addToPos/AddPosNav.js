@@ -14,7 +14,7 @@ function AddToPosNav({ setTypeSelected }) {
   }, []);
   return (
     // small screen nav
-    <div className='navbar bg-base-100 sticky top-0 z-50'>
+    <div className='navbar  sticky top-0 z-50'>
       <div className='navbar-start'>
         <div className='dropdown'>
           <div
