@@ -5,15 +5,22 @@ function MainForm({ typeSelected, setTypeSelected }) {
   if (typeSelected === '') {
     return (
       <div className='flex flex-col w-full items-center justify-center relative top-1/4'>
-        <div className='flex flex-col  items-center justify-around w-full'>
-          <h1 className='text-3xl font-bold text-black'>
-            Entering area to modify the Point of Sales application
-          </h1>
-          <div className='flex flex-col items-center justify-center '>
-            <h2>Pick a Category at the top of the screen to proceed to form</h2>
-            <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
+        <div className='flex flex-row  items-center justify-center gap-12 w-full'>
+          <div className='inline-grid *:[grid-area:1/1]'>
+            <div className='status status-warning animate-ping'></div>
+            <div className='status status-warning'></div>
+          </div>
+          <div className='flex flex-col items-center justify-center'>
+            <h1 className='text-3xl font-bold text-black'>
+              Entering area to modify the Point of Sales application
+            </h1>
+            <p>
+              Select the type of item you want to add to the POS system from
+              below.
+            </p>
           </div>
         </div>
+
         {typeSelected == 'cocktails' && (
           <div className='mb-4'>
             <label

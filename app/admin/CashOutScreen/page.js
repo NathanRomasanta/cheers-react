@@ -523,10 +523,12 @@ function CashOutPg() {
       <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
         <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md '>
           <div className='flex flex-col justify-center items-center h-full'>
-            <h1 className='text-2xl font-bold '>
-              Please select a Barista and Date to view data
-            </h1>
-            <span className='loading loading-infinity loading-xl bg-gradient-to-r from-zinc-700  to-orange-500'></span>
+            <div className='flex flex-row  items-center justify-center gap-12 w-full'>
+              <div className='status status-warning'></div>
+              <h1 className='text-2xl font-bold '>
+                Please select a Barista and Date to view data
+              </h1>
+            </div>
             <TopBar
               setSelectedBarista={setBaristaID}
               setSelectedDate={setUserDate}

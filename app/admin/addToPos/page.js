@@ -12,16 +12,18 @@ const AddToPosPage = () => {
         <h1 className='text-2xl font-bold mb-4 text-black'>
           Create New POS Item
         </h1>
-        {!typeSelected && (
-          <AddToPosNav
+        <div className='flex flex-col items-center justify-center  relative top-1/4'>
+          <MainForm
             typeSelected={typeSelected}
             setTypeSelected={setTypeSelected}
           />
-        )}
-        <MainForm
-          typeSelected={typeSelected}
-          setTypeSelected={setTypeSelected}
-        />
+          {!typeSelected && (
+            <AddToPosNav
+              typeSelected={typeSelected}
+              setTypeSelected={setTypeSelected}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
