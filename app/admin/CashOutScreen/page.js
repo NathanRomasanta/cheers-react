@@ -524,7 +524,10 @@ function CashOutPg() {
         <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md '>
           <div className='flex flex-col justify-center items-center h-full'>
             <div className='flex flex-row  items-center justify-center gap-12 w-full'>
-              <div className='status status-warning'></div>
+              <div className='inline-grid *:[grid-area:1/1]'>
+                <div className='status status-warning animate-ping'></div>
+                <div className='status status-warning'></div>
+              </div>
               <h1 className='text-2xl font-bold '>
                 Please select a Barista and Date to view data
               </h1>
