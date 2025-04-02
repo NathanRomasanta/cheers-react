@@ -1,11 +1,11 @@
 /**
  **  E2E Cypress Tests for Navigating POS System
  **
- **  TC025
+ **  TC025, TC064
  **/
 
 // TC025:	Page Load Test 
-describe('tc025: page load test', () => {
+describe('tc025/tc064: page load test', () => {
   
   beforeEach(() => {
 

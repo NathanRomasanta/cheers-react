@@ -1,16 +1,22 @@
 /**
  **  E2E Cypress Functional Testing for Inventory System
  **
- **  TC042 - TC054
+ **  TC042 - TC054, TC065 - 
  **/
 
 // TC042:	Test Bandwidth 
-// TC043:	Test Bandwidth 
+    /** Manual Testing - Passed **/
+
+// TC043:	Test Bandwidth
+   /** Suspended **/
+
 // TC044:	Test read receipt 
-// TC045:	All pages load 
-// TC046:	All buttons work 
-// TC047:	Test Input Fields
-context('tc047: test input fields', () => {
+    /** Suspended **/
+
+
+// TC046: All buttons work, TC047:Test Input Fields, TC048: Test Input Fields
+// TC065: All buttons work, TC066: Test Input Fields, TC067: Test Input Fields
+context('tc046 - tc048 // tc065 - tc067', () => {
 
     describe('validate functionality of inventory page', () => {
 
@@ -46,7 +52,6 @@ context('tc047: test input fields', () => {
             cy.contains('button', 'Cancel').click();
         });
 
-        // TODO: Write test case for validating functionality of delete button
     });
 
     describe('validate functionality of add inventory page', () => {
@@ -76,18 +81,75 @@ context('tc047: test input fields', () => {
         });
     });
 
-    // TODO: Validate functionality of Orders Page
+    describe('validate functionality of add POS item page', () => {
+        beforeEach( () => {
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
+            cy.contains('button', 'Add POS Item').click();
+        });
 
-    // TODO: Validate functionality of _____ Page
+        it('passes if Add POS Item button navigates to add POS item page', () => {
+            cy.get('h1').should('contain', 'Add POS Item'); // Assert page says 'Add POS Item'
+        });
 
-    // TODO: Validate functionality of _____ Page
+        it('passes if it selects a category from the dropdown', () => {
+            cy.get('select[name="category"]').click().select('Beer').should('have.value', 'beer');
+        });
 
+        it('passes if navigates to add item to POS system page', () => {
+            cy.get('select[name="category"]').click().select('Beer').should('have.value', 'beer');
+            cy.contains('h2', 'Add Item to POS System').should('be.visible');
+            cy.contains('input', 'Item Name').click().type('Test Item').should('have.value', 'Test Item');
+            cy.contains('input', 'Price').click().type('5.99').should('have.value', '5.99');
+            cy.contains('input', 'Oz').click().type('12').should('have.value', '12');
+        });
+    });
+
+    describe('validate functionality of orders page', () => {
+        beforeEach( () => {
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
+            cy.contains('button', 'Orders').click();
+        });
+
+        it('passes if Filter dropdown is functional and navigates to orders page', () => {
+            cy.get('h1').should('contain', 'Orders'); // Assert page says 'Orders'
+            cy.contains('dropdown', 'Filter by Status').click().select('Pending').should('have.value', 'pending');
+            cy.should('contain', 'No Orders Found for this Status'); // Assert page says 'No Orders Found for this Status'
+        });
+    });
+
+    describe('validate functionality of Create New Users page', () => {
+        beforeEach( () => {
+            cy.visit('https://cheers-react-pie-git-a39dd4-nathan-romasantas-projects-f39eeed6.vercel.app/admin');
+            cy.contains('button', 'Create New Users').click();
+        });
+
+        it('passes if Create New Users button navigates to create new users page', () => {
+            cy.get('h1').should('contain', 'Create New Users'); // Assert page says 'Create New Users'
+        });
+
+        it('passes if all text inputs accept valid input', () => {
+            cy.contains('input', 'First Name').click().type('Test First Name').should('have.value', 'Test First Name');
+            cy.contains('input', 'Last Name').click().type('Test Last Name').should('have.value', 'Test Last Name');
+            cy.contains('input', 'Email').click().type('testemail@email.com').should('have.value', 'testemail@email.com');
+            cy.contains('input', 'Temporary Password').click().type('testpassword').should('have.value', 'testpassword');
+        });
+    });
 });
 
-// TC048:	Test Input Fields 
-// TC049:	Request Stock Orders 
-// TC050:	Request Stock Orders 
-// TC051:	Request Stock Orders 
-// TC052:	Notification for Order fulfillment  
+// TC049:	Request Stock Orders - Inventory users are able to submit orders for suppliers stock
+    /** Suspended **/
+
+// TC050:	Request Stock Orders - Input fields are validated for stock orders
+    /** Suspended **/
+
+// TC051:	Request Stock Orders - Notification for failed stock orders appears
+    /** Suspended **/
+
+// TC052:	Notification for Order fulfillment 
+    /** Suspended **/
+
 // TC053:	Notification for stock acceptance  
+    /** Suspended **/
+
 // TC054:	Notification for Stock Acceptance
+    /** Suspended **/

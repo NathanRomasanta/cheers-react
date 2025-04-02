@@ -57,3 +57,7 @@
 // // TC034:	Database Data Retrieval 
 // // TC035: Item Editing 
 // // TC036:	Item Editing Save Validation 
+
+// TC068:	Approve stock request from POS 
+// TC069:	Reject stock request from POS 
+// TC070:	Approve/Reject stock request from POS 
