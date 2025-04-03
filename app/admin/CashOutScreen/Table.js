@@ -37,10 +37,10 @@ function Table({
 
   if (type === 1) {
     return (
-      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
+      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-x-auto  items-center flex-wrap '>
         <div>
           {/* Table */}
-          <table className='table table-pin-rows table-pin-cols table-sm bg-zinc-500 bg-opacity-65 w-full'>
+          <table className='table table-xs table-pin-rows table-pin-cols  bg-zinc-500 bg-opacity-65 w-full'>
             {/* head */}
             <thead>
               <tr>
@@ -88,10 +88,10 @@ function Table({
     );
   } else {
     return (
-      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-scroll  items-center flex-wrap '>
+      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-x-auto items-center flex-wrap '>
         <div>
           {/* Table */}
-          <table className='table table-pin-rows table-pin-cols table-sm bg-zinc-500 bg-opacity-65 w-full'>
+          <table className='table table-pin-rows table-pin-cols table-xs bg-zinc-500 bg-opacity-65 w-full'>
             {/* head */}
             <thead>
               <tr>
