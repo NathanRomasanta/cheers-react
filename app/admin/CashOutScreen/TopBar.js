@@ -68,7 +68,7 @@ export default function TopBar({
   };
 
   return (
-    <div className='navbar sticky top-0 z-50  h-20'>
+    <div className='navbar bg-white sticky top-0 z-50  h-20'>
       {showToast && <CustomAlert message={toastMessage} />}
       {/* Render toast if visible */}
       <div className='navbar-start'>

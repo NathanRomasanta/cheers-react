@@ -106,6 +106,12 @@ export default function ItemsListView() {
       fetchItems();
 
       handleCloseModal();
+      toast.current.show({
+        severity: 'error',
+        summary: 'Deleted',
+        detail: 'Inventory item successfully Deleted',
+        life: 3000,
+      });
     } catch (err) {
       console.error('Error updating item: ', err);
       alert('Failed to save changes. Please try again.');
