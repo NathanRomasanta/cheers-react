@@ -6,7 +6,7 @@ function VSpliter({ children }) {
   let secondChild = childrenArray[1] || null;
 
   return (
-    <div className='flex w-screen flex-col border-opacity-50 overflow-y-auto '>
+    <div className='flex w-screen flex-col border-opacity-50  overflow-y-clip '>
       <div
         key='first'
         className='card   rounded-box grid flex-auto h-full place-items-start'>
@@ -17,7 +17,7 @@ function VSpliter({ children }) {
         className='divider divider-warning'></div>
       <div
         key='second'
-        className='card   rounded-box grid flex-auto h-full place-items-start'>
+        className='card   rounded-box grid flex-auto h-full place-items-start min-w-fit'>
         {secondChild}
       </div>
     </div>

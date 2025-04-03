@@ -1,7 +1,7 @@
 const CustomInputBox = ({ Headers, children }) => {
   if (children.length > 1) {
     return (
-      <div className='flex flex-col justify-center items-center gap-4  '>
+      <div className='flex flex-col justify-center items-center gap-4   '>
         {children.map((child, index) => (
           <div
             key={index}

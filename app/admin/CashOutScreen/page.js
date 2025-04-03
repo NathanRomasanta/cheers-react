@@ -512,7 +512,7 @@ function CashOutPg() {
   // Loading screen while data loads
   if (loading) {
     return (
-      <div className='flex flex-col justify-center items-center h-full'>
+      <div className='flex flex-col justify-center items-center h-full w-dvw'>
         <h1 className='text-2xl font-bold'>Loading ...</h1>
         <span className='loading loading-bars loading-xl bg-gradient-to-r from-zinc-700  to-orange-500 '></span>
       </div>
@@ -520,7 +520,7 @@ function CashOutPg() {
   }
   if (tableData.length === 0) {
     return (
-      <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
+      <div className='min-h-screen  bg-gray-50 py-8 px-4 h-full min-w-screen '>
         <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md '>
           <div className='flex flex-col justify-center items-center h-full'>
             <div className='flex flex-row  items-center justify-center gap-12 w-full'>
@@ -547,8 +547,7 @@ function CashOutPg() {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
-      {' '}
+    <div className='min-h-screen bg-gray-50  min-w-screen '>
       <TopBar
         setSelectedBarista={setBaristaID}
         setSelectedDate={setUserDate}
@@ -557,8 +556,7 @@ function CashOutPg() {
         setSwitchSearch={setSwitchSearch}
         switchSearch={switchSearch}
       />
-      <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md overflow-auto  '>
-        {/* Dropdowns to be added  */}
+      <div className=' h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md overflow-y-auto'>
         <VSpliter>
           <VSpliter>
             {/*Main Cashout Table */}

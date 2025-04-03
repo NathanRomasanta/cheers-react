@@ -83,7 +83,6 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
     while (cocktailIngredients.length !== ingredientCount) {
       return (
         <div>
-          <h1>Ingredient {cocktailIngredients.length + 1}</h1>
           <SubForm
             ingredientName={ingredientName}
             setIngredientName={setIngredientName}
@@ -92,6 +91,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
             ingredientOunces={ingredientOz}
             setIngredientOunces={setIngredientOz}
             CreateID={CreateID}
+            cocktailIngredients={cocktailIngredients}
           />
         </div>
       );
@@ -153,7 +153,6 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
 
   return (
     <TopForm>
-      <h1>{typeSelected.id}</h1>
       {/* Shows SubForm when the Create CockTail Button is pressed  */}
       {showIngredients ? (
         renderIngredientSubForm({
@@ -172,16 +171,22 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
           setIsLiquor,
         })
       ) : (
-        <div className='form'>
-          <CustomInputBox
-            Headers={[
-              ' Cocktail Name :',
-              ' Cocktail Price :',
-              ' # of Ingredients: ',
-            ]}>
+        <div>
+          <fieldset className='fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box'>
+            <legend className='fieldset-legend '>
+              {' '}
+              Add Item to Point of Sale System in the{' '}
+              {typeSelected.id.charAt(0).toUpperCase() +
+                typeSelected.id.slice(1)}{' '}
+              category
+            </legend>
+
+            <label className='fieldset-label relative left-28'>
+              CockTail Name :
+            </label>
             <input
               type='text'
-              className='input input-bordered w-1/2'
+              className='input input-bordered w-1/3 relative left-48'
               placeholder='Cocktail Name'
               value={cocktailName}
               onChange={(e) => {
@@ -191,9 +196,13 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                 setCocktailName(e.target.value);
               }}
             />
+
+            <label className='fieldset-label relative left-28'>
+              CockTail Price :
+            </label>
             <input
               type='number'
-              className='input input-bordered w-1/2'
+              className='input input-bordered  w-1/3 relative left-48'
               placeholder='Price'
               value={cocktailPrice}
               onChange={(e) => {
@@ -202,9 +211,13 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                 setCocktailPrice(value);
               }}
             />
+
+            <label className='fieldset-label relative left-28'>
+              Number of Ingredients :
+            </label>
             <input
               type='number'
-              className='input input-bordered w-1/2'
+              className='input input-bordered  w-1/3 relative left-48'
               placeholder=' 0'
               value={ingredientCount}
               onChange={(e) => {
@@ -213,40 +226,40 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                 setIngredientCount(value);
               }}
             />
-          </CustomInputBox>
+            <div className='flex flex-row gap-4 m-5 justify-around'>
+              {!showIngredients ? (
+                <div className='flex flex-row gap-10  justify-around items-center'>
+                  <button
+                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
+                    onClick={() => {
+                      setShowIngredients(true);
+                    }}>
+                    Create Cocktail
+                  </button>
+                  <button
+                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
+                    onClick={() => setTypeSelected('')}>
+                    Back
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
+                    onClick={() => handleNextIngredient()}>
+                    Next Ingredient
+                  </button>
+                  <button
+                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
+                    onClick={() => setShowIngredients(false)}>
+                    Back
+                  </button>
+                </div>
+              )}
+            </div>
+          </fieldset>
         </div>
       )}
-      <div className='flex flex-row gap-4 m-5 justify-around'>
-        {!showIngredients ? (
-          <div className='flex flex-row gap-10  justify-around items-center'>
-            <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => {
-                setShowIngredients(true);
-              }}>
-              Create Cocktail
-            </button>
-            <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => setTypeSelected('')}>
-              Back
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => handleNextIngredient()}>
-              Next Ingredient
-            </button>
-            <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => setShowIngredients(false)}>
-              Back
-            </button>
-          </div>
-        )}
-      </div>
     </TopForm>
   );
 }
