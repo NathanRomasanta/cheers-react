@@ -2,13 +2,13 @@ import Image from 'next/image';
 
 function TopForm({ children }) {
   return (
-    <div className='card card-side bg-base-100 shadow-sm  w-11/12'>
+    <div className='card card-side bg-base-100 shadow-sm  w-11/12 relative bottom-32'>
       <figure>
         <Image
-          src={'/images/cheers.jpg'}
+          src={'/images/CheersNew.jpg'}
           alt={'Cheers to the future.'}
-          width={500}
-          height={300}
+          width={300}
+          height={100}
         />
       </figure>
       <div className='card-body justify-center  gap-5'>

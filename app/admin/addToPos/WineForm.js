@@ -7,7 +7,7 @@ import AddPosItem from './Add-PosItem';
 import fetchWines from './fetch-Wines';
 import fetchBeers from './fetch-Beers';
 import fetchFoods from './fetch-Foods';
-import { ArrowUpFromDot } from 'lucide-react';
+import { ArrowUpFromDot, CaseUpper } from 'lucide-react';
 
 const CreateID = (str) => {
   let idNumber = Math.floor(Math.random() * 100);
@@ -88,14 +88,21 @@ function WineForm({ typeSelected, setTypeSelected }) {
   }, []); // Empty dependency array to run only once on mount
   return (
     <TopForm>
-      <div className='form'>
-        <CustomInputBox Headers={[' Name :', 'Price :']}>
-          <div className='dropdown dropdown-top'>
+      <div className=' items-center justify-center gap-5'>
+        <fieldset className='fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box '>
+          <legend className='fieldset-legend'>
+            Add Item to Point of Sale System in the{' '}
+            {typeSelected.id.charAt(0).toUpperCase() + typeSelected.id.slice(1)}{' '}
+            category
+          </legend>
+
+          <label className='fieldset-label relative left-36'>Name</label>
+          <div className='dropdown dropdown-top relative left-36'>
             <div
               tabIndex={0}
               role='button'
-              className=' border-orange-400 bg-orange-500  hover:text-black  hover:bg-orange-400   rounded-xl px-2 py-3 text-white font-semibold flex flex-row gap-2 w-full'>
-              <ArrowUpFromDot size={20} />
+              className='flex flex-row justify-center items-center border-orange-400 bg-orange-500  hover:text-black  hover:bg-orange-400   rounded-xl px-2 py-3 text-white font-semibold  gap-2 w-1/2'>
+              <ArrowUpFromDot size={15} />
               Item Name
             </div>
             <ul
@@ -113,9 +120,10 @@ function WineForm({ typeSelected, setTypeSelected }) {
               ))}
             </ul>
           </div>
+          <label className='fieldset-label relative left-36'>Price</label>
           <input
             type='number'
-            className='input input-bordered w-1/2'
+            className='input input-bordered w-1/4 relative left-36'
             placeholder='Price'
             value={price}
             onChange={(e) => {
@@ -124,11 +132,13 @@ function WineForm({ typeSelected, setTypeSelected }) {
             }}
           />
           {typeSelected.id === 'food' ? null : (
-            <div className='flex flex-row gap-44 w-full'>
-              <label className='label'>Ounces</label>
+            <div>
+              <label className='fieldset-label relative left-36'>
+                Ounces :
+              </label>
               <input
                 type='number'
-                className='input input-bordered w-1/2'
+                className='input input-bordered w-1/4 relative left-36 '
                 placeholder='Oz'
                 value={ounces}
                 onChange={(e) => {
@@ -139,44 +149,50 @@ function WineForm({ typeSelected, setTypeSelected }) {
               />
             </div>
           )}
-        </CustomInputBox>
 
-        <div className='flex flex-row gap-4 m-5 justify-around'>
-          <button
-            className='btn  bg-orange-500 text-white hover:bg-orange-600'
-            onClick={() => {
-              if (name === '' || price === 0 || category === '') {
-                alert('Please fill out all fields');
-                return;
-              }
-              if (!isLiquor && ounces === 0) {
-                alert(
-                  'Please check if liquor and number of ounces are filled out correctly'
+          <div className='flex flex-row gap-4 m-5 justify-center w-1/2  relative left-24'>
+            <button
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => {
+                if (name === '' || price === 0 || category === '') {
+                  alert('Please fill out all fields');
+                  return;
+                }
+                if (!isLiquor && ounces === 0) {
+                  alert(
+                    'Please check if liquor and number of ounces are filled out correctly'
+                  );
+                  return;
+                }
+                console.log('Create Item');
+                let item = CreatePosItem(
+                  name,
+                  price,
+                  category,
+                  isLiquor,
+                  ounces
                 );
-                return;
-              }
-              console.log('Create Item');
-              let item = CreatePosItem(name, price, category, isLiquor, ounces);
 
-              console.log(item);
-              alert('Item Created');
-              AddPosItem(item);
+                console.log(item);
+                alert('Item Created');
+                AddPosItem(item);
 
-              // Clear the states
-              setName('');
-              setPrice('');
-              setCategory('');
-              setOunces('');
-              setIsLiquor(null);
-            }}>
-            Create Item
-          </button>
-          <button
-            className='btn  bg-orange-500 text-white hover:bg-orange-600'
-            onClick={() => setTypeSelected('')}>
-            Back
-          </button>
-        </div>
+                // Clear the states
+                setName('');
+                setPrice('');
+                setCategory('');
+                setOunces('');
+                setIsLiquor(null);
+              }}>
+              Create Item
+            </button>
+            <button
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => setTypeSelected('')}>
+              Back
+            </button>
+          </div>
+        </fieldset>
       </div>
     </TopForm>
   );
