@@ -7,6 +7,7 @@ import AddPosItem from './Add-PosItem';
 import fetchWines from './fetch-Wines';
 import fetchBeers from './fetch-Beers';
 import fetchFoods from './fetch-Foods';
+import { ArrowUpFromDot } from 'lucide-react';
 
 const CreateID = (str) => {
   let idNumber = Math.floor(Math.random() * 100);
@@ -93,16 +94,17 @@ function WineForm({ typeSelected, setTypeSelected }) {
             <div
               tabIndex={0}
               role='button'
-              className='btn m-1'>
+              className=' border-orange-400 bg-orange-500  hover:text-black  hover:bg-orange-400   rounded-xl px-2 py-3 text-white font-semibold flex flex-row gap-2 w-full'>
+              <ArrowUpFromDot size={20} />
               Item Name
             </div>
             <ul
               tabIndex={0}
-              className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
+              className='dropdown-content menu bg-orange-400  rounded-box z-1 w-52 p-2 shadow-sm text-white '>
               {items.map((item) => (
                 <li
                   key={item.id}
-                  className='hover:bg-gray-200 cursor-pointer'
+                  className='hover:text-black cursor-pointer'
                   onClick={() => {
                     setName(item.name);
                   }}>
