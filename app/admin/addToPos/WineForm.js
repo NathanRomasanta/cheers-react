@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomInputBox from './CustomInputBox';
-import BoolInput from './BoolInput';
+
 import TopForm from './TopForm';
 import AddPosItem from './Add-PosItem';
+
+import fetchWines from './fetch-Wines';
+import fetchBeers from './fetch-Beers';
+import fetchFoods from './fetch-Foods';
 
 const CreateID = (str) => {
   let idNumber = Math.floor(Math.random() * 100);
@@ -39,22 +43,74 @@ function WineForm({ typeSelected, setTypeSelected }) {
   //
   const [category, setCategory] = useState('');
   const [ounces, setOunces] = useState('');
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      switch (typeSelected.id) {
+        case 'wines':
+          setCategory('wines');
+          try {
+            const items = await fetchWines();
+            setItems(items);
+          } catch (error) {
+            console.error('Error fetching wines:', error);
+          }
+          break;
+
+        case 'beers':
+          setCategory('beers');
+          try {
+            const items = await fetchBeers();
+            setItems(items);
+          } catch (error) {
+            console.error('Error fetching beers:', error);
+          }
+          break;
+        case 'food':
+          setCategory('food');
+          try {
+            const items = await fetchFoods();
+            setItems(items);
+          } catch (error) {
+            console.error('Error fetching foods:', error);
+          }
+          break;
+
+        default:
+          console.warn('Unknown type selected:', typeSelected.id);
+          break;
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run only once on mount
   return (
     <TopForm>
       <div className='form'>
         <CustomInputBox Headers={[' Name :', 'Price :']}>
-          <input
-            type='text'
-            className='input input-bordered w-1/2'
-            placeholder='Item Name'
-            value={name}
-            onChange={(e) => {
-              console.log('Name :', e.target.value);
-              console.log(CreateID(e.target.value));
-              setCategory(String(typeSelected.id));
-              setName(e.target.value);
-            }}
-          />
+          <div className='dropdown dropdown-top'>
+            <div
+              tabIndex={0}
+              role='button'
+              className='btn m-1'>
+              Item Name
+            </div>
+            <ul
+              tabIndex={0}
+              className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
+              {items.map((item) => (
+                <li
+                  key={item.id}
+                  className='hover:bg-gray-200 cursor-pointer'
+                  onClick={() => {
+                    setName(item.name);
+                  }}>
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
           <input
             type='number'
             className='input input-bordered w-1/2'
