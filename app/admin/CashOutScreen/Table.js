@@ -47,7 +47,7 @@ function Table({
                 {tableTitles.map((title, index) => (
                   <th
                     key={index}
-                    className='text-center bg-zinc-700 bg-opacity-65 text-orange-400 font-semibold text-lg'>
+                    className='text-center bg-zinc-700  text-orange-400 font-semibold sm:text-xs lg:text-lg'>
                     {title}
                   </th>
                 ))}
@@ -88,17 +88,17 @@ function Table({
     );
   } else {
     return (
-      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-x-auto items-center flex-wrap '>
+      <div className='flex flex-col gap-8  h-full w-full min-w-96 rounded-lg  overflow-x-auto  items-center flex-wrap '>
         <div>
           {/* Table */}
-          <table className='table table-pin-rows table-pin-cols table-xs bg-zinc-500 bg-opacity-65 w-full'>
+          <table className='table table-xs table-pin-rows table-pin-cols  bg-zinc-500 bg-opacity-65 w-full'>
             {/* head */}
             <thead>
               <tr>
                 {tableTitles.map((title, index) => (
                   <th
                     key={index}
-                    className='text-center bg-zinc-700 bg-opacity-65 text-orange-400 text-lg'>
+                    className='text-center bg-zinc-700 bg-opacity-65 text-orange-400 sm:text-xs lg:text-lg'>
                     {title}
                   </th>
                 ))}

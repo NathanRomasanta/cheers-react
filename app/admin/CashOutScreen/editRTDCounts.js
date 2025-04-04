@@ -71,7 +71,6 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
   };
   return (
     <div className=' justify-center   '>
-      <h1>Edit count</h1>
       <button
         className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
         onClick={() => {
