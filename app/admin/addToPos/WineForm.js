@@ -98,6 +98,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
 
           <label className='fieldset-label relative left-36'>Name</label>
           <div className='dropdown dropdown-top relative left-36'>
+            <h1>{name || 'Please select a Item Name'}</h1>
             <div
               tabIndex={0}
               role='button'
@@ -128,7 +129,7 @@ function WineForm({ typeSelected, setTypeSelected }) {
             value={price}
             onChange={(e) => {
               console.log('Price :', e.target.value);
-              setPrice(Math.max(0, e.target.value)); // Ensure value is not below 0
+              setPrice(Number(Math.max(0, e.target.value))); // Ensure value is not below 0
             }}
           />
           {typeSelected.id === 'food' ? null : (
