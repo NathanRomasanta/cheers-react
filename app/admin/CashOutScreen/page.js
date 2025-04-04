@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // components
 
 import Table from './Table';
-import VSpliter from './HSpliter';
+import HSpliter from './HSpliter';
 import EditCount from './editCount';
 
 import EditRTDCounts from './editRTDCounts';
@@ -90,12 +90,12 @@ function CashOutPg() {
     'Order',
 
     'Name',
-
-    'Total oz per order',
+    'Number sold',
+    'Value per Item',
     'Total Sales',
 
-    'Total Sales',
-    'Total Items',
+    'Total Items Sold',
+
     'Time',
   ];
 
@@ -222,32 +222,43 @@ function CashOutPg() {
       const fetchedItems = await fetchTransactions(baristaID, userDate);
 
       const mappedData = (fetchedItems || []).flatMap((item, index) => {
-        // Ensure item and item.order exist before proceeding
         if (!item || !Array.isArray(item.order)) return [];
-        return item.order
-          .filter((orderItem) => orderItem?.isLiquor) // Filter to only include items with isLiquor === true
-          .map((orderItem, orderIndex, array) => [
-            index + 1, // Row #
-            `${index + 1}.${orderIndex + 1}`, // Sub-row #
-            orderItem?.name || 'Unknown', // Item name
-            orderItem?.ounces ? Number(orderItem.ounces) : 0, // Ounces
-            `$${((orderItem?.price || 0) * (orderItem?.ounces || 0)).toFixed(
-              2
-            )}`, // Price
-            orderIndex === array.length - 1 ? item?.total || '' : '', // Total sales for the order (only on last item)
-            orderIndex === array.length - 1 ? item?.totalItems || '' : '', // Total items in the order (only on last item)
-            orderIndex === array.length - 1
-              ? item?.time
-                ? new Date(item.time).toLocaleString()
-                : ''
-              : '', // Safely convert to Date object and then to string (only on last item)
-          ]);
-      });
-      setTransTableData(mappedData); // Fetched items set to state
-    };
-    fetchTrans();
 
-    // Trigger data fetch when component mounts
+        return item.order
+          .filter((orderItem) => orderItem?.isLiquor)
+          .map((orderItem, orderIndex, array) => {
+            const isLastItem = orderIndex === array.length - 1;
+
+            return [
+              index + 1, // Row #
+              `${index + 1}.${orderIndex + 1}`, // Sub-row #
+              orderItem?.name || 'Unknown', // Item name
+              orderItem?.ounces || 0, // Quantity
+              // Ounces
+              (
+                (orderItem?.price || 0) * (orderItem?.ounces || 0)
+              ).toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              }),
+              isLastItem
+                ? (item?.total || 0).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })
+                : '', // Total sales for the order (only on last item)
+              isLastItem ? item?.totalItems || '' : '', // Total items in the order (only on last item)
+              isLastItem && item?.time
+                ? new Date(item.time).toLocaleString()
+                : '', // Time (only on last item)
+            ];
+          });
+      });
+
+      setTransTableData(mappedData);
+    };
+
+    fetchTrans();
   }, [CashOutItems]);
 
   //ROW FUNCTIONS FOR THE MAIN CASHOUT TABLE//
@@ -255,49 +266,20 @@ function CashOutPg() {
   // row to calculate sales
 
   const stockUsed = (row) => {
-    //TO DO:
-    //This functions conditional can be removed when added to the main app due to the added data to make it work as intended
-    if (row[10] === 'Gin') {
-      let openTotalOz = parseFloat(row[11]);
+    let openTotalOz = Number(row[11]) || 0;
+    let stockCloseFull = Number(row[12]) || 0; // Correct index for Quantity
 
-      let stockCloseFull = parseFloat(row[12]); // Correct index for Quantity
+    let OzUsed = openTotalOz - stockCloseFull;
 
-      // ADD REQ OZ  subtract the spills
-      let spills = 2;
-
-      let OzUsed = openTotalOz - stockCloseFull - spills;
-      if (OzUsed < 0) {
-        let positiveOzUsed = OzUsed * -1;
-        OzUsed = positiveOzUsed;
-      }
-
-      if (isNaN(OzUsed)) {
-        OzUsed = 0;
-      }
-      let newRow = [...row, OzUsed.toFixed(2)];
-      if (newRow.length > InventoryColumnTitles.length) {
-        newRow.pop();
-      }
-
-      return newRow;
+    if (isNaN(OzUsed)) {
+      OzUsed = 0;
     }
-    //KEEP THE FUNCTION MINUS THE IF STATEMENT
-    if (row[10] === 'Rum') {
-      let openTotalOz = Number(row[11]) || 0;
-      let stockCloseFull = Number(row[12]) || 0; // Correct index for Quantity
-      // ADD REQ OZ  subtract the spills
-      let OzUsed = openTotalOz - stockCloseFull;
-
-      if (isNaN(OzUsed)) {
-        OzUsed = 0;
-      }
-      let newRow = [...row, OzUsed.toFixed(2)];
-      if (newRow.length > InventoryColumnTitles.length) {
-        newRow.pop();
-      }
-
-      return newRow;
+    let newRow = [...row, OzUsed.toFixed(2)];
+    if (newRow.length > InventoryColumnTitles.length) {
+      newRow.pop();
     }
+
+    return newRow;
   };
   /**
    * Calculates the stock value for a given row and appends it to the row.
@@ -547,110 +529,109 @@ function CashOutPg() {
   }
 
   return (
-    <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
-      <div className='w-full max-w-7xl'>
-        <TopBar
-          setSelectedBarista={setBaristaID}
-          setSelectedDate={setUserDate}
-          selectedDate={userDate}
-          selectedBarista={baristaID}
-          setSwitchSearch={setSwitchSearch}
-          switchSearch={switchSearch}
-        />
-        <div className='min-h-screen bg-gray-50 py-8 px-4 h-full w-full'>
-          <div className='h-full w-full mx-auto bg-white p-8 rounded-lg shadow-md'>
-            <VSpliter>
-              <VSpliter>
-                {/*Main Cashout Table */}
-                <Spliter
-                  title='Liquor /Wine'
-                  title2='Cashout'>
-                  <Table
-                    type={1}
-                    tableTitles={InventoryColumnTitles}
-                    tableData={tableData}
-                    setModData={(data) => {
-                      setModData(data);
-                      setSelectedRow(data);
-                    }}
-                    modData={modData}
-                    selectedRow={selectedRow}
-                    setSelectedRow={setSelectedRow}
-                  />
-                  <div className='flex flex-col'>
-                    <TotalSales
-                      tableData={tableData}
-                      RTDTableData={RTDTableData}
-                    />
-                    <EditCount
-                      setEditCount={setEditCount}
-                      editCount={editCount}
-                      modData={modData}
-                      setModData={setModData}
-                      setTableData={setTableData}
-                      baristaID={baristaID}
-                      userDate={userDate}
-                    />
-                  </div>
-                </Spliter>
-                {/* RTD Table */}
-                <Spliter title='Single Sale Items'>
-                  <div className='flex'>
-                    <Table
-                      type={1}
-                      tableData={RTDTableData}
-                      tableTitles={rtdTitles}
-                      setModData={(data) => {
-                        setModData(data);
-                        setSelectedRTDRow(data);
-                      }}
-                      modData={modData}
-                      selectedRow={selectedRTDRow}
-                      setSelectedRow={setSelectedRTDRow}
-                    />
-                  </div>
-                  <EditRTDCounts
-                    baristaID={baristaID}
-                    userDate={userDate}
-                    setTableData={setTableData}
-                    modData={modData}
-                  />
-                </Spliter>
-              </VSpliter>
-              {/* Req Table*/}
+    <div className='w-svh h-svw '>
+      <TopBar
+        setSelectedBarista={setBaristaID}
+        setSelectedDate={setUserDate}
+        selectedDate={userDate}
+        selectedBarista={baristaID}
+        setSwitchSearch={setSwitchSearch}
+        switchSearch={switchSearch}
+      />
+      <div className='  py-8 px-4 h-svw w-svw  '>
+        <div className='h-full w-svw mx-auto bg-white p-8 rounded-lg shadow-md min-w-fit '>
+          <HSpliter>
+            <HSpliter>
+              {/*Main Cashout Table */}
               <Spliter
-                title2='Requests'
-                title='Transactions'>
-                <div className='flex w-full h-3/4'>
-                  <Table
-                    key={'Transactions'}
-                    tableData={transTableData}
-                    tableTitles={transTableTitles}
-                    setModData={(data) => {
-                      setModData(data);
-                      setSelectedTransRow(data);
-                    }}
-                    modData={modData}
-                    selectedRow={selectedTransRow}
-                    setSelectedRow={setSelectedTransRow}
-                  />
-                </div>
+                title='Liquor /Wine'
+                title2='Cashout'>
                 <Table
-                  type={2}
-                  key='invReqTable'
-                  tableData={invReqTableData}
-                  tableTitles={['Row', 'Name', 'Quantity']}
+                  type={1}
+                  tableTitles={InventoryColumnTitles}
+                  tableData={tableData}
                   setModData={(data) => {
                     setModData(data);
-                    setSelectData(data);
+                    setSelectedRow(data);
                   }}
                   modData={modData}
-                  selectedRow={selectedReqRow}
-                  setSelectedRow={setSelectedReqRow}
+                  selectedRow={selectedRow}
+                  setSelectedRow={setSelectedRow}
+                />
+                <div className='flex flex-col'>
+                  <TotalSales
+                    tableData={tableData}
+                    RTDTableData={RTDTableData}
+                  />
+                  <EditCount
+                    setEditCount={setEditCount}
+                    editCount={editCount}
+                    modData={modData}
+                    setModData={setModData}
+                    setTableData={setTableData}
+                    baristaID={baristaID}
+                    userDate={userDate}
+                  />
+                </div>
+              </Spliter>
+              {/* RTD Table */}
+              <Spliter
+                title='Single Sale Items'
+                title2={'Edit RTD Counts'}>
+                <Table
+                  type={1}
+                  tableData={RTDTableData}
+                  tableTitles={rtdTitles}
+                  setModData={(data) => {
+                    setModData(data);
+                    setSelectedRTDRow(data);
+                  }}
+                  modData={modData}
+                  selectedRow={selectedRTDRow}
+                  setSelectedRow={setSelectedRTDRow}
+                />
+
+                <EditRTDCounts
+                  baristaID={baristaID}
+                  userDate={userDate}
+                  setTableData={setTableData}
+                  modData={modData}
                 />
               </Spliter>
-            </VSpliter>
-          </div>
+            </HSpliter>
+            {/* Req Table*/}
+            <Spliter
+              title2='Requests'
+              title='Transactions'>
+              <Table
+                type={2}
+                key={'Transactions'}
+                tableData={transTableData}
+                tableTitles={transTableTitles}
+                setModData={(data) => {
+                  setModData(data);
+                  setSelectedTransRow(data);
+                }}
+                modData={modData}
+                selectedRow={selectedTransRow}
+                setSelectedRow={setSelectedTransRow}
+              />
+
+              <Table
+                type={2}
+                key={'Requests'}
+                tableData={invReqTableData}
+                tableTitles={['Row', 'Name', 'Quantity']}
+                setModData={(data) => {
+                  setModData(data);
+                  setSelectData(data);
+                }}
+                modData={modData}
+                selectedRow={selectedReqRow}
+                setSelectedRow={setSelectedReqRow}
+              />
+            </Spliter>
+          </HSpliter>
         </div>
       </div>
     </div>

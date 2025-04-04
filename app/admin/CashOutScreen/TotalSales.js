@@ -65,12 +65,13 @@ function TotalSales({ tableData, RTDTableData }) {
   }, [cashReceived, tableData, RTDTableData]);
 
   return (
-    <div className='  items-center  justify-center w-full h-full'>
-      <h1 className='text-lg font-semibold'>Total Stock Value</h1>
-      <p>{StockTotal(tableData, RTDTableData)}</p>
-      <h1 className='text-lg font-semibold'>Total Stock Over/Loss</h1>
-      <p>{StockOverLoss(tableData, RTDTableData)}</p>
-
+    <div className='  items-center  justify-center w-min lg:h-full'>
+      <div className=' flex flex-col border-2 w-48'>
+        <h1 className='text-lg font-semibold'>Total Stock Value</h1>
+        <p>{StockTotal(tableData, RTDTableData)}</p>
+        <h1 className='text-lg font-semibold'>Total Stock Over/Loss</h1>
+        <p>{StockOverLoss(tableData, RTDTableData)}</p>
+      </div>
       <>
         <h1 className='text-lg font-semibold'>Tip:</h1>
         {cashReceived >=

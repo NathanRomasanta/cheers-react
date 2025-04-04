@@ -18,8 +18,8 @@ export default function TopBar({
   selectedBarista,
   setSwitchSearch,
   switchSearch,
+  selectedDate,
 }) {
-  // Added Sign Out functionality
   const [baristaList, setBaristaList] = useState([]);
   const [dateList, setDateList] = useState([]);
   const [toastMessage, setToastMessage] = useState(''); // State for toast message
@@ -27,8 +27,15 @@ export default function TopBar({
 
   useEffect(() => {
     const FetchBaristas = async () => {
-      const fetchedBaristas = await fetchBaristas();
-      setBaristaList(fetchedBaristas);
+      try {
+        const fetchedBaristas = await fetchBaristas();
+        setBaristaList(fetchedBaristas);
+      } catch (error) {
+        console.error('Error fetching baristas:', error);
+        setToastMessage('Failed to fetch baristas. Please try again.'); // Set error toast message
+        setShowToast(true); // Show the toast
+        setTimeout(() => setShowToast(false), 2000); // Hide the toast after 2 seconds
+      }
     };
     FetchBaristas();
   }, []);
@@ -36,9 +43,16 @@ export default function TopBar({
   useEffect(() => {
     const fetchDates = async () => {
       if (selectedBarista) {
-        const fetchedDates = await fetchBaristaDates(selectedBarista);
-        console.log('fetchedDates', fetchedDates);
-        setDateList(fetchedDates);
+        try {
+          const fetchedDates = await fetchBaristaDates(selectedBarista);
+          console.log('fetchedDates', fetchedDates);
+          setDateList(fetchedDates);
+        } catch (error) {
+          console.error('Error fetching dates:', error);
+          setToastMessage('Failed to fetch dates. Please try again.'); // Set error toast message
+          setShowToast(true); // Show the toast
+          setTimeout(() => setShowToast(false), 2000); // Hide the toast after 2 seconds
+        }
       }
     };
     fetchDates();
@@ -68,7 +82,7 @@ export default function TopBar({
   };
 
   return (
-    <div className='navbar bg-white sticky top-0 z-50  h-20'>
+    <div className='navbar  sm:w-20 lg:w-screen relative top-0 z-50  h-20 '>
       {showToast && <CustomAlert message={toastMessage} />}
       {/* Render toast if visible */}
       <div className='navbar-start'>
@@ -76,7 +90,7 @@ export default function TopBar({
           <div
             tabIndex={0}
             role='button'
-            className='btn btn-ghost lg:hidden '>
+            className='btn btn-outline btn-warning text-black hover:text-white lg:hidden '>
             <svg
               className='h-5 w-5'
               viewBox='0 0 24 24'>
@@ -197,6 +211,12 @@ export default function TopBar({
               <button
                 className='btn btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2 '
                 onClick={() => {
+                  if (!selectedBarista || !selectedDate) {
+                    setToastMessage('Please select a Date first!'); // Set the toast message
+                    setShowToast(true); // Show the toast
+                    setTimeout(() => setShowToast(false), 2000); // Hide the toast after 2 seconds
+                    return;
+                  }
                   setSwitchSearch(!switchSearch);
                   setTimeout(() => {
                     setSwitchSearch(false);
