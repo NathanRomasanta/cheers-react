@@ -176,6 +176,7 @@ export default function AddInventory() {
               Item Quantity
             </label>
             <input
+              name="itemQuantity"
               type="number"
               id="quantity"
               value={itemQuantity}
