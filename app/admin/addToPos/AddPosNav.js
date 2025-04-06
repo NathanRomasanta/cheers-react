@@ -20,27 +20,26 @@ function AddToPosNav({ setTypeSelected }) {
           <div
             tabIndex={0}
             role='button'
-            className='btn btn-ghost lg:hidden'>
+            className='btn btn-outline btn-warning text-black hover:text-white lg:hidden  '>
             <EllipsisVertical size={25} />
             Categories
           </div>
+          {/* for small menu */}
           <ul
             tabIndex={0}
             className='menu menu-sm dropdown-content bg-gradient-to-br from-orange-50 to-orange-200 rounded-box z-1 mt-3 w-52 p-2 shadow'>
             <li>
-              <details>
-                <ul className='border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
-                  {drinkTypes.map((drinkType) => (
-                    <li key={drinkType.id}>
-                      <a
-                        className='hover:text-white'
-                        onClick={() => setTypeSelected(drinkType)}>
-                        {drinkType.id}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
+              <ul className='border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
+                {drinkTypes.map((drinkType) => (
+                  <li key={drinkType.id}>
+                    <a
+                      className='hover:text-white'
+                      onClick={() => setTypeSelected(drinkType)}>
+                      {drinkType.id}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
           </ul>
         </div>

@@ -90,7 +90,7 @@ export default function TopBar({
           <div
             tabIndex={0}
             role='button'
-            className='btn btn-outline btn-warning text-black hover:text-white lg:hidden '>
+            className='btn btn-outline btn-warning text-black hover:text-white lg:hidden  '>
             <svg
               className='h-5 w-5'
               viewBox='0 0 24 24'>
@@ -102,34 +102,27 @@ export default function TopBar({
               />
               <EllipsisVertical size={27} />
             </svg>
+            Barista
           </div>
           {/* for small menu */}
           <ul
             tabIndex={0}
-            className='menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow'>
+            className='menu menu-sm dropdown-content bg-gradient-to-br from-orange-50 to-orange-200 rounded-box z-1 mt-3 w-52 p-2 shadow'>
             <li>
-              <div className='dropdown dropdown-right dropdown-end'>
-                <div
-                  tabIndex={0}
-                  role='button'
-                  className='btn btn-sm btn-ghost m-1 mb-2'>
-                  Barista
-                </div>
-                <ul
-                  tabIndex={0}
-                  className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
-                  {baristaList.map((barista, index) => (
-                    <li key={index}>
-                      <a
-                        onClick={() => {
-                          handleBaristaSelection(barista.id); // Call the handler
-                        }}>
-                        {barista.id}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ul
+                tabIndex={0}
+                className='border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
+                {baristaList.map((barista, index) => (
+                  <li key={index}>
+                    <a
+                      onClick={() => {
+                        handleBaristaSelection(barista.id); // Call the handler
+                      }}>
+                      {barista.id}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </li>
 
             {selectedBarista && (
@@ -153,6 +146,25 @@ export default function TopBar({
                     </li>
                   ))}
                 </ul>
+                <button
+                  className='btn btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   hover:border-rose-400  rounded-xl mr-2 '
+                  onClick={() => {
+                    if (!selectedBarista || !selectedDate) {
+                      setToastMessage('Please select a Date first!'); // Set the toast message
+                      setShowToast(true); // Show the toast
+                      setTimeout(() => setShowToast(false), 2000); // Hide the toast after 2 seconds
+                      return;
+                    }
+                    setSwitchSearch(!switchSearch);
+                    setTimeout(() => {
+                      setSwitchSearch(false);
+                      setSelectedDate('');
+                      setSelectedBarista('');
+                    }, 1000);
+                  }}>
+                  Search
+                  <Search size={12} />
+                </button>
               </div>
             )}
           </ul>
