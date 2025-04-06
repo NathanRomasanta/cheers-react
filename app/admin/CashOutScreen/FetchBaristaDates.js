@@ -7,7 +7,7 @@ const fetchBaristaDates = async (baristaID) => {
       db,
       'Cashout',
       baristaID,
-      'Date '
+      'Date'
     );
     const baristaDatesQuery = query(baristaDatesCollectionReference);
     const baristaDatesQuerySnapshot = await getDocs(baristaDatesQuery);

@@ -514,14 +514,16 @@ function CashOutPg() {
                 Please select a Barista and Date to view data
               </h1>
             </div>
-            <TopBar
-              setSelectedBarista={setBaristaID}
-              setSelectedDate={setUserDate}
-              selectedDate={userDate}
-              selectedBarista={baristaID}
-              setSwitchSearch={setSwitchSearch}
-              switchSearch={switchSearch}
-            />
+            <div className='flex flex-row  justify-start items-center  w-full '>
+              <TopBar
+                setSelectedBarista={setBaristaID}
+                setSelectedDate={setUserDate}
+                selectedDate={userDate}
+                selectedBarista={baristaID}
+                setSwitchSearch={setSwitchSearch}
+                switchSearch={switchSearch}
+              />
+            </div>
           </div>
         </div>
       </div>

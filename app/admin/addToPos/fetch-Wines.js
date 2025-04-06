@@ -22,7 +22,7 @@ const fetchWines = async () => {
           createdAt: data.createdAt,
         };
       })
-      .filter((item) => item.isLiquor === true && item.category === 'wines'); // Filter out non-liquor items
+      .filter((item) => item.isLiquor === true && item.category === 'Wine'); // Filter out non-liquor items
     return winesData;
   } catch (error) {
     console.error('Error fetching wines: ', error);

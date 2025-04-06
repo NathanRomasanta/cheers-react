@@ -75,7 +75,10 @@ function TotalSales({ tableData, RTDTableData }) {
       <>
         <h1 className='text-lg font-semibold'>Tip:</h1>
         {cashReceived >=
-        parseFloat(StockTotal(tableData, RTDTableData).replace('$', '')) ? (
+        parseFloat(StockTotal(tableData, RTDTableData).replace('$', '')) +
+          parseFloat(
+            StockOverLoss(tableData, RTDTableData).replace('$', '')
+          ) ? (
           <p>{`$${(cashReceived * 0.035).toFixed(2)}`}</p>
         ) : (
           <p>0</p>
