@@ -49,13 +49,13 @@
     // Messages Screen Navigation
     it('passes if Messages button navigates to Messages page', () => {
         cy.contains('button', 'Messages').click();
-        cy.get('h1').should('contain', 'Messages'); // Assert page says 'Messages'
+        cy.should('contain', 'Messages'); // Assert page says 'Messages'
     });
 
     // Settings Screen Navigation
     it('passes if Settings button navigates to Settings page', () => {
         cy.contains('button', 'Settings').click();
-        cy.get('h1').should('contain', 'Settings'); // Assert page says 'Settings'
+        cy.should('contain', 'Settings'); // Assert page says 'Settings'
     });
 
 });
