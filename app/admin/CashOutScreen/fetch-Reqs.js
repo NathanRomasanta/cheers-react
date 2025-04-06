@@ -7,7 +7,7 @@ const fetchReqData = async (baristaID, userDate) => {
       db,
       'Cashout',
       baristaID,
-      'Date ',
+      'Date',
       userDate,
       'Requests'
     );
