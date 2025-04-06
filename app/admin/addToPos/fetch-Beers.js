@@ -3,7 +3,7 @@ import { db } from '../../_utils/Firebase';
 
 const fetchBeers = async () => {
   try {
-    const beersCollectionReference = collection(db, 'Items');
+    const beersCollectionReference = collection(db, 'Inventory');
     const beersQuery = query(beersCollectionReference);
     const beersQuerySnapshot = await getDocs(beersQuery);
 
@@ -21,7 +21,11 @@ const fetchBeers = async () => {
           createdAt: data.createdAt,
         };
       })
-      .filter((item) => item.isLiquor === false && item.category === 'beers'); // Filter out non-liquor items
+      .filter(
+        (item) =>
+          (item.isLiquor === false && item.category === 'RTDs') ||
+          item.category === 'N/A Beverages'
+      ); // Filter out non-liquor items
     return beersData;
   } catch (error) {
     console.error('Error fetching beers: ', error);

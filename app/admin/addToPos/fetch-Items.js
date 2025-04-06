@@ -2,7 +2,7 @@ import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../_utils/Firebase';
 const fetchItems = async () => {
   try {
-    const itemsCollectionReference = collection(db, 'Items');
+    const itemsCollectionReference = collection(db, 'Inventory');
     const itemsQuery = query(itemsCollectionReference);
     const itemsQuerySnapshot = await getDocs(itemsQuery);
     // Extract data from FireStore snapshot

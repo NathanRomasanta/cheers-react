@@ -3,7 +3,7 @@ import { db } from '../../_utils/Firebase';
 
 const fetchFoods = async () => {
   try {
-    const foodsCollectionReference = collection(db, 'Items');
+    const foodsCollectionReference = collection(db, 'Inventory');
     const foodsQuery = query(foodsCollectionReference);
     const foodsQuerySnapshot = await getDocs(foodsQuery);
 

@@ -21,20 +21,20 @@ function AddToPosNav({ setTypeSelected }) {
             tabIndex={0}
             role='button'
             className='btn btn-ghost lg:hidden'>
-            <EllipsisVertical className='h-6 w-6' />
+            <EllipsisVertical size={25} />
+            Categories
           </div>
           <ul
             tabIndex={0}
-            className='menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow'>
+            className='menu menu-sm dropdown-content bg-gradient-to-br from-orange-50 to-orange-200 rounded-box z-1 mt-3 w-52 p-2 shadow'>
             <li>
               <details>
-                <summary className='bg-orange-500 bg-opacity-25 hover:bg-opacity-75 '>
-                  Categories
-                </summary>
-                <ul className='p-2'>
+                <ul className='border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
                   {drinkTypes.map((drinkType) => (
                     <li key={drinkType.id}>
-                      <a onClick={() => setTypeSelected(drinkType)}>
+                      <a
+                        className='hover:text-white'
+                        onClick={() => setTypeSelected(drinkType)}>
                         {drinkType.id}
                       </a>
                     </li>
@@ -54,14 +54,19 @@ function AddToPosNav({ setTypeSelected }) {
               <summary className='  border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl relative right-16'>
                 Categories
               </summary>
-              <ul className='p-2'>
-                {drinkTypes.map((drinkType) => (
-                  <li key={drinkType.id}>
-                    <a onClick={() => setTypeSelected(drinkType)}>
-                      {drinkType.id}
-                    </a>
-                  </li>
-                ))}
+              <ul className='menu menu-md dropdown-content bg-gradient-to-b from-white via-slate-50 to-orange-200 rounded-box z-1 mt-3 w-28 p-2 shadow'>
+                <div className='border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
+                  {drinkTypes.map((drinkType) => (
+                    <li key={drinkType.id}>
+                      <a
+                        className='hover:text-white hover:bg-inherit'
+                        onClick={() => setTypeSelected(drinkType)}>
+                        {drinkType.id.charAt(0).toUpperCase() +
+                          drinkType.id.slice(1)}
+                      </a>
+                    </li>
+                  ))}
+                </div>
               </ul>
             </details>
           </li>
