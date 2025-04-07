@@ -45,7 +45,7 @@ export default function TopBar({
       if (selectedBarista) {
         try {
           const fetchedDates = await fetchBaristaDates(selectedBarista);
-          console.log('fetchedDates', fetchedDates);
+
           setDateList(fetchedDates);
         } catch (error) {
           console.error('Error fetching dates:', error);

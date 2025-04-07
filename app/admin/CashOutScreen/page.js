@@ -124,8 +124,9 @@ function CashOutPg() {
       const fetchCashOutData = async () => {
         setLoading(true);
         const fetchedItems = await fetchCashOut(baristaID, userDate);
+        console.log('Fetched Items:', fetchedItems); // Debugging
         setLoading(false);
-        setCashOutItems(fetchedItems); // Fetched items set to state
+        setCashOutItems(fetchedItems);
       };
       fetchCashOutData();
     }
@@ -139,16 +140,16 @@ function CashOutPg() {
   useEffect(() => {
     const mappedData = CashOutItems.map((item, index) => [
       index + 1, // Row #
-      item.name, // database name field
-      item.open_count, // database id field
-      item.open_lbs, // database quantity field
-      item.open_oz, // database quantity field
-      item.close_count, // database quantity field
-      item.close_lbs, // database quantity field
-      item.close_oz, // database quantity field
-      item.price, // database price field
-      item.bottle_size, // database ID field
-      item.ID, // database ID field
+      item.name || 'Unknown',
+      item.open_count || 0,
+      item.open_lbs || 0,
+      item.open_oz || 0,
+      item.close_count || 0,
+      item.close_lbs || 0,
+      item.close_oz || 0,
+      item.price || 0,
+      item.bottle_size || 0,
+      item.ID || 'Unknown',
     ]);
 
     setTableData(
@@ -312,7 +313,8 @@ function CashOutPg() {
     let stockFull = Number(row[2]); // Correct index for Quantity
     let stockLbs = Number(row[3]); // Correct index for Quantity
     let stockOz = Number(row[4]); // Correct index for Quantity
-    let TotalOz = stockOz + stockLbs * 16 + stockFull * Number(row[9]);
+    let conversionFactor = Number(row[9]) || 0; // Fallback to 0 if row[9] is invalid
+    let TotalOz = stockOz + stockLbs * 16 + stockFull * conversionFactor;
     let newRow = [...row, TotalOz.toFixed(2)]; // Add TotalOz to the row
     if (newRow.length > InventoryColumnTitles.length) {
       newRow.pop();
@@ -332,36 +334,16 @@ function CashOutPg() {
    * @returns {Array} - A new row array with the calculated total ounces appended. If the new row exceeds the length of `InventoryColumnTitles`, the last element is removed.
    */
   const closeOZ = (row) => {
-    if (row[10] === 'Gin') {
-      let stockCloseFull = Number(row[5]); // Correct index for Quantity
-      let stockCloseLbs = Number(row[6]); // Correct index for Quantity
-      let stockCloseOz = Number(row[7]); // Correct index for Quantity
-      let TotalCloseOz =
-        stockCloseOz -
-        emptyBottleWeights.flourishGin26 +
-        stockCloseLbs * 16 +
-        stockCloseFull * Number(row[9]);
-      let newRow = [...row, TotalCloseOz.toFixed(2)]; // Add TotalOz to the row
-      if (newRow.length > InventoryColumnTitles.length) {
-        newRow.pop();
-      }
-      return newRow;
+    let stockCloseFull = Number(row[5]); // Correct index for Quantity
+    let stockCloseLbs = Number(row[6]); // Correct index for Quantity
+    let stockCloseOz = Number(row[7]); // Correct index for Quantity
+    let TotalCloseOz =
+      stockCloseOz + stockCloseLbs * 16 + stockCloseFull * Number(row[9]);
+    let newRow = [...row, TotalCloseOz.toFixed(2)]; // Add TotalOz to the row
+    if (newRow.length > InventoryColumnTitles.length) {
+      newRow.pop();
     }
-    if (row[10] === 'Rum') {
-      let stockCloseFull = Number(row[5]); // Correct index for Quantity
-      let stockCloseLbs = Number(row[6]); // Correct index for Quantity
-      let stockCloseOz = Number(row[7]); // Correct index for Quantity
-      let TotalCloseOz =
-        stockCloseOz -
-        emptyBottleWeights.bacardiWhitePlastic40 +
-        stockCloseLbs * 16 +
-        stockCloseFull * Number(row[9]);
-      let newRow = [...row, TotalCloseOz.toFixed(2)]; // Add TotalOz to the row
-      if (newRow.length > InventoryColumnTitles.length) {
-        newRow.pop();
-      }
-      return newRow;
-    }
+    return newRow;
   };
 
   const RTDPopulateFoodStock = (rows) => {

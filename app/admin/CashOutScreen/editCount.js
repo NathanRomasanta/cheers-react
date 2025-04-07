@@ -1,5 +1,7 @@
-import { doc, updateDoc, getFirestore } from 'firebase/firestore';
+import { doc, collection, updateDoc, getFirestore } from 'firebase/firestore';
 import { db } from '../../_utils/Firebase';
+
+import { useState } from 'react';
 
 function editCount({
   editCount,
@@ -10,6 +12,7 @@ function editCount({
   baristaID,
   userDate,
 }) {
+  const [baristaId, setBaristaId] = useState(baristaID);
   // edit states
 
   // Edit Count Functions
@@ -43,8 +46,8 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaID,
-        'Date ',
+        baristaId,
+        'Date',
         userDate,
         'Stock',
         row[10].toString()
@@ -96,8 +99,8 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaID,
-        'Date ',
+        baristaId,
+        'Date',
         userDate,
         'Stock',
         row[9].toString()
@@ -143,11 +146,11 @@ function editCount({
     );
 
     try {
-      const docRef = doc(
+      const docRef = collection(
         db,
         'Cashout',
-        baristaID,
-        'Date ',
+        baristaId,
+        'Date',
         userDate,
         'Stock',
         row[10].toString()
@@ -195,8 +198,8 @@ function editCount({
         const docRef = doc(
           db,
           'Cashout',
-          baristaID,
-          'Date ',
+          baristaId,
+          'Date',
           userDate,
           'Stock',
           row[10].toString()
@@ -232,8 +235,8 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaID,
-        'Date ',
+        baristaId,
+        'Date',
         userDate,
         'Stock',
         row[10].toString()
@@ -265,8 +268,8 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaID,
-        'Date ',
+        baristaId,
+        'Date',
         userDate,
         'Stock',
         row[10].toString()
