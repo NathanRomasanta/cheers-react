@@ -77,7 +77,7 @@ function CashOutPg() {
   let rtdTitles = [
     '',
     'Row',
-    'Name',
+    'ID:Name',
     'Open Count',
     'Close Count',
     'Price',
@@ -134,9 +134,6 @@ function CashOutPg() {
     // Trigger data fetch when component mounts
   }, [switchSearch, baristaID, userDate]);
 
-  // Map firestore data to match format of table for Main Cashout Table
-  // uses the openOZ closeOZ stockUsed StockValueRow AddTransTableToCashOut AddReqTableToCashOut functions
-
   useEffect(() => {
     const mappedData = CashOutItems.map((item, index) => [
       index + 1, // Row #
@@ -160,6 +157,8 @@ function CashOutPg() {
       )
     );
   }, [CashOutItems, invReqTableData]);
+  // Map firestore data to match format of table for Main Cashout Table
+  // uses the openOZ closeOZ stockUsed StockValueRow AddTransTableToCashOut AddReqTableToCashOut functions
 
   // Fetch data from Requests table Firestore
   //Requests Table
@@ -203,7 +202,7 @@ function CashOutPg() {
   useEffect(() => {
     const mappedData = RTDItems.map((item, index) => [
       index + 1, // Row #
-      item.name, // database name field
+      `${item.ID}:${item.name}`, // database name field
       item.open_count, // database id field
       item.close_count, // database quantity field
       item.price, // database price field
@@ -221,39 +220,39 @@ function CashOutPg() {
   useEffect(() => {
     const fetchTrans = async () => {
       const fetchedItems = await fetchTransactions(baristaID, userDate);
+      console.log('Fetched Transactions:', fetchedItems); // Debugging
 
       const mappedData = (fetchedItems || []).flatMap((item, index) => {
         if (!item || !Array.isArray(item.order)) return [];
 
-        return item.order
-          .filter((orderItem) => orderItem?.isLiquor)
-          .map((orderItem, orderIndex, array) => {
-            const isLastItem = orderIndex === array.length - 1;
+        return item.order.map((orderItem, orderIndex, array) => {
+          const isLastItem = orderIndex === array.length - 1;
 
-            return [
-              index + 1, // Row #
-              `${index + 1}.${orderIndex + 1}`, // Sub-row #
-              orderItem?.name || 'Unknown', // Item name
-              orderItem?.ounces || 0, // Quantity
-              // Ounces
-              (
-                (orderItem?.price || 0) * (orderItem?.ounces || 0)
-              ).toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD',
-              }),
-              isLastItem
-                ? (item?.total || 0).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                  })
-                : '', // Total sales for the order (only on last item)
-              isLastItem ? item?.totalItems || '' : '', // Total items in the order (only on last item)
-              isLastItem && item?.time
-                ? new Date(item.time).toLocaleString()
-                : '', // Time (only on last item)
-            ];
-          });
+          return [
+            index + 1, // Row #
+            `${index + 1}.${orderIndex + 1}`, // Sub-row #
+            orderItem?.name || 'Unknown', // Item name
+            orderItem?.quantity || 0, // Quantity sold
+            // Ounces
+            (
+              (parseFloat(orderItem?.price) || 0) *
+              (parseFloat(orderItem?.quantity) || 0)
+            ).toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            }),
+            isLastItem
+              ? (item?.total || 0).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })
+              : '', // Total sales for the order (only on last item)
+            isLastItem ? item?.totalItems || '' : '', // Total items in the order (only on last item)
+            isLastItem && item?.time
+              ? new Date(item.time).toLocaleString()
+              : '', // Time (only on last item)
+          ];
+        });
       });
 
       setTransTableData(mappedData);
@@ -261,6 +260,30 @@ function CashOutPg() {
 
     fetchTrans();
   }, [CashOutItems]);
+
+  useEffect(() => {
+    const fetchTrans = async () => {
+      try {
+        if (!baristaID || !userDate) {
+          return;
+        }
+        const fetchedItems = await fetchTransactions(baristaID, userDate);
+        console.log('Fetched Transactions:', fetchedItems); // Debugging
+
+        const mappedData = fetchedItems.map((item, index) => [
+          index + 1, // Row #
+
+          item.name || 'Unknown',
+        ]);
+        setTransTableData(mappedData);
+        console.log('Mapped Transactions:', mappedData); // Debugging
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      }
+    };
+
+    fetchTrans();
+  }, [baristaID, userDate]);
 
   //ROW FUNCTIONS FOR THE MAIN CASHOUT TABLE//
   // used in the mapped data useEffect to add rows to the table
@@ -453,7 +476,7 @@ function CashOutPg() {
     let totalSales = 0;
 
     transTableData.forEach((innerRow) => {
-      if (innerRow[2] === row[1]) {
+      if (innerRow[2] === row[1].toString().split(':')[0].toString()) {
         let sales = parseFloat(innerRow[4].replace('$', '')) || 0;
         totalSales += sales;
       }
@@ -542,7 +565,7 @@ function CashOutPg() {
                   selectedRow={selectedRow}
                   setSelectedRow={setSelectedRow}
                 />
-                <div className='flex flex-col'>
+                <div className='flex flex-row gap-5 mr-10'>
                   <TotalSales
                     tableData={tableData}
                     RTDTableData={RTDTableData}
