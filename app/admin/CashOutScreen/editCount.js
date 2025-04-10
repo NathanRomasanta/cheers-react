@@ -1,5 +1,6 @@
 import { doc, collection, updateDoc, getFirestore } from 'firebase/firestore';
 import { db } from '../../_utils/Firebase';
+import { X } from 'lucide-react';
 
 import { useState } from 'react';
 
@@ -103,7 +104,7 @@ function editCount({
         'Date',
         userDate,
         'Stock',
-        row[9].toString()
+        row[10].toString()
       );
       await updateDoc(docRef, { open_lbs: newCount });
       console.log('Document updated with ID: ', docRef.id);
@@ -146,10 +147,10 @@ function editCount({
     );
 
     try {
-      const docRef = collection(
+      const docRef = doc(
         db,
         'Cashout',
-        baristaId,
+        baristaID,
         'Date',
         userDate,
         'Stock',
@@ -198,7 +199,7 @@ function editCount({
         const docRef = doc(
           db,
           'Cashout',
-          baristaId,
+          baristaID,
           'Date',
           userDate,
           'Stock',
@@ -235,7 +236,7 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaId,
+        baristaID,
         'Date',
         userDate,
         'Stock',
@@ -268,7 +269,7 @@ function editCount({
       const docRef = doc(
         db,
         'Cashout',
-        baristaId,
+        baristaID,
         'Date',
         userDate,
         'Stock',
@@ -297,56 +298,58 @@ function editCount({
         </button>
       )}
       {editCount && (
-        <div className='flex flex-row flex-wrap gap-5 '>
+        <div className='flex flex-row flex-wrap gap-5 border-2 w-1/2 justify-center items-center p-5 rounded-xl'>
           <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              EditOpenCount(modData);
-            }}>
-            OPEN Count
-          </button>
-          <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              EditOpenLbs(modData);
-            }}>
-            OPEN Lbs
-          </button>
-          <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              editOpenOz(modData);
-            }}>
-            OPEN Oz
-          </button>
-          <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              EditCloseCount(modData);
-            }}>
-            Close Count
-          </button>
-          <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              editCloseLbs(modData);
-            }}>
-            Close Lbs
-          </button>
-          <button
-            className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
-            onClick={() => {
-              editCloseOz(modData);
-            }}>
-            Close Oz
-          </button>
-          <button
-            className='btn btn-circle btn-xs btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400 '
+            className='btn btn-circle btn-xs btn-ghost  hover:bg-opacity-100 hover:text-white  hover:bg-red-500 hover:border-white hover:shadow-lg relative bottom-4 left-44 '
             onClick={() => {
               setEditCount(false);
             }}>
-            X
+            <X />
           </button>
+          <div className=' flex flex-wrap items-center justify-center gap-2'>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                EditOpenCount(modData);
+              }}>
+              OPEN Count
+            </button>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                EditOpenLbs(modData);
+              }}>
+              OPEN Lbs
+            </button>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                editOpenOz(modData);
+              }}>
+              OPEN Oz
+            </button>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                EditCloseCount(modData);
+              }}>
+              Close Count
+            </button>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                editCloseLbs(modData);
+              }}>
+              Close Lbs
+            </button>
+            <button
+              className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
+              onClick={() => {
+                editCloseOz(modData);
+              }}>
+              Close Oz
+            </button>
+          </div>
         </div>
       )}
     </div>

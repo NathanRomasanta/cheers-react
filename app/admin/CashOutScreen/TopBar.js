@@ -158,8 +158,6 @@ export default function TopBar({
                     setSwitchSearch(!switchSearch);
                     setTimeout(() => {
                       setSwitchSearch(false);
-                      setSelectedDate('');
-                      setSelectedBarista('');
                     }, 1000);
                   }}>
                   Search
@@ -232,8 +230,6 @@ export default function TopBar({
                   setSwitchSearch(!switchSearch);
                   setTimeout(() => {
                     setSwitchSearch(false);
-                    setSelectedDate('');
-                    setSelectedBarista('');
                   }, 1000);
                 }}>
                 Search

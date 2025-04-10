@@ -2,7 +2,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../_utils/Firebase';
 
 function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
-  const editRTDpopCloseOz = async (row) => {
+  const editRTDCloseOz = async (row, baristaID, userDate) => {
     if (!row || row.length === 0) {
       alert('Please select a row to edit');
       return;
@@ -13,7 +13,7 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
       alert('Invalid count entered. Please enter a valid number.');
       return;
     }
-    newRow[7] = newCount; // Close count is in the 4th index
+    newRow[3] = newCount; // Close count is in the 4th index
     setTableData((prevData) =>
       prevData.map((r) => (r[0] === row[0] ? newRow : r))
     );
@@ -23,10 +23,10 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
         db,
         'Cashout',
         baristaID,
-        'Date ',
+        'Date',
         userDate,
         'RTD',
-        row[1].toString()
+        row[1].toString().split(':')[0].toString()
       );
       await updateDoc(docRef, { close_count: newCount });
       console.log('Document updated with ID: ', docRef.id);
@@ -36,7 +36,7 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
     }
   };
 
-  const editRTDpopOpenOz = async (row) => {
+  const editRTDOpenOz = async (row, baristaID, userDate) => {
     if (!row || row.length === 0) {
       alert('Please select a row to edit');
       return;
@@ -47,7 +47,7 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
       alert('Invalid count entered. Please enter a valid number.');
       return;
     }
-    newRow[6] = newCount; // Close count is in the 4th index
+    newRow[2] = newCount;
     setTableData((prevData) =>
       prevData.map((r) => (r[0] === row[0] ? newRow : r))
     );
@@ -57,10 +57,10 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
         db,
         'Cashout',
         baristaID,
-        'Date ',
+        'Date',
         userDate,
         'RTD',
-        row[1].toString()
+        row[1].toString().split(':')[0].toString()
       );
       await updateDoc(docRef, { open_count: newCount });
       console.log('Document updated with ID: ', docRef.id);
@@ -74,14 +74,14 @@ function editRTDCounts({ modData, setTableData, baristaID, userDate }) {
       <button
         className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
         onClick={() => {
-          editRTDpopOpenOz(modData);
+          editRTDOpenOz(modData, baristaID, userDate);
         }}>
         Edit Open
       </button>
       <button
         className='btn  btn-outline border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400    rounded-xl mr-2'
         onClick={() => {
-          editRTDpopCloseOz(modData);
+          editRTDCloseOz(modData, baristaID, userDate);
         }}>
         Edit Close
       </button>

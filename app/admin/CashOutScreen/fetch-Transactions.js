@@ -5,7 +5,7 @@ const fetchTransactions = async (baristaID, userDate) => {
   try {
     const TransCollectionReference = collection(
       db,
-      'Transactions',
+      'transactions',
       baristaID,
       userDate
     );
@@ -15,14 +15,12 @@ const fetchTransactions = async (baristaID, userDate) => {
       const data = doc.data();
       return {
         id: data.id,
-        isLiquor: data.isLiquor,
-        order: data.order,
-        name: data.name,
+        order: data.ingredients,
+        name: data.baristaUID,
         ounces: data.ounces ? Number(data.ounces) : 0, // Convert to number if present
-        price: data.price,
         time: data.time && data.time.toDate ? data.time.toDate() : null, // Convert Firestore timestamp to JavaScript Date object if valid
         total: data.total,
-        totalItems: data['total items'], // Handle space in key name
+        totalItems: data.totalItems,
       };
     });
     return TransData;
