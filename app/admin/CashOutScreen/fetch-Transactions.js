@@ -1,11 +1,11 @@
-import { collection, query, getDocs } from 'firebase/firestore';
-import { db } from '../../_utils/Firebase';
+import { collection, query, getDocs } from "firebase/firestore";
+import { db } from "../../_utils/Firebase";
 
 const fetchTransactions = async (baristaID, userDate) => {
   try {
     const TransCollectionReference = collection(
       db,
-      'Transactions',
+      "transactions",
       baristaID,
       userDate
     );
@@ -22,12 +22,12 @@ const fetchTransactions = async (baristaID, userDate) => {
         price: data.price,
         time: data.time && data.time.toDate ? data.time.toDate() : null, // Convert Firestore timestamp to JavaScript Date object if valid
         total: data.total,
-        totalItems: data['total items'], // Handle space in key name
+        totalItems: data["total items"], // Handle space in key name
       };
     });
     return TransData;
   } catch (error) {
-    console.error('Error fetching transactions: ', error);
+    console.error("Error fetching transactions: ", error);
     throw error;
   }
 };

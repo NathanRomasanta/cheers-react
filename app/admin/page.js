@@ -92,7 +92,7 @@ export default function AdminPanel() {
     },
     {
       id: "Create New Users",
-      label: "Create New Users",
+      label: "Add Users",
       icon: <UserPlus size={27} />,
       path: "/dashboard/settings",
     },
