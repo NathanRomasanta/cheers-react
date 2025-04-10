@@ -93,6 +93,18 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
             CreateID={CreateID}
             cocktailIngredients={cocktailIngredients}
           />
+          <div className=' flex flex-row gap-4 m-5 justify-around'>
+            <button
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => handleNextIngredient()}>
+              Next Ingredient
+            </button>
+            <button
+              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              onClick={() => setShowIngredients(false)}>
+              Back
+            </button>
+          </div>
         </div>
       );
     }
@@ -238,24 +250,11 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                   </button>
                   <button
                     className='btn  bg-orange-500 text-white hover:bg-orange-600'
-                    onClick={() => setTypeSelected('')}>
+                    onClick={() => setTypeSelected(null)}>
                     Back
                   </button>
                 </div>
-              ) : (
-                <div>
-                  <button
-                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
-                    onClick={() => handleNextIngredient()}>
-                    Next Ingredient
-                  </button>
-                  <button
-                    className='btn  bg-orange-500 text-white hover:bg-orange-600'
-                    onClick={() => setShowIngredients(false)}>
-                    Back
-                  </button>
-                </div>
-              )}
+              ) : null}
             </div>
           </fieldset>
         </div>

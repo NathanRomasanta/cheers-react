@@ -41,6 +41,11 @@ function SubForm({
             role='button'
             className='flex flex-row justify-center items-center border-orange-400 bg-orange-500  hover:text-black  hover:bg-orange-400   rounded-xl px-2 py-3 text-white font-semibold  gap-2 w-1/2'>
             Ingredient Name
+            {ingredientName ? (
+              <span className='text-black'>{ingredientName}</span>
+            ) : (
+              <span className='text-black'>Select an Ingredient</span>
+            )}
           </div>
           <ul
             tabIndex={0}
