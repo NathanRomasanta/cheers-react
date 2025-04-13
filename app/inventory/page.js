@@ -14,11 +14,13 @@ import {
   Airplay,
   FilePlus,
   UserPlus,
+  Send,
 } from 'lucide-react';
 import AddInventory from '@/admin/create-inventory/page';
 import ControlPanel from '@/admin/control-panel/page';
 import ItemsListView from '@/admin/inventory-screen/page';
 import CreateUsers from '@/admin/create-users/page';
+import Orders from '@/admin/orders/page';
 
 export default function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -93,6 +95,12 @@ export default function Dashboard() {
       path: '/dashboard/documents',
     },
     {
+      id: 'Orders',
+      label: 'Orders',
+      icon: <Send size={27} />,
+      path: '/dashboard/settings',
+    },
+    {
       id: 'Add Inventory',
       label: 'Add Inventory',
       icon: <FilePlus size={27} />,
@@ -133,7 +141,8 @@ export default function Dashboard() {
         return <ControlPanel />;
       case 'Create New Users':
         return <CreateUsers />;
-
+      case 'Orders':
+        return <Orders />;
       default:
         return <ControlPanel />;
     }
