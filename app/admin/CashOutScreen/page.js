@@ -219,13 +219,16 @@ function CashOutPg() {
   //No extra mapping needed for the transactions table
   useEffect(() => {
     const fetchTrans = async () => {
+      if (!baristaID || !userDate) {
+        return;
+      }
       const fetchedItems = await fetchTransactions(baristaID, userDate);
       console.log('Fetched Transactions:', fetchedItems); // Debugging
 
       const mappedData = (fetchedItems || []).flatMap((item, index) => {
         if (!item || !Array.isArray(item.order)) return [];
 
-        return item.order.map((orderItem, orderIndex, array) => {
+        return item.ingredients.map((orderItem, orderIndex, array) => {
           const isLastItem = orderIndex === array.length - 1;
 
           return [
