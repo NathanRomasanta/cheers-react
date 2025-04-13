@@ -98,12 +98,6 @@ export default function Dashboard() {
       icon: <FilePlus size={27} />,
       path: '/dashboard/settings',
     },
-    {
-      id: 'Create New Users',
-      label: 'Add Users',
-      icon: <UserPlus size={27} />,
-      path: '/dashboard/settings',
-    },
   ];
 
   // Add admin option if the user is an admin
