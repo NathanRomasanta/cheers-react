@@ -6,7 +6,19 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '/app/_utils/AuthContext';
 import { Toast } from 'primereact/toast';
-import { LogOut, Shield, Menu, X, Airplay } from 'lucide-react';
+import {
+  LogOut,
+  Shield,
+  Menu,
+  X,
+  Airplay,
+  FilePlus,
+  UserPlus,
+} from 'lucide-react';
+import AddInventory from '@/admin/create-inventory/page';
+import ControlPanel from '@/admin/control-panel/page';
+import ItemsListView from '@/admin/inventory-screen/page';
+import CreateUsers from '@/admin/create-users/page';
 
 export default function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -69,21 +81,41 @@ export default function Dashboard() {
 
   const menuItems = [
     {
+      id: 'Dashboard',
+      label: 'Dashboard',
+      icon: <Airplay size={27} />,
+      path: '/dashboard/documents',
+    },
+    {
       id: 'Inventory',
       label: 'Inventory',
       icon: <Airplay size={27} />,
       path: '/dashboard/documents',
     },
+    {
+      id: 'Add Inventory',
+      label: 'Add Inventory',
+      icon: <FilePlus size={27} />,
+      path: '/dashboard/settings',
+    },
   ];
 
   // Add admin option if the user is an admin
   if (isAdmin) {
-    menuItems.push({
-      id: 'admin',
-      label: 'Admin Panel',
-      icon: <Shield size={20} />,
-      path: '/admin',
-    });
+    menuItems.push(
+      {
+        id: 'admin',
+        label: 'Admin Panel',
+        icon: <Shield size={20} />,
+        path: '/admin',
+      },
+      {
+        id: 'Create New Users',
+        label: 'Add Users',
+        icon: <UserPlus size={27} />,
+        path: '/dashboard/settings',
+      }
+    );
   }
 
   const toggleMobileMenu = () => {
@@ -93,59 +125,17 @@ export default function Dashboard() {
   const renderContent = () => {
     switch (activeItem) {
       case 'Inventory':
-        return (
-          <div className='p-6'>
-            <h2 className='text-2xl font-bold mb-4'>Documents</h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='bg-white p-4 rounded shadow'>
-                <h3 className='font-bold'>Project Report</h3>
-                <p className='text-sm text-gray-500'>Updated yesterday</p>
-              </div>
+        return <ItemsListView />;
 
-              <div className='card flex justify-content-center'>
-                <Toast ref={toast} />
-
-                <button
-                  className='bg-green-500 text-white px-4 py-2 rounded'
-                  onClick={showSuccess}>
-                  Success
-                </button>
-                <button
-                  className='bg-blue-500 text-white px-4 py-2 rounded'
-                  onClick={showInfo}>
-                  Info
-                </button>
-                <button
-                  className='bg-yellow-500 text-white px-4 py-2 rounded'
-                  onClick={showWarn}>
-                  Warning
-                </button>
-                <button
-                  className='bg-red-500 text-white px-4 py-2 rounded'
-                  onClick={showError}>
-                  Error
-                </button>
-              </div>
-            </div>
-          </div>
-        );
+      case 'Add Inventory':
+        return <AddInventory />;
+      case 'Dashboard':
+        return <ControlPanel />;
+      case 'Create New Users':
+        return <CreateUsers />;
 
       default:
-        return (
-          <div className='p-6'>
-            <h2 className='text-2xl font-bold mb-4'>Documents</h2>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='bg-white p-4 rounded shadow'>
-                <h3 className='font-bold'>Project Report</h3>
-                <p className='text-sm text-gray-500'>Updated yesterday</p>
-              </div>
-              <div className='bg-white p-4 rounded shadow'>
-                <h3 className='font-bold'>Meeting Notes</h3>
-                <p className='text-sm text-gray-500'>Updated 3 days ago</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <ControlPanel />;
     }
   };
 
