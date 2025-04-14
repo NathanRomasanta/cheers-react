@@ -31,6 +31,7 @@ import CashOutPg from "./CashOutScreen/page";
 import { getAuth, signOut } from "firebase/auth";
 import { Routes, Route, Navigate } from "react-router-dom";
 import CreateUsers from "./create-users/page";
+import Inventory from "./inventory/page";
 
 export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -67,6 +68,13 @@ export default function AdminPanel() {
     {
       id: "Inventory",
       label: "Inventory",
+      icon: <Table size={27} />,
+      path: "/dashboard/settings",
+    },
+
+    {
+      id: "Inventory2",
+      label: "Inventory2",
       icon: <Table size={27} />,
       path: "/dashboard/settings",
     },
@@ -211,6 +219,9 @@ export default function AdminPanel() {
         return <ItemsListView />;
       case "Add Inventory":
         return <AddInventory />;
+
+      case "Inventory2":
+        return <Inventory />;
 
       case "Create New Users":
         return <CreateUsers />;
