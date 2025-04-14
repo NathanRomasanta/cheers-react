@@ -101,7 +101,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
             </button>
             <button
               className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => setShowIngredients(false)}>
+              onClick={() => setShowIngredients('')}>
               Back
             </button>
           </div>
@@ -250,7 +250,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                   </button>
                   <button
                     className='btn  bg-orange-500 text-white hover:bg-orange-600'
-                    onClick={() => setTypeSelected(null)}>
+                    onClick={() => setTypeSelected('')}>
                     Back
                   </button>
                 </div>
