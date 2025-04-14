@@ -20,6 +20,8 @@ import {
   BookMarked,
   Accessibility,
   UserPlus,
+  Sheet,
+  LayoutDashboard,
 } from 'lucide-react';
 import CreatePOSItem from './create-pos-item-screen/page';
 import ControlPanel from './control-panel/page';
@@ -53,7 +55,7 @@ export default function AdminPanel() {
     {
       id: 'Dashboard',
       label: 'Dashboard',
-      icon: <Airplay size={27} />,
+      icon: <LayoutDashboard size={27} />,
       path: '/dashboard/documents',
     },
 
