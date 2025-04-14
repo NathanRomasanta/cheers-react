@@ -15,6 +15,8 @@ import {
   FilePlus,
   UserPlus,
   Send,
+  LayoutDashboard,
+  Sheet,
 } from 'lucide-react';
 import AddInventory from '@/admin/create-inventory/page';
 import ControlPanel from '@/admin/control-panel/page';
@@ -85,13 +87,13 @@ export default function Dashboard() {
     {
       id: 'Dashboard',
       label: 'Dashboard',
-      icon: <Airplay size={27} />,
+      icon: <LayoutDashboard size={27} />,
       path: '/dashboard/documents',
     },
     {
       id: 'Inventory',
       label: 'Inventory',
-      icon: <Airplay size={27} />,
+      icon: <Sheet size={27} />,
       path: '/dashboard/documents',
     },
     {
