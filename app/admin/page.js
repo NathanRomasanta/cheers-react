@@ -1,6 +1,6 @@
 // pages/Dashboard.js
 
-"use client";
+'use client';
 
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
@@ -20,23 +20,10 @@ import {
   BookMarked,
   Accessibility,
   UserPlus,
-} from "lucide-react";
-import CreatePOSItem from "./create-pos-item-screen/page";
-import ControlPanel from "./control-panel/page";
-import ItemsListView from "./inventory-screen/page";
-import AddInventory from "./create-inventory/page";
-import Orders from "./orders/page";
-import AddToPosPage from "./addToPos/page";
-import CashOutPg from "./CashOutScreen/page";
-import { getAuth, signOut } from "firebase/auth";
-import { Routes, Route, Navigate } from "react-router-dom";
-import CreateUsers from "./create-users/page";
-import Inventory from "./inventory/page";
-=======
-  Sheet,
-  LayoutDashboard,
 } from 'lucide-react';
-import CreatePOSItem from './create-pos-item-screen/page';
+
+import { Sheet, LayoutDashboard } from 'lucide-react';
+
 import ControlPanel from './control-panel/page';
 import ItemsListView from './inventory-screen/page';
 import AddInventory from './create-inventory/page';
@@ -46,7 +33,6 @@ import CashOutPg from './CashOutScreen/page';
 import { getAuth, signOut } from 'firebase/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import CreateUsers from './create-users/page';
->>>>>>> 4b6c92c8289b7baf3bb41c8bf7ab4e4e16dfdb4c
 
 export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -88,20 +74,8 @@ export default function AdminPanel() {
     },
 
     {
-<<<<<<< HEAD
-      id: "Inventory2",
-      label: "Inventory2",
-      icon: <Table size={27} />,
-      path: "/dashboard/settings",
-    },
-
-    {
-      id: "Add Inventory",
-      label: "Add Inventory",
-=======
       id: 'Add Inventory',
       label: 'Add Inventory',
->>>>>>> 4b6c92c8289b7baf3bb41c8bf7ab4e4e16dfdb4c
       icon: <FilePlus size={27} />,
       path: '/dashboard/settings',
     },
@@ -240,14 +214,7 @@ export default function AdminPanel() {
       case 'Add Inventory':
         return <AddInventory />;
 
-<<<<<<< HEAD
-      case "Inventory2":
-        return <Inventory />;
-
-      case "Create New Users":
-=======
       case 'Create New Users':
->>>>>>> 4b6c92c8289b7baf3bb41c8bf7ab4e4e16dfdb4c
         return <CreateUsers />;
       default:
         return <ControlPanel />;
