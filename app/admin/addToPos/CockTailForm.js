@@ -95,12 +95,12 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
           />
           <div className=' flex flex-row gap-4 m-5 justify-around'>
             <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              className='btn btn-md rounded-lg bg-orange-500 text-white hover:bg-orange-600'
               onClick={() => handleNextIngredient()}>
               Next Ingredient
             </button>
             <button
-              className='btn  bg-orange-500 text-white hover:bg-orange-600'
+              className='btn btn-md rounded-lg  bg-orange-500 text-white hover:bg-orange-600'
               onClick={() => {
                 // Reset all states to blank states
                 setShowIngredients(false);
@@ -116,7 +116,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                 setIsLiquor(false);
                 setTypeSelected('');
               }}>
-              Back
+              Restart Creation
             </button>
           </div>
         </div>
