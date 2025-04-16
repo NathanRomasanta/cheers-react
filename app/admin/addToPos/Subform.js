@@ -35,7 +35,7 @@ function SubForm({
         <label className='fieldset-label relative left-36'>
           Ingredient Name :
         </label>
-        <div className='dropdown dropdown-top relative left-36'>
+        <div className='dropdown dropdown-start relative left-36'>
           <div
             tabIndex={0}
             role='button'
