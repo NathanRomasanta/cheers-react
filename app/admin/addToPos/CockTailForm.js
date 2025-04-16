@@ -101,7 +101,21 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
             </button>
             <button
               className='btn  bg-orange-500 text-white hover:bg-orange-600'
-              onClick={() => setShowIngredients('')}>
+              onClick={() => {
+                // Reset all states to blank states
+                setShowIngredients(false);
+                setIngredientCount(0);
+                setCocktailIngredients([]);
+                setCocktailName('');
+                setCocktailPrice('');
+                setIfAdded(false);
+                setCocktailOz('');
+                setIngredientName('');
+                setIngredientOz('');
+                setIngredientIsLiquor(false);
+                setIsLiquor(false);
+                setTypeSelected('');
+              }}>
               Back
             </button>
           </div>
@@ -194,7 +208,7 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
             </legend>
 
             <label className='fieldset-label relative left-28'>
-              CockTail Name :
+              Cocktail Name :
             </label>
             <input
               type='text'
@@ -250,7 +264,20 @@ function CocktailForm({ typeSelected, setTypeSelected }) {
                   </button>
                   <button
                     className='btn  bg-orange-500 text-white hover:bg-orange-600'
-                    onClick={() => setTypeSelected('')}>
+                    onClick={() => {
+                      setShowIngredients(false);
+                      setIngredientCount(0);
+                      setCocktailIngredients([]);
+                      setCocktailName('');
+                      setCocktailPrice('');
+                      setIfAdded(false);
+                      setCocktailOz('');
+                      setIngredientName('');
+                      setIngredientOz('');
+                      setIngredientIsLiquor(false);
+                      setIsLiquor(false);
+                      setTypeSelected('');
+                    }}>
                     Back
                   </button>
                 </div>
