@@ -8,20 +8,12 @@ import { useAuth } from '/app/_utils/AuthContext';
 import { useRouter } from 'next/navigation';
 import { ShieldX } from 'lucide-react';
 import {
-  Mail,
   Settings,
   LogOut,
-  Shield,
   Menu,
   X,
-  Airplay,
-  Send,
-  FilePlus,
-  Table,
+  LayoutDashboard,
   Receipt,
-  BookMarked,
-  Accessibility,
-  UserPlus,
 } from 'lucide-react';
 
 import { getAuth, signOut } from 'firebase/auth';
@@ -55,7 +47,7 @@ export default function CashoutAdmin() {
     {
       id: 'Dashboard',
       label: 'Dashboard',
-      icon: <Airplay size={27} />,
+      icon: <LayoutDashboard size={27} />,
       path: '/dashboard/documents',
     },
     {

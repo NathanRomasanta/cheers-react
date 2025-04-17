@@ -202,7 +202,7 @@ function CashOutPg() {
   useEffect(() => {
     const mappedData = RTDItems.map((item, index) => [
       index + 1, // Row #
-      `${item.ID}:${item.name}`, // database name field
+      `${item.ID}:${' '} ${item.name}`, // database name field
       item.open_count, // database id field
       item.close_count, // database quantity field
       item.price, // database price field

@@ -9,20 +9,17 @@ import {
   Mail,
   Settings,
   LogOut,
-  Shield,
   Menu,
   X,
-  Airplay,
   Send,
   FilePlus,
   Table,
   Receipt,
   BookMarked,
-  Accessibility,
   UserPlus,
+  Sheet,
+  LayoutDashboard,
 } from 'lucide-react';
-
-import { Sheet, LayoutDashboard } from 'lucide-react';
 
 import ControlPanel from './control-panel/page';
 import ItemsListView from './inventory-screen/page';
@@ -69,7 +66,7 @@ export default function AdminPanel() {
     {
       id: 'Inventory',
       label: 'Inventory',
-      icon: <Table size={27} />,
+      icon: <Sheet size={27} />,
       path: '/dashboard/settings',
     },
 
