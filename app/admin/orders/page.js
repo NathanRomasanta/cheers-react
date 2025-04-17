@@ -16,6 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; // theme
 import 'primereact/resources/primereact.min.css'; // core css
 import 'primeicons/primeicons.css';
+import { ChevronDown } from 'lucide-react';
 
 export default function Orders() {
   const [items, setItems] = useState([]);
@@ -203,14 +204,18 @@ export default function Orders() {
           <div className='flex justify-between items-center mb-4'>
             <h1 className='text-2xl font-bold'>Orders</h1>
             {statusFilter && (
-              <div className='dropdown dropdown-bottom dropdown-end' id='filter-dropdown'>
+              <div
+                className='dropdown dropdown-bottom dropdown-end'
+                id='filter-dropdown'>
                 <div
                   tabIndex={0}
                   role='button'
                   id='filter-btn'
                   className=' h-10 border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400 hover:text-white   rounded-xl justify-center flex items-center p-2'>
                   Filter by Status
+                  <ChevronDown />
                 </div>
+
                 <ul
                   tabIndex={0}
                   className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
@@ -256,16 +261,17 @@ export default function Orders() {
                       <div
                         tabIndex={0}
                         role='button'
-                        className='h-10 border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75 hover:bg-orange-400 hover:text-white rounded-xl justify-center flex items-center p-2'>
+                        className='h-10 border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75 hover:bg-orange-400 hover:text-white rounded-xl justify-center flex items-center px-2 gap-4'>
                         Filter by Status
+                        <ChevronDown />
                       </div>
                       <ul
                         tabIndex={0}
-                        className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
+                        className='dropdown-content menu bg-orange-400 bg-opacity-55  rounded-box z-1 w-40 p-2 shadow-sm'>
                         {statusOptions.map((option) => (
                           <li key={option.value}>
                             <button
-                              className={`btn ${
+                              className={`btn btn-ghost    bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl  ${
                                 statusFilter === option.value
                                   ? 'btn-active'
                                   : ''
