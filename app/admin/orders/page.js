@@ -261,17 +261,17 @@ export default function Orders() {
                       <div
                         tabIndex={0}
                         role='button'
-                        className='h-10 border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75 hover:bg-orange-400 hover:text-white rounded-xl justify-center flex items-center px-2 py-3 gap-4'>
+                        className='h-10 border-orange-400 bg-orange-500 bg-opacity-25 hover:bg-opacity-75 hover:bg-orange-400 hover:text-white rounded-xl justify-center flex items-center px-2 gap-4'>
                         Filter by Status
                         <ChevronDown />
                       </div>
                       <ul
                         tabIndex={0}
-                        className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
+                        className='dropdown-content menu bg-orange-400 bg-opacity-55  rounded-box z-1 w-40 p-2 shadow-sm'>
                         {statusOptions.map((option) => (
                           <li key={option.value}>
                             <button
-                              className={`btn ${
+                              className={`btn btn-ghost    bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl  ${
                                 statusFilter === option.value
                                   ? 'btn-active'
                                   : ''

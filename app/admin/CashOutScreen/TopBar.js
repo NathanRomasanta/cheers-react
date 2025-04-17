@@ -181,9 +181,11 @@ export default function TopBar({
             </div>
             <ul
               tabIndex={0}
-              className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
+              className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm   bg-orange-500 bg-opacity-25 hover:bg-opacity-75  hover:bg-orange-400   rounded-xl'>
               {baristaList.map((barista, index) => (
-                <li key={index}>
+                <li
+                  key={index}
+                  className='hover:text-white'>
                   <a
                     onClick={() => {
                       handleBaristaSelection(barista.id); // Call the handler
