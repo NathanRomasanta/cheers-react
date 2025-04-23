@@ -48,7 +48,7 @@ const ControlPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "Items")); // "orders" is your Firestore collection name
+        const querySnapshot = await getDocs(collection(db, "Inventory")); // "orders" is your Firestore collection name
 
         const accountSnapshot = await getDocs(collection(db, "Accounts"));
         const ordersSnapshot = await getDocs(collection(db, "Orders"));
